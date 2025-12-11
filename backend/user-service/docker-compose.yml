@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  user-service:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - AI_DEFAULT_MODEL=claude-haiku-4.5
+    restart: unless-stopped

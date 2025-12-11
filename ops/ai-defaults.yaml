@@ -1,0 +1,22 @@
+# 默认 AI 配置（全局）
+# 将此文件作为仓库中各服务读取 AI 配置的集中来源。
+# 说明：将 `AI_DEFAULT_MODEL` 或此 YAML 的值注入到运行环境中，可让所有客户端默认使用 Claude Haiku 4.5。
+
+default:
+  model: "claude-haiku-4.5" # 统一的模型 ID（小写短标识）
+  display_name: "Claude Haiku 4.5"
+  provider: "Anthropic"
+  version: "4.5"
+
+# 按服务覆盖示例（可选）
+services:
+  api-service:
+    model: "claude-haiku-4.5"
+  docs-generator:
+    model: "claude-haiku-4.5"
+# 部署/CI 示例：在 CI 或容器环境中，将该文件的值写入环境变量：
+# AI_DEFAULT_MODEL=claude-haiku-4.5
+# 或者在 Kubernetes 中使用 ConfigMap/Secret 将该值注入到 Pod 环境。
+
+# 注意：具体的 SDK/客户端可能要求不同的 model identifier（例如 Anthropics 的实际 ID），
+# 请在运行时把该短标识映射为具体的 provider model name 或者密钥名称。
