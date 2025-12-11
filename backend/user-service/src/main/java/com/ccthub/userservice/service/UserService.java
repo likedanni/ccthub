@@ -1,15 +1,16 @@
 package com.ccthub.userservice.service;
 
-import com.ccthub.userservice.dto.RegisterRequest;
-import com.ccthub.userservice.dto.RegisterResponse;
-import com.ccthub.userservice.dto.LoginRequest;
-import com.ccthub.userservice.model.User;
-import com.ccthub.userservice.repository.UserRepository;
-import com.ccthub.userservice.util.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.ccthub.userservice.dto.LoginRequest;
+import com.ccthub.userservice.dto.RegisterRequest;
+import com.ccthub.userservice.dto.RegisterResponse;
+import com.ccthub.userservice.model.User;
+import com.ccthub.userservice.repository.UserRepository;
+import com.ccthub.userservice.util.JwtTokenProvider;
 
 @Service
 public class UserService {
@@ -40,20 +41,17 @@ public class UserService {
 
         String accessToken = jwtTokenProvider.generateAccessToken(
                 savedUser.getId().toString(),
-                savedUser.getPhone()
-        );
+                savedUser.getPhone());
         String refreshToken = jwtTokenProvider.generateRefreshToken(
                 savedUser.getId().toString(),
-                savedUser.getPhone()
-        );
+                savedUser.getPhone());
 
         return new RegisterResponse(
                 savedUser.getId(),
                 savedUser.getPhone(),
                 accessToken,
                 refreshToken,
-                aiDefaultModel
-        );
+                aiDefaultModel);
     }
 
     public RegisterResponse login(LoginRequest request) throws Exception {
@@ -66,20 +64,17 @@ public class UserService {
 
         String accessToken = jwtTokenProvider.generateAccessToken(
                 user.getId().toString(),
-                user.getPhone()
-        );
+                user.getPhone());
         String refreshToken = jwtTokenProvider.generateRefreshToken(
                 user.getId().toString(),
-                user.getPhone()
-        );
+                user.getPhone());
 
         return new RegisterResponse(
                 user.getId(),
                 user.getPhone(),
                 accessToken,
                 refreshToken,
-                aiDefaultModel
-        );
+                aiDefaultModel);
     }
 
     public User getUserById(Long id) {

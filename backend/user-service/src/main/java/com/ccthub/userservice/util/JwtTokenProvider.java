@@ -1,13 +1,17 @@
 package com.ccthub.userservice.util;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+
+import javax.crypto.SecretKey;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtTokenProvider {
@@ -36,10 +40,10 @@ public class JwtTokenProvider {
         SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
 
         return Jwts.builder()
-                .subject(userId)
+                .setSubject(userId)
                 .claim("phone", phone)
-                .issuedAt(now)
-                .expiration(expiryDate)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }

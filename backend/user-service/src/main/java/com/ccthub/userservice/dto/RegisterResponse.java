@@ -20,10 +20,23 @@ public class RegisterResponse {
         this.aiDefaultModel = aiDefaultModel;
     }
 
-    public Long getId() { return id; }
-    public String getPhone() { return phone; }
-    public String getAccessToken() { return accessToken; }
-    public String getRefreshToken() { return refreshToken; }
-    public String getAiDefaultModel() { return aiDefaultModel; }
-}
+    public Long getId() {
+        return id;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public String getAiDefaultModel() {
+        return aiDefaultModel;
+    }
 }
