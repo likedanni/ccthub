@@ -1,12 +1,12 @@
 package com.ccthub.userservice.dto;
 
-public class RegisterRequest {
+public class LoginRequest {
     private String phone;
     private String password;
 
-    public RegisterRequest() {}
+    public LoginRequest() {}
 
-    public RegisterRequest(String phone, String password) {
+    public LoginRequest(String phone, String password) {
         this.phone = phone;
         this.password = password;
     }
