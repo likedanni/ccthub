@@ -9,19 +9,6 @@ on:
 jobs:
   build-and-coverage:
     runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: cct-hub
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -40,24 +27,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Wait for MySQL service to be ready
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y default-mysql-client
-          echo "Waiting for MySQL to be available..."
-          for i in {1..20}; do
-            mysqladmin ping -h mysql -uroot -proot >/dev/null 2>&1 && break
-            echo "MySQL not ready yet ($i/20)... sleeping 3s"
-            sleep 3
-          done
-          mysqladmin ping -h mysql -uroot -proot
-
       - name: Build and run tests (mvn verify)
         working-directory: backend/user-service
         env:
-          SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/cct-hub?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-          SPRING_DATASOURCE_USERNAME: root
-          SPRING_DATASOURCE_PASSWORD: root
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: mvn -B -DskipTests=false verify
 

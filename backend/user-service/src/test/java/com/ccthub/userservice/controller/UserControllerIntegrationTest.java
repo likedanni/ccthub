@@ -10,17 +10,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.ccthub.userservice.config.TestContainersConfig;
 import com.ccthub.userservice.dto.LoginRequest;
 import com.ccthub.userservice.dto.RegisterRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@SpringBootTest
 @AutoConfigureMockMvc
-public class UserControllerIntegrationTest {
+public class UserControllerIntegrationTest extends TestContainersConfig {
 
     @Autowired
     private MockMvc mockMvc;

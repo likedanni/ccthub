@@ -1,6 +1,5 @@
-
 ALTER TABLE `users`
-ADD COLUMN IF NOT EXISTS `status_tmp` VARCHAR(20) DEFAULT 'ACTIVE';
+ADD COLUMN `status_tmp` VARCHAR(20) DEFAULT 'ACTIVE';
 UPDATE `users`
 SET `status_tmp` = CASE
         WHEN `status` IN (1, '1') THEN 'ACTIVE'
@@ -9,5 +8,5 @@ SET `status_tmp` = CASE
     END
 WHERE `status_tmp` IS NULL
     OR `status_tmp` = '';
-ALTER TABLE `users` DROP COLUMN IF EXISTS `status`;
+ALTER TABLE `users` DROP COLUMN `status`;
 ALTER TABLE `users` CHANGE COLUMN `status_tmp` `status` VARCHAR(20) NOT NULL DEFAULT 'ACTIVE';

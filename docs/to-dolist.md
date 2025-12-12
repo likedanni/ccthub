@@ -158,3 +158,36 @@ docker run --rm -e AI_DEFAULT_MODEL=claude-haiku-4.5 -p 8080:8080 ccthub/user-se
 - C: 生成 docker-compose 联调模板（MySQL + Redis + core services）并放在 /ops 或 /examples。
 
 请回复选择（A/B/C 或组合），我将按选项继续实施并更新 TODO 列表。
+
+---
+
+## 最近已完成的工作（更新记录）
+
+下面是近期在 `backend/user-service` 上完成的重要项，已同步到分支 `ci/migration-jwt-test`：
+
+- **创建分支并提交**：在 `ci/migration-jwt-test` 分支提交了本次修复与文档更新（包括测试清理、JWT 处理修复、README 更新）。
+- **修复 JWT 密钥处理**：修复 `JwtTokenProvider`，在初始化时如果 `jwt.secret` 太短会生成并缓存一个合规密钥，避免 HS512 的 WeakKeyException（文件：`src/main/java/com/ccthub/userservice/util/JwtTokenProvider.java`）。生产环境请提供持久且 >=64 字节的 secret。
+- **改进测试幂等性**：在集成测试 `UserControllerIntegrationTest` 中添加 `@BeforeEach` 清理 `users` 表，确保每次测试从干净状态开始（文件：`src/test/java/com/ccthub/userservice/controller/UserControllerIntegrationTest.java`）。
+- **验证并应用 Flyway V2**：在 `127.0.0.1:3307`（docker 映射）上 Flyway 成功应用 V2 迁移并通过测试；在 `127.0.0.1:3306` 上发现 `users.status` 列为 `tinyint`，与实体期望的 `varchar` 不匹配，需通过新增 Flyway 迁移或调整实体以统一 schema（建议通过 Flyway 做变更）。
+- **README 增加 JWT 指南**：在 `backend/user-service/README.md` 中加入了 `jwt.secret` 推荐（HS512 要求 >=512 bits / >=64 字节）以及生成示例（`openssl rand -base64 64`）。
+
+以上工作已提交到本地分支 `ci/migration-jwt-test`（commit 示例：`cb1e96c`、`2faf9d7`）。
+
+## 流程规则（新增） — 完成功能后必须更新 `to-dolist.md`
+
+为保证项目进度透明与变更可追溯，添加以下必须遵守的轻量规则：
+
+1. 每当完成一个功能/修复（包括迁移、重大配置或测试相关改动），提交 PR 前必须在 `docs/to-dolist.md` 中追加一条“最近已完成的工作”，包含：
+
+- **短标题**（一行）：如 `修复 JWT 密钥处理`。
+- **分支 / commit**：例如 `branch: ci/migration-jwt-test, commit: cb1e96c`。
+- **受影响文件**：列出修改的主要文件路径。
+- **简短说明**：为什么要改、对哪个环境影响、是否需要后续迁移或回滚说明。
+
+2. `to-dolist.md` 的更新应放在文件的“最近已完成的工作”节顶部，最近的改动最先列出。更新可以由 PR 作者完成，也可在代码合并后由合并者补充。
+
+3. CI/PR Review 要求：PR description 中应引用 `to-dolist.md` 相应条目（格式或行号），方便 reviewer 验证变更是否已记录。
+
+4. 若变更涉及数据库 schema（Flyway 迁移），在 README 或 `docs` 中同时注明执行顺序（例如在主库上先做备份、然后执行 Flyway migrate）。
+
+下次我会把此条目也补齐到 PR 描述里；若你接受该规则，我会把所有尚未记录的历史关键改动补充进 `to-dolist.md`。
