@@ -5,11 +5,13 @@
 This draft contains Flyway migrations and related fixes to allow `user-service` to run against the existing host MySQL database (`cct-hub`), plus test/JWT dependency corrections included in the same branch.
 
 Key goals:
+
 - Convert `users.status` from `TINYINT` to `VARCHAR(20)` (V3).
 - Add safe defaults to host-only columns blocking JPA inserts: `phone_encrypted` (V4) and `nickname` (V5).
 - Keep changes minimal and backwards-safe; a DB backup was taken before applying migrations.
 
 ## Files changed (migrations)
+
 - `src/main/resources/db/migration/V3__migrate_status_to_varchar.sql`
   - Add `status_tmp` VARCHAR(20), map integer values (1 → 'ACTIVE', 0 → 'INACTIVE'), drop old `status`, rename `status_tmp` → `status`.
   - Plain SQL only (no DELIMITER / stored-proc fragments) for Flyway parsing and broad MySQL compatibility.
@@ -45,6 +47,25 @@ gh pr create --title "fix(migrations): migrate users.status and add DB defaults"
 ```
 
 Or open a PR in the web UI after pushing the branch.
+
+## Coverage CI and badge
+
+This repository now includes a GitHub Actions workflow that runs `mvn verify`, produces JaCoCo coverage, uploads the HTML report as a workflow artifact, and attempts to upload the coverage summary to Codecov.
+
+- Workflow file: `.github/workflows/coverage.yml`
+- Artifact: `user-service-jacoco-report` (contains `target/site/jacoco` HTML report)
+- Codecov: the workflow uses `codecov/codecov-action` to upload `backend/user-service/target/site/jacoco/jacoco.xml`.
+  - If the repository is private, set the `CODECOV_TOKEN` secret in GitHub (Repository Settings → Secrets) before relying on the Codecov upload step.
+
+### Coverage badge (PR)
+
+You can add a coverage badge to the PR description or `README.md` once Codecov runs successfully. Example markdown (replace `TOKEN` only if you need it for private repos):
+
+```md
+[![codecov](https://codecov.io/gh/likedanni/ccthub/branch/ci/migration-jwt-test/graph/badge.svg?token=TOKEN)](https://codecov.io/gh/likedanni/ccthub)
+```
+
+If Codecov is not desirable, we still upload the HTML report as an artifact and you can link to it from the PR manually.
 
 ## Staging run / recommended steps before production
 
