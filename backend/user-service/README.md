@@ -24,10 +24,10 @@ cd backend/user-service
 docker-compose up -d
 
 # 或（单独运行 db 容器后运行服务）：
-docker run --name mysql-ccthub -e MYSQL_ROOT_PASSWORD=12345678 -e MYSQL_DATABASE=cct-hub -p 3306:3306 -d mysql:8.0 --default-authentication-plugin=mysql_native_password
+docker run --name mysql-ccthub -e MYSQL_ROOT_PASSWORD=12345678 -e MYSQL_DATABASE=cct-hub -p 3307:3306 -d mysql:8.0 --default-authentication-plugin=mysql_native_password
 docker build -t ccthub/user-service:local .
 docker run --rm \
-	-e SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/cct-hub \
+	-e SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3307/cct-hub \
 	-e SPRING_DATASOURCE_USERNAME=root \
 	-e SPRING_DATASOURCE_PASSWORD=12345678 \
 	-e JWT_SECRET=your-secret-key-change-in-production-12345 \
