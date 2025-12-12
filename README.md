@@ -1,6 +1,6 @@
 # 长治文旅大生态服务平台
 
-[![codecov](https://codecov.io/gh/likedanni/ccthub/branch/ci/migration-jwt-test/graph/badge.svg)](https://codecov.io/gh/likedanni/ccthub)
+[![codecov](https://codecov.io/gh/likedanni/ccthub/branch/main/graph/badge.svg?token=YOUR_CODECOV_TOKEN)](https://codecov.io/gh/likedanni/ccthub)
 
 ## 项目简介
 
