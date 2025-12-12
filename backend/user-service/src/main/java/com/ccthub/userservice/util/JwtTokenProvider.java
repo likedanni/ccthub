@@ -12,6 +12,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 
 @Component
 public class JwtTokenProvider {
@@ -25,6 +26,20 @@ public class JwtTokenProvider {
     @Value("${jwt.refresh.expiration:604800000}")
     private long refreshTokenExpirationInMs;
 
+    private SecretKey signingKey;
+
+    @PostConstruct
+    public void init() {
+        byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
+        if (keyBytes.length < 64) {
+            // generate a secure random key suitable for HS512 when provided secret is too
+            // short
+            this.signingKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+        } else {
+            this.signingKey = Keys.hmacShaKeyFor(keyBytes);
+        }
+    }
+
     public String generateAccessToken(String userId, String phone) {
         return generateToken(userId, phone, jwtExpirationInMs);
     }
@@ -37,21 +52,18 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expirationTime);
 
-        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
-
         return Jwts.builder()
                 .setSubject(userId)
                 .claim("phone", phone)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(key, SignatureAlgorithm.HS512)
+                .signWith(signingKey, SignatureAlgorithm.HS512)
                 .compact();
     }
 
     public String getUserIdFromToken(String token) {
-        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
         return Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(signingKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
@@ -59,9 +71,8 @@ public class JwtTokenProvider {
     }
 
     public String getPhoneFromToken(String token) {
-        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
         return (String) Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(signingKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
@@ -70,9 +81,8 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token) {
         try {
-            SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
             Jwts.parserBuilder()
-                    .setSigningKey(key)
+                    .setSigningKey(signingKey)
                     .build()
                     .parseClaimsJws(token);
             return true;

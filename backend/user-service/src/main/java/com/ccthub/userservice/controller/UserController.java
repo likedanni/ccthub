@@ -1,5 +1,7 @@
 package com.ccthub.userservice.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +24,15 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
         try {
             RegisterResponse response = userService.register(request);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
+            logger.error("Register error", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
@@ -38,6 +43,7 @@ public class UserController {
             RegisterResponse response = userService.login(request);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
+            logger.error("Login error", e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
