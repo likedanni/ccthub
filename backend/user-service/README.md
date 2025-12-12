@@ -30,7 +30,11 @@ docker run --rm \
 	-e SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3307/cct-hub \
 	-e SPRING_DATASOURCE_USERNAME=root \
 	-e SPRING_DATASOURCE_PASSWORD=12345678 \
-	-e JWT_SECRET=your-secret-key-change-in-production-12345 \
+	# 推荐使用一个长度足够的 secret（HS512 需要 >= 512 bits，即 >=64 字节）
+	# 生成示例：
+	#   openssl rand -base64 64
+	# 在容器中通过环境变量注入（示例变量名 `JWT_SECRET` 或 Spring 属性 `jwt.secret` 均可）
+	-e JWT_SECRET=your-64-byte-base64-secret-here \
 	-e AI_DEFAULT_MODEL=claude-haiku-4.5 \
 	-p 8080:8080 ccthub/user-service:local
 ```
