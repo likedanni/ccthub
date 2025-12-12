@@ -8,12 +8,12 @@
     "build:mp-weixin": "uni build -p mp-weixin"
   },
   "dependencies": {
-    "@dcloudio/uni-app": "^3.0.0",
-    "vue": "^3.3.4"
+    "@dcloudio/uni-app": "3.0.0-alpha-4080720251125001",
+    "vue": "^3.2.45"
   },
   "devDependencies": {
-    "@dcloudio/vite-plugin-uni": "^3.0.0",
-    "@dcloudio/types": "^3.0.0",
-    "vite": "^4.5.0"
+    "@dcloudio/vite-plugin-uni": "3.0.0-alpha-4080720251125001",
+    "@dcloudio/types": "^3.4.8",
+    "vite": "^5.2.8"
   }
 }
