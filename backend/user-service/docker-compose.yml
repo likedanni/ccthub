@@ -1,9 +1,33 @@
 version: '3.8'
 services:
+  db:
+    image: mysql:8.0
+    container_name: mysql-ccthub
+    environment:
+      MYSQL_ROOT_PASSWORD: "12345678"
+      MYSQL_DATABASE: "cct-hub"
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-uroot", "-p12345678"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   user-service:
     build: .
     ports:
       - "8080:8080"
     environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/cct-hub?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=12345678
+      - JWT_SECRET=your-secret-key-change-in-production-12345
       - AI_DEFAULT_MODEL=claude-haiku-4.5
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
