@@ -9,9 +9,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ccthub.userservice.dto.ChangePasswordRequest;
 import com.ccthub.userservice.dto.LoginRequest;
 import com.ccthub.userservice.dto.RegisterRequest;
 import com.ccthub.userservice.dto.RegisterResponse;
+import com.ccthub.userservice.dto.UpdateProfileRequest;
+import com.ccthub.userservice.dto.UserProfileResponse;
 import com.ccthub.userservice.model.User;
 import com.ccthub.userservice.repository.UserRepository;
 import com.ccthub.userservice.util.JwtTokenProvider;
@@ -109,6 +112,108 @@ public class UserService {
     }
 
     /**
+     * 获取用户详细信息
+     */
+    public UserProfileResponse getUserProfile(Long userId) throws Exception {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new Exception("User not found"));
+
+        UserProfileResponse response = new UserProfileResponse();
+        response.setId(user.getId());
+        response.setPhone(user.getPhone());
+        response.setNickname(user.getNickname());
+        response.setAvatarUrl(user.getAvatarUrl());
+        response.setRealName(user.getRealName());
+        response.setMemberLevel(user.getMemberLevel());
+        response.setGrowthValue(user.getGrowthValue());
+        response.setTotalPoints(user.getTotalPoints());
+        response.setAvailablePoints(user.getAvailablePoints());
+        response.setWalletBalance(user.getWalletBalance());
+        response.setRegisterTime(user.getRegisterTime());
+        response.setLastLoginTime(user.getLastLoginTime());
+        response.setStatus(user.getStatus());
+
+        return response;
+    }
+
+    /**
+     * 更新用户个人信息
+     */
+    public UserProfileResponse updateProfile(Long userId, UpdateProfileRequest request) throws Exception {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new Exception("User not found"));
+
+        if (request.getNickname() != null && !request.getNickname().trim().isEmpty()) {
+            user.setNickname(request.getNickname());
+        }
+
+        if (request.getAvatarUrl() != null) {
+            user.setAvatarUrl(request.getAvatarUrl());
+        }
+
+        if (request.getRealName() != null && !request.getRealName().trim().isEmpty()) {
+            user.setRealName(request.getRealName());
+        }
+
+        if (request.getIdCard() != null && !request.getIdCard().trim().isEmpty()) {
+            // 加密身份证号
+            user.setIdCardEncrypted(encryptIdCard(request.getIdCard()));
+        }
+
+        User savedUser = userRepository.save(user);
+        return getUserProfile(savedUser.getId());
+    }
+
+    /**
+     * 修改登录密码
+     */
+    public void changePassword(Long userId, ChangePasswordRequest request) throws Exception {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new Exception("User not found"));
+
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
+            throw new Exception("旧密码不正确");
+        }
+
+        // 密码强度验证
+        if (request.getNewPassword().length() < 6) {
+            throw new Exception("密码长度至少6位");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+    }
+
+    /**
+     * 设置/修改支付密码
+     */
+    public void setPaymentPassword(Long userId, String paymentPassword) throws Exception {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new Exception("User not found"));
+
+        if (paymentPassword.length() != 6 || !paymentPassword.matches("\\d{6}")) {
+            throw new Exception("支付密码必须是6位数字");
+        }
+
+        user.setPaymentPassword(passwordEncoder.encode(paymentPassword));
+        userRepository.save(user);
+    }
+
+    /**
+     * 验证支付密码
+     */
+    public boolean verifyPaymentPassword(Long userId, String paymentPassword) throws Exception {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new Exception("User not found"));
+
+        if (user.getPaymentPassword() == null) {
+            throw new Exception("未设置支付密码");
+        }
+
+        return passwordEncoder.matches(paymentPassword, user.getPaymentPassword());
+    }
+
+    /**
      * 加密手机号（使用SHA-256）
      */
     private String encryptPhone(String phone) {
@@ -128,6 +233,29 @@ public class UserService {
             return hexString.toString();
         } catch (Exception e) {
             throw new RuntimeException("Failed to encrypt phone", e);
+        }
+    }
+
+    /**
+     * 加密身份证号（使用SHA-256）
+     */
+    private String encryptIdCard(String idCard) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            String saltedIdCard = idCard + "salt"; // 简单加盐，实际应使用配置
+            byte[] hash = digest.digest(saltedIdCard.getBytes(StandardCharsets.UTF_8));
+
+            // 转换为十六进制字符串
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1)
+                    hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to encrypt idCard", e);
         }
     }
 }

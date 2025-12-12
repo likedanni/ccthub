@@ -24,6 +24,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "payment_password", length = 255)
+    private String paymentPassword;
+
     @Column(name = "phone_encrypted", nullable = false, length = 128)
     private String phoneEncrypted;
 
@@ -96,6 +99,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPaymentPassword() {
+        return paymentPassword;
+    }
+
+    public void setPaymentPassword(String paymentPassword) {
+        this.paymentPassword = paymentPassword;
     }
 
     public String getPhoneEncrypted() {
