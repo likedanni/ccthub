@@ -1,5 +1,7 @@
 # 长治文旅大生态服务平台
 
+[![codecov](https://codecov.io/gh/likedanni/ccthub/branch/ci/migration-jwt-test/graph/badge.svg)](https://codecov.io/gh/likedanni/ccthub)
+
 ## 项目简介
 本项目为“长治文旅大生态服务平台”统一工程仓库，
 用于承载文档、前端、后端、数据库、接口、运维、合规及 AI 协作规范。
