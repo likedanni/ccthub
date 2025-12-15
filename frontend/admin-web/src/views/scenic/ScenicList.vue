@@ -121,8 +121,8 @@
 import { getCitiesByProvince, getProvinces } from "@/api/region";
 import {
     deleteScenicSpot,
-    getScenicSpotList,
     getScenicSpotDetail,
+    getScenicSpotList,
     updateScenicSpotStatus,
 } from "@/api/scenic";
 import { ElMessage, ElMessageBox } from "element-plus";

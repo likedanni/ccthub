@@ -49,6 +49,41 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/tickets",
+    component: Layout,
+    redirect: "/tickets/list",
+    meta: { title: "票务管理", icon: "Ticket" },
+    children: [
+      {
+        path: "list",
+        name: "TicketList",
+        component: () => import("@/views/tickets/TicketList.vue"),
+        meta: { title: "票种管理" },
+      },
+      {
+        path: "create",
+        name: "TicketCreate",
+        component: () => import("@/views/tickets/TicketForm.vue"),
+        meta: { title: "创建票种" },
+        hidden: true,
+      },
+      {
+        path: "edit/:id",
+        name: "TicketEdit",
+        component: () => import("@/views/tickets/TicketForm.vue"),
+        meta: { title: "编辑票种" },
+        hidden: true,
+      },
+      {
+        path: "prices/:ticketId",
+        name: "TicketPrices",
+        component: () => import("@/views/tickets/TicketPriceCalendar.vue"),
+        meta: { title: "票价日历" },
+        hidden: true,
+      },
+    ],
+  },
 ];
 
 const router = createRouter({

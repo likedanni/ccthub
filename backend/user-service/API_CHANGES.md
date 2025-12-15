@@ -3,6 +3,7 @@
 更新日期: 2025-12-15
 
 简要说明:
+
 - 新增通用文件上传接口并统一返回与历史兼容的字符串 URL。
 - 新增用于只更新景区媒体字段的接口（`PUT /api/scenic-spots/{id}/media`）。
 - 修复文件下载路由的回退查找逻辑（支持从 `uploads` 根目录递归查找实际文件）。
@@ -11,10 +12,12 @@
 主要变更接口:
 
 - `POST /api/files/upload`
+
   - 描述: 通用文件上传，使用 multipart/form-data，字段 `file` 和 `category`（例如 `scenic`/`avatars`）。
   - 返回示例: `{"code":0,"message":"上传成功","data":"http://localhost:8080/api/files/scenic/{filename}"}` （`data` 为字符串 URL，兼容旧客户端）
 
 - `GET /api/files/{category}/{filename}`
+
   - 描述: 根据 `category`（子目录）和 `filename` 返回文件流；若目标文件不存在，会在 `uploads` 根目录中递归查找并返回（兼容历史错误路径）。
 
 - `PUT /api/scenic-spots/{id}/media`
@@ -28,9 +31,11 @@
 - 本地 Swagger UI 地址: `http://localhost:8080/swagger-ui/index.html#/`，OpenAPI JSON: `http://localhost:8080/v3/api-docs`。
 
 变更关联文件（示例）:
+
 - `FileController.java`, `FileStorageService.java`, `ScenicSpotController.java`, `ScenicSpotService.java`, `application.yml`, `frontend/admin-web/src/views/scenic/ScenicForm.vue`
 
 若需我为你：
+
 - 生成 DB 修复脚本以统一历史路径（avatars→scenic），或
 - 将这些变更打包成一个 PR（含 PR 描述），
-请回复我想继续的操作。
+  请回复我想继续的操作。
