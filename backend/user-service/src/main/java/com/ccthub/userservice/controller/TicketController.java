@@ -67,8 +67,11 @@ public class TicketController {
     @Operation(summary = "分页查询票种", description = "分页获取所有票种列表")
     @GetMapping
     public ResponseEntity<Page<TicketResponse>> getTickets(
+            @RequestParam(required = false) Long scenicSpotId,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Integer status,
             @PageableDefault(size = 10, sort = "createTime", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<TicketResponse> page = ticketService.getTickets(pageable);
+        Page<TicketResponse> page = ticketService.getTickets(pageable, scenicSpotId, name, status);
         return ResponseEntity.ok(page);
     }
 

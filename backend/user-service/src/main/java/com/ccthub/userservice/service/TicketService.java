@@ -116,11 +116,11 @@ public class TicketService {
     }
 
     /**
-     * 分页查询票种
+     * 分页查询票种（支持按景区、名称、状态过滤）
      */
-    public Page<TicketResponse> getTickets(Pageable pageable) {
-        return ticketRepository.findAll(pageable)
-                .map(this::convertToResponse);
+    public Page<TicketResponse> getTickets(Pageable pageable, Long scenicSpotId, String name, Integer status) {
+        Page<Ticket> page = ticketRepository.findByFilters(scenicSpotId, name, status, pageable);
+        return page.map(this::convertToResponse);
     }
 
     /**

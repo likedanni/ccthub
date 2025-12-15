@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.ccthub.userservice.entity.Ticket;
@@ -47,6 +49,17 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
      * 根据名称模糊查询
      */
     Page<Ticket> findByNameContaining(String name, Pageable pageable);
+
+        /**
+         * 动态条件查询：景区ID、名称模糊、状态
+         */
+        @Query("SELECT t FROM Ticket t WHERE (:scenicSpotId IS NULL OR t.scenicSpotId = :scenicSpotId) "
+            + "AND (:name IS NULL OR LOWER(t.name) LIKE LOWER(CONCAT('%',:name,'%'))) "
+            + "AND (:status IS NULL OR t.status = :status)")
+        Page<Ticket> findByFilters(@Param("scenicSpotId") Long scenicSpotId,
+                       @Param("name") String name,
+                       @Param("status") Integer status,
+                       Pageable pageable);
 
     /**
      * 统计景区的票种数量
