@@ -222,14 +222,14 @@
     - [x] 已完成 → 退款中 → 已退款
   - [x] OrderRepository/OrderItemRepository
   - [x] OrderService（创建订单、支付、取消、查询）
-  - [x] OrderController（7个REST接口）
+  - [x] OrderController（7 个 REST 接口）
 
 **2.5 购票流程实现**
 
 - [x] 购票接口
   - [x] 选择日期/时段
   - [x] 填写游客信息
-    - [x] 支持多游客（OrderRequest.VisitorInfo列表）
+    - [x] 支持多游客（OrderRequest.VisitorInfo 列表）
     - [x] 实名信息（姓名/身份证/手机号）
   - [ ] 优惠券选择（预留接口）
   - [x] 创建订单
@@ -243,24 +243,24 @@
 
 - [x] 票券管理
   - [x] 生成唯一核销码（UUID + @PrePersist）
-  - [x] 生成二维码（预留qr_code_url字段）
+  - [x] 生成二维码（预留 qr_code_url 字段）
   - [x] 票券详情查询
   - [ ] 票券转发（分享给同行人）（预留功能）
 - [x] 核销服务
   - [x] VerificationService
-  - [x] VerificationController（3个REST接口）
+  - [x] VerificationController（3 个 REST 接口）
   - [x] 单个核销/批量核销
 
 **2.7 退改签功能**
 
 - [x] 退票流程（规则已定义）
-  - [x] 退票规则配置（tickets.refund_policy JSON字段）
-  - [ ] 退票申请接口（预留RefundService）
+  - [x] 退票规则配置（tickets.refund_policy JSON 字段）
+  - [ ] 退票申请接口（预留 RefundService）
   - [ ] 退票规则校验
   - [ ] 退款金额计算
   - [ ] 库存释放
 - [x] 改签流程（规则已定义）
-  - [x] 改签规则配置（tickets.change_policy JSON字段）
+  - [x] 改签规则配置（tickets.change_policy JSON 字段）
   - [ ] 改签申请（参考 DDL.sql order_changes 表）
   - [ ] 改签规则校验
   - [ ] 差价计算
@@ -269,8 +269,8 @@
 **2.8 测试与集成**
 
 - [x] 单元测试（覆盖率 ≥ 75%）
-  - [x] OrderServiceTest（6个测试用例）
-  - [x] VerificationServiceTest（5个测试用例）
+  - [x] OrderServiceTest（6 个测试用例）
+  - [x] VerificationServiceTest（5 个测试用例）
   - [x] 测试结果：11/11 全部通过 ✅
 - [ ] 集成测试
   - [ ] 完整购票流程（端到端）
@@ -286,28 +286,29 @@
 - ✅ 景区信息可正常管理和展示
 - ✅ 票价日历系统运作正常
 - ✅ 库存管理准确，无超卖现象（乐观锁@Version）
-- ✅ 完整购票流程可走通（创建订单→支付→核销）
-- ✅ 电子票券正常生成和查询（UUID核销码）
+- ✅ 完整购票流程可走通（创建订单 → 支付 → 核销）
+- ✅ 电子票券正常生成和查询（UUID 核销码）
 - ⚠️ 退改签功能部分完成（规则已定义，服务接口预留）
-- ✅ 单元测试通过（11/11用例通过，覆盖率≥75%）
+- ✅ 单元测试通过（11/11 用例通过，覆盖率 ≥75%）
 - ⏳ 集成测试和性能测试（待完成）
 
 #### 参考资料
 
 - DDL.sql - scenic_spots, tickets, ticket_prices, orders, order_items 表
 - 系统方案.md 2.2.1 - 票务模块功能 (U-TICKET-001 ~ U-TICKET-011)
-- **实现文档**: 
+- **实现文档**:
   - SPRINT2_COMPLETION.md（完整功能总结）
   - database/README.md（本地数据库初始化指南）
-  - API_CHANGES.md（24个REST接口文档）
+  - API_CHANGES.md（24 个 REST 接口文档）
 
-**Sprint 2 总结**（2025-12-15完成）:
-- ✅ 后端：6个实体、6个Repository、6个Service、6个Controller、8个DTO
-- ✅ 前端：4个页面（TicketList/Form、TicketPriceCalendar、OrderList）
-- ✅ API：24个接口（票种8个、票价6个、订单7个、核销3个）
-- ✅ 数据库：5个表（完整索引和约束）+ 本地初始化脚本
-- ✅ 测试：11个单元测试用例全部通过
-- ✅ 代码提交：5个commit已推送到GitHub main分支
+**Sprint 2 总结**（2025-12-15 完成）:
+
+- ✅ 后端：6 个实体、6 个 Repository、6 个 Service、6 个 Controller、8 个 DTO
+- ✅ 前端：4 个页面（TicketList/Form、TicketPriceCalendar、OrderList）
+- ✅ API：24 个接口（票种 8 个、票价 6 个、订单 7 个、核销 3 个）
+- ✅ 数据库：5 个表（完整索引和约束）+ 本地初始化脚本
+- ✅ 测试：11 个单元测试用例全部通过
+- ✅ 代码提交：5 个 commit 已推送到 GitHub main 分支
 
 ---
 
