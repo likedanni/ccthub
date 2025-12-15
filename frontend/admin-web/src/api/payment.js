@@ -1,14 +1,14 @@
-import request from '@/utils/request'
+import request from "@/utils/request";
 
 /**
  * 创建支付订单
  */
 export function createPayment(data) {
   return request({
-    url: '/api/payments',
-    method: 'post',
-    data
-  })
+    url: "/api/payments",
+    method: "post",
+    data,
+  });
 }
 
 /**
@@ -17,8 +17,8 @@ export function createPayment(data) {
 export function getPayment(paymentNo) {
   return request({
     url: `/api/payments/${paymentNo}`,
-    method: 'get'
-  })
+    method: "get",
+  });
 }
 
 /**
@@ -27,8 +27,8 @@ export function getPayment(paymentNo) {
 export function closePayment(paymentNo) {
   return request({
     url: `/api/payments/${paymentNo}/close`,
-    method: 'put'
-  })
+    method: "put",
+  });
 }
 
 /**
@@ -36,10 +36,10 @@ export function closePayment(paymentNo) {
  */
 export function getPayments(params) {
   return request({
-    url: '/api/payments',
-    method: 'get',
-    params
-  })
+    url: "/api/payments",
+    method: "get",
+    params,
+  });
 }
 
 /**
@@ -47,9 +47,9 @@ export function getPayments(params) {
  */
 export function getPaymentStatistics() {
   return request({
-    url: '/api/payments/statistics',
-    method: 'get'
-  })
+    url: "/api/payments/statistics",
+    method: "get",
+  });
 }
 
 /**
@@ -58,7 +58,7 @@ export function getPaymentStatistics() {
 export function paymentCallback(paymentNo, data) {
   return request({
     url: `/api/payments/callback/${paymentNo}`,
-    method: 'post',
-    data
-  })
+    method: "post",
+    data,
+  });
 }

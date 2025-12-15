@@ -1,20 +1,22 @@
 package com.ccthub.userservice.service;
 
-import com.ccthub.userservice.dto.payment.RefundAuditRequest;
-import com.ccthub.userservice.dto.payment.RefundRequest;
-import com.ccthub.userservice.dto.payment.RefundResponse;
-import com.ccthub.userservice.entity.OrderRefund;
-import com.ccthub.userservice.repository.OrderRefundRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import com.ccthub.userservice.dto.payment.RefundAuditRequest;
+import com.ccthub.userservice.dto.payment.RefundRequest;
+import com.ccthub.userservice.dto.payment.RefundResponse;
+import com.ccthub.userservice.entity.OrderRefund;
+import com.ccthub.userservice.repository.OrderRefundRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 退款服务
@@ -120,11 +122,11 @@ public class RefundService {
 
         refund.setStatus(status);
         refund.setPaymentRefundNo(paymentRefundNo);
-        
+
         if (status.equals(OrderRefund.STATUS_SUCCESS)) {
             refund.setPaymentRefundAt(LocalDateTime.now());
         }
-        
+
         refundRepository.save(refund);
 
         log.info("退款状态更新成功，refundNo={}, status={}", refundNo, status);
@@ -143,7 +145,7 @@ public class RefundService {
      * 分页查询退款列表
      */
     public Page<RefundResponse> getRefunds(String orderNo, Long userId, Integer status,
-                                           LocalDateTime startTime, LocalDateTime endTime, Pageable pageable) {
+            LocalDateTime startTime, LocalDateTime endTime, Pageable pageable) {
         Page<OrderRefund> page = refundRepository.findByFilters(orderNo, userId, status, startTime, endTime, pageable);
         return page.map(this::convertToResponse);
     }

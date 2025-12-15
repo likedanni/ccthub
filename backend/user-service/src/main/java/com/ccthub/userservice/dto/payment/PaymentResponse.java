@@ -1,9 +1,9 @@
 package com.ccthub.userservice.dto.payment;
 
-import lombok.Data;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import lombok.Data;
 
 /**
  * 支付信息响应

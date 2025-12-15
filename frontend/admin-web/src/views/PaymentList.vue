@@ -147,9 +147,9 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { closePayment as closePaymentApi, getPayments, getPaymentStatistics } from '@/api/payment'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { getPayments, getPaymentStatistics, closePayment as closePaymentApi } from '@/api/payment'
+import { onMounted, reactive, ref } from 'vue'
 
 const loading = ref(false)
 const tableData = ref([])

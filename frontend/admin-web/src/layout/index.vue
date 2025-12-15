@@ -48,6 +48,24 @@
           </template>
           <el-menu-item index="/orders/list">订单列表</el-menu-item>
         </el-sub-menu>
+        <el-sub-menu index="/payments">
+          <template #title>
+            <el-icon>
+              <Wallet />
+            </el-icon>
+            <span>支付管理</span>
+          </template>
+          <el-menu-item index="/payments/list">支付流水</el-menu-item>
+        </el-sub-menu>
+        <el-sub-menu index="/refunds">
+          <template #title>
+            <el-icon>
+              <RefreshLeft />
+            </el-icon>
+            <span>退款管理</span>
+          </template>
+          <el-menu-item index="/refunds/list">退款申请</el-menu-item>
+        </el-sub-menu>
       </el-menu>
     </el-aside>
 

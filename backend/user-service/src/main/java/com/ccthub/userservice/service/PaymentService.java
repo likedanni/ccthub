@@ -1,19 +1,21 @@
 package com.ccthub.userservice.service;
 
-import com.ccthub.userservice.dto.payment.PaymentRequest;
-import com.ccthub.userservice.dto.payment.PaymentResponse;
-import com.ccthub.userservice.entity.Payment;
-import com.ccthub.userservice.repository.PaymentRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import com.ccthub.userservice.dto.payment.PaymentRequest;
+import com.ccthub.userservice.dto.payment.PaymentResponse;
+import com.ccthub.userservice.entity.Payment;
+import com.ccthub.userservice.repository.PaymentRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 支付服务
@@ -66,11 +68,11 @@ public class PaymentService {
 
         payment.setStatus(status);
         payment.setThirdPartyNo(thirdPartyNo);
-        
+
         if (status.equals(Payment.STATUS_SUCCESS)) {
             payment.setPaymentTime(LocalDateTime.now());
         }
-        
+
         payment.setCallbackTime(LocalDateTime.now());
         paymentRepository.save(payment);
 
@@ -108,8 +110,9 @@ public class PaymentService {
      * 分页查询支付列表
      */
     public Page<PaymentResponse> getPayments(String orderNo, String paymentType, Integer status,
-                                              LocalDateTime startTime, LocalDateTime endTime, Pageable pageable) {
-        Page<Payment> page = paymentRepository.findByFilters(orderNo, paymentType, status, startTime, endTime, pageable);
+            LocalDateTime startTime, LocalDateTime endTime, Pageable pageable) {
+        Page<Payment> page = paymentRepository.findByFilters(orderNo, paymentType, status, startTime, endTime,
+                pageable);
         return page.map(this::convertToResponse);
     }
 

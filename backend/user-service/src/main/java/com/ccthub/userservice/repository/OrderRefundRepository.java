@@ -1,6 +1,9 @@
 package com.ccthub.userservice.repository;
 
-import com.ccthub.userservice.entity.OrderRefund;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,9 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import com.ccthub.userservice.entity.OrderRefund;
 
 /**
  * 订单退款Repository接口
@@ -51,11 +52,11 @@ public interface OrderRefundRepository extends JpaRepository<OrderRefund, Long> 
             + "AND (:startTime IS NULL OR r.createdAt >= :startTime) "
             + "AND (:endTime IS NULL OR r.createdAt <= :endTime)")
     Page<OrderRefund> findByFilters(@Param("orderNo") String orderNo,
-                                     @Param("userId") Long userId,
-                                     @Param("status") Integer status,
-                                     @Param("startTime") LocalDateTime startTime,
-                                     @Param("endTime") LocalDateTime endTime,
-                                     Pageable pageable);
+            @Param("userId") Long userId,
+            @Param("status") Integer status,
+            @Param("startTime") LocalDateTime startTime,
+            @Param("endTime") LocalDateTime endTime,
+            Pageable pageable);
 
     /**
      * 统计某状态的退款数量

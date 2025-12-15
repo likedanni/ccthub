@@ -1,10 +1,17 @@
 package com.ccthub.userservice.entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import lombok.Data;
 
 /**
  * 订单退款实体
@@ -71,7 +78,7 @@ public class OrderRefund {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
         if (refundNo == null) {
-            refundNo = "REFUND" + System.currentTimeMillis() + String.format("%04d", (int)(Math.random() * 10000));
+            refundNo = "REFUND" + System.currentTimeMillis() + String.format("%04d", (int) (Math.random() * 10000));
         }
         if (status == null) {
             status = STATUS_PENDING_AUDIT;

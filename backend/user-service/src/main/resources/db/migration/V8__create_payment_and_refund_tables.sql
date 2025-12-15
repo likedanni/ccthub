@@ -17,8 +17,7 @@ CREATE TABLE IF NOT EXISTS payments (
     INDEX idx_third_party_no (third_party_no),
     INDEX idx_create_time (create_time),
     INDEX idx_status (status)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='支付流水表';
-
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '支付流水表';
 -- 创建订单退款表
 CREATE TABLE IF NOT EXISTS order_refunds (
     id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '退款ID，主键自增',
@@ -42,4 +41,4 @@ CREATE TABLE IF NOT EXISTS order_refunds (
     INDEX idx_refund_no (refund_no),
     INDEX idx_status (status),
     INDEX idx_created_at (created_at)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='订单退款申请与处理表';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '订单退款申请与处理表';

@@ -1,10 +1,16 @@
 package com.ccthub.userservice.entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
+import lombok.Data;
 
 /**
  * 支付流水实体
@@ -58,7 +64,7 @@ public class Payment {
     protected void onCreate() {
         createTime = LocalDateTime.now();
         if (paymentNo == null) {
-            paymentNo = "PAY" + System.currentTimeMillis() + String.format("%04d", (int)(Math.random() * 10000));
+            paymentNo = "PAY" + System.currentTimeMillis() + String.format("%04d", (int) (Math.random() * 10000));
         }
     }
 
