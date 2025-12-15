@@ -170,7 +170,8 @@ const pagination = reactive({
 const loadScenicSpots = async () => {
   try {
     const res = await getScenicSpots({ size: 1000 })
-    scenicSpots.value = res.content || []
+    // ApiResponse格式: {code, message, data: {content, total, ...}}
+    scenicSpots.value = res.data.content || []
   } catch (error) {
     ElMessage.error('加载景区列表失败')
   }
