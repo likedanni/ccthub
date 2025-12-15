@@ -16,7 +16,8 @@ mysql -uroot -p12345678 cct-hub -e "
 
 ## 二、启动服务
 
-### 后端（端口8080）
+### 后端（端口 8080）
+
 ```bash
 cd /Users/like/CCTHub/backend/user-service
 mvn spring-boot:run
@@ -24,15 +25,17 @@ mvn spring-boot:run
 ```
 
 ### 前端（端口自动分配）
+
 ```bash
 cd /Users/like/CCTHub/frontend/admin-web
-npm run dev  
+npm run dev
 # 查看输出中的端口号，通常是3000/3001/3002
 ```
 
 ## 三、验证功能
 
-### 3.1 后端API测试
+### 3.1 后端 API 测试
+
 ```bash
 # 票种API（4个票种）
 curl "http://localhost:8080/api/tickets?page=0&size=10"
@@ -43,49 +46,56 @@ curl "http://localhost:8080/api/orders"
 
 ### 3.2 前端页面测试
 
-**步骤1**: 打开浏览器 → 前端日志中显示的地址（如http://localhost:3002）
+**步骤 1**: 打开浏览器 → 前端日志中显示的地址（如 http://localhost:3002）
 
-**步骤2**: 登录
+**步骤 2**: 登录
+
 - 手机号: `13800138000`
 - 密码: `password123`
 
-**步骤3**: 测试菜单
-- ✅ 点击「票种管理」→ 应显示4个票种
-- ✅ 点击「订单管理」→ 应显示5个订单
+**步骤 3**: 测试菜单
+
+- ✅ 点击「票种管理」→ 应显示 4 个票种
+- ✅ 点击「订单管理」→ 应显示 5 个订单
 
 ## 四、问题排查
 
 ### ❌ "票种管理"点击无反应
 
 **检查后端**:
+
 ```bash
 curl http://localhost:8080/api/tickets
 # 应返回JSON数据，包含content字段
 ```
 
-**解决**: 确保后端在8080端口运行
+**解决**: 确保后端在 8080 端口运行
 
 ### ❌ "订单管理"提示资源不存在
 
 **检查表结构**:
+
 ```bash
 mysql -uroot -p12345678 -e "DESC cct-hub.orders;" | grep "^id"
 # 应该有: id bigint NO PRI NULL auto_increment
 ```
 
-**已修复**: 
-1. orders表添加了自增主键id
+**已修复**:
+
+1. orders 表添加了自增主键 id
 2. 前端数据访问路径已修复（commit: 97eb9f54）
 
 ## 五、服务管理
 
 ### 停止服务
+
 ```bash
 pkill -f "spring-boot:run"  # 后端
 pkill -f "vite"              # 前端
 ```
 
 ### 查看日志
+
 ```bash
 # 后端（如果后台启动）
 tail -f /tmp/backend.log
@@ -102,13 +112,13 @@ tail -f /tmp/frontend.log
 
 # 包含:
 # - 后端API健康检查
-# - 票种/订单数据验证  
+# - 票种/订单数据验证
 # - 数据库统计信息
 ```
 
 ## 相关文档
 
-- **BUG_FIX_REPORT_20251215.md** - Bug修复详细报告
+- **BUG_FIX_REPORT_20251215.md** - Bug 修复详细报告
 - **COMPLETE_TEST_REPORT.md** - 完整测试报告
 - **test-frontend-backend.sh** - 自动化测试脚本
 

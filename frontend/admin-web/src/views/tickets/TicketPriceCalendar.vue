@@ -143,6 +143,70 @@
         </el-button>
       </template>
     </el-dialog>
+
+    <!-- 编辑票价对话框 -->
+    <el-dialog
+      v-model="showEditDialog"
+      title="编辑票价"
+      width="600px"
+    >
+      <el-form
+        ref="editFormRef"
+        :model="editForm"
+        :rules="editRules"
+        label-width="120px"
+      >
+        <el-form-item label="日期">
+          <el-input v-model="editForm.priceDate" disabled />
+        </el-form-item>
+
+        <el-form-item label="价格类型" prop="priceType">
+          <el-select v-model="editForm.priceType" placeholder="请选择价格类型">
+            <el-option label="成人票" :value="1" />
+            <el-option label="学生票" :value="2" />
+            <el-option label="儿童票" :value="3" />
+            <el-option label="老年票" :value="4" />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="原价" prop="originalPrice">
+          <el-input-number
+            v-model="editForm.originalPrice"
+            :min="0.01"
+            :precision="2"
+            placeholder="请输入原价"
+          />
+        </el-form-item>
+
+        <el-form-item label="售价" prop="sellPrice">
+          <el-input-number
+            v-model="editForm.sellPrice"
+            :min="0.01"
+            :precision="2"
+            placeholder="请输入售价"
+          />
+        </el-form-item>
+
+        <el-form-item label="总库存" prop="inventoryTotal">
+          <el-input-number
+            v-model="editForm.inventoryTotal"
+            :min="0"
+            placeholder="请输入总库存"
+          />
+        </el-form-item>
+
+        <el-form-item label="是否启用">
+          <el-switch v-model="editForm.isActive" />
+        </el-form-item>
+      </el-form>
+
+      <template #footer>
+        <el-button @click="showEditDialog = false">取消</el-button>
+        <el-button type="primary" @click="handleEditSubmit" :loading="submitting">
+          确定
+        </el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -151,7 +215,8 @@ import {
     batchSaveTicketPrices,
     deleteTicketPrice,
     getTicket,
-    getTicketPricesByTicket
+    getTicketPricesByTicket,
+    saveTicketPrice
 } from '@/api/ticket'
 import { ArrowLeft, Delete, Edit, Plus } from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -167,10 +232,23 @@ const priceList = ref([])
 const loading = ref(false)
 const submitting = ref(false)
 const showBatchDialog = ref(false)
+const showEditDialog = ref(false)
 const batchFormRef = ref(null)
+const editFormRef = ref(null)
 
 const batchForm = reactive({
   dateRange: [],
+  priceType: 1,
+  originalPrice: 0,
+  sellPrice: 0,
+  inventoryTotal: 0,
+  isActive: true
+})
+
+const editForm = reactive({
+  id: null,
+  ticketId: null,
+  priceDate: '',
   priceType: 1,
   originalPrice: 0,
   sellPrice: 0,
@@ -182,6 +260,21 @@ const batchRules = {
   dateRange: [
     { required: true, message: '请选择日期范围', trigger: 'change' }
   ],
+  priceType: [
+    { required: true, message: '请选择价格类型', trigger: 'change' }
+  ],
+  originalPrice: [
+    { required: true, message: '请输入原价', trigger: 'blur' }
+  ],
+  sellPrice: [
+    { required: true, message: '请输入售价', trigger: 'blur' }
+  ],
+  inventoryTotal: [
+    { required: true, message: '请输入总库存', trigger: 'blur' }
+  ]
+}
+
+const editRules = {
   priceType: [
     { required: true, message: '请选择价格类型', trigger: 'change' }
   ],
@@ -258,9 +351,34 @@ const handleBatchSubmit = async () => {
   }
 }
 
-// 编辑（暂不实现，后续完善）
+// 编辑
 const handleEdit = (row) => {
-  ElMessage.info('编辑功能开发中')
+  editForm.id = row.id
+  editForm.ticketId = row.ticketId
+  editForm.priceDate = row.priceDate
+  editForm.priceType = row.priceType
+  editForm.originalPrice = row.originalPrice
+  editForm.sellPrice = row.sellPrice
+  editForm.inventoryTotal = row.inventoryTotal
+  editForm.isActive = row.isActive
+  showEditDialog.value = true
+}
+
+// 编辑提交
+const handleEditSubmit = async () => {
+  await editFormRef.value.validate()
+
+  submitting.value = true
+  try {
+    await saveTicketPrice(editForm)
+    ElMessage.success('修改成功')
+    showEditDialog.value = false
+    loadPrices()
+  } catch (error) {
+    ElMessage.error('修改失败')
+  } finally {
+    submitting.value = false
+  }
 }
 
 // 删除

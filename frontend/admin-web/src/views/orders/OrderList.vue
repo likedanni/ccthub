@@ -7,7 +7,7 @@
           <el-input v-model="searchForm.orderNo" placeholder="请输入订单号" clearable />
         </el-form-item>
         <el-form-item label="订单状态">
-          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable>
+          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 200px">
             <el-option label="待支付" value="PENDING_PAYMENT" />
             <el-option label="待使用" value="PENDING_USE" />
             <el-option label="已完成" value="COMPLETED" />

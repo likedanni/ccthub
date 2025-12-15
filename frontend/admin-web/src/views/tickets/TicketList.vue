@@ -183,13 +183,37 @@ const loadData = async () => {
   try {
     const params = {
       page: pagination.page - 1,
-      size: pagination.size,
-      ...searchForm
+      size: pagination.size
     }
+    // 添加搜索条件
+    if (searchForm.scenicSpotId) {
+      params.scenicSpotId = searchForm.scenicSpotId
+    }
+    if (searchForm.name) {
+      params.name = searchForm.name
+    }
+    if (searchForm.status !== null && searchForm.status !== undefined) {
+      params.status = searchForm.status
+    }
+
+    // 调试日志：打印请求参数
+    // 开发调试时可在浏览器控制台查看
+    // 发布前可删除或用条件开关控制
+    // eslint-disable-next-line no-console
+    console.log('[TicketList] loadData 请求参数:', JSON.parse(JSON.stringify(params)))
+
     const res = await getTickets(params)
+
+    // 调试日志：打印后端响应（已由拦截器解包）
+    // eslint-disable-next-line no-console
+    console.log('[TicketList] loadData 返回数据:', res)
+
     tableData.value = res.content || []
     pagination.total = res.totalElements || 0
   } catch (error) {
+    // 调试日志：打印错误详情
+    // eslint-disable-next-line no-console
+    console.error('[TicketList] loadData 错误:', error)
     ElMessage.error('加载数据失败')
   } finally {
     loading.value = false
@@ -198,6 +222,10 @@ const loadData = async () => {
 
 // 搜索
 const handleSearch = () => {
+  // 调试日志：点击搜索
+  // eslint-disable-next-line no-console
+  console.log('[TicketList] handleSearch 触发，searchForm:', JSON.parse(JSON.stringify(searchForm)))
+
   pagination.page = 1
   loadData()
 }

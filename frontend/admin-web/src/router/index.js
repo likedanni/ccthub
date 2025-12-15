@@ -98,6 +98,34 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/payments",
+    component: Layout,
+    redirect: "/payments/list",
+    meta: { title: "支付管理", icon: "Wallet" },
+    children: [
+      {
+        path: "list",
+        name: "PaymentList",
+        component: () => import("@/views/PaymentList.vue"),
+        meta: { title: "支付流水" },
+      },
+    ],
+  },
+  {
+    path: "/refunds",
+    component: Layout,
+    redirect: "/refunds/list",
+    meta: { title: "退款管理", icon: "RefreshLeft" },
+    children: [
+      {
+        path: "list",
+        name: "RefundList",
+        component: () => import("@/views/RefundList.vue"),
+        meta: { title: "退款申请" },
+      },
+    ],
+  },
 ];
 
 const router = createRouter({
