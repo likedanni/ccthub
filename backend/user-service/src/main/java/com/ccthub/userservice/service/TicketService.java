@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ccthub.userservice.dto.TicketRequest;
 import com.ccthub.userservice.dto.TicketResponse;
 import com.ccthub.userservice.entity.Ticket;
+import com.ccthub.userservice.repository.ScenicSpotRepository;
 import com.ccthub.userservice.repository.TicketRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TicketService {
 
     private final TicketRepository ticketRepository;
+    private final ScenicSpotRepository scenicSpotRepository;
     private final ObjectMapper objectMapper;
 
     /**
@@ -160,6 +162,11 @@ public class TicketService {
         TicketResponse response = new TicketResponse();
         response.setId(ticket.getId());
         response.setScenicSpotId(ticket.getScenicSpotId());
+
+        // 查询并设置景区名称
+        scenicSpotRepository.findById(ticket.getScenicSpotId())
+                .ifPresent(spot -> response.setScenicSpotName(spot.getName()));
+
         response.setName(ticket.getName());
         response.setType(ticket.getType());
         response.setDescription(ticket.getDescription());
