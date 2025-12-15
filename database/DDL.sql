@@ -526,7 +526,25 @@ CREATE TABLE `order_changes` (
     CONSTRAINT `fk_order_changes_new_ticket` FOREIGN KEY (`new_ticket_id`) REFERENCES `tickets` (`id`) ON DELETE
   SET NULL ON UPDATE CASCADE
 ) COMMENT = "门票订单改签记录表。涉及库存释放和重新锁定。";
--- 25. 用户反馈表
+
+-- 25. 订单核销记录表
+CREATE TABLE `order_verifications` (
+  `id` bigint PRIMARY KEY AUTO_INCREMENT COMMENT "核销ID，主键自增",
+  `order_no` varchar(32) NOT NULL COMMENT "订单号",
+  `merchant_id` bigint NOT NULL COMMENT "商户ID",
+  `operator_id` bigint NOT NULL COMMENT "操作员ID",
+  `verified_quantity` int DEFAULT 1 COMMENT "本次核销数量",
+  `verified_at` datetime DEFAULT (now()) COMMENT "核销时间",
+  `created_at` datetime DEFAULT (now()) COMMENT "创建时间",
+  INDEX `idx_order_no` (`order_no`) COMMENT "订单号索引",
+  INDEX `idx_merchant_id` (`merchant_id`) COMMENT "商户ID索引",
+  INDEX `idx_operator_id` (`operator_id`) COMMENT "操作员ID索引",
+  INDEX `idx_verified_at` (`verified_at`) COMMENT "核销时间索引",
+  CONSTRAINT `fk_verifications_order` FOREIGN KEY (`order_no`) REFERENCES `orders` (`order_no`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_verifications_merchant` FOREIGN KEY (`merchant_id`) REFERENCES `merchants` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) COMMENT = "订单核销记录表。记录每次核销操作，支持部分核销和批量核销。";
+
+-- 26. 用户反馈表
 CREATE TABLE `user_feedback` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT COMMENT "反馈ID，主键自增",
   `user_id` bigint NOT NULL COMMENT "用户ID",

@@ -1,5 +1,6 @@
 package com.ccthub.userservice.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,4 +37,14 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
      * 统计订单已核销数量
      */
     long countByOrderIdAndIsVerified(Long orderId, Boolean isVerified);
+
+    /**
+     * 统计员工核销总数
+     */
+    long countByVerifyStaffIdAndIsVerified(Long staffId, Boolean isVerified);
+
+    /**
+     * 统计员工某时间后核销数
+     */
+    long countByVerifyStaffIdAndIsVerifiedAndVerifyTimeAfter(Long staffId, Boolean isVerified, LocalDateTime time);
 }
