@@ -122,7 +122,7 @@ public class PaymentTimeoutService {
         }
 
         // 2. 查询支付记录
-        Payment payment = paymentRepository.findByOrderNo(orderNo, Payment.STATUS_PENDING)
+        Payment payment = paymentRepository.findByOrderNoAndStatus(orderNo, Payment.STATUS_PENDING)
                 .orElseThrow(() -> new IllegalArgumentException("支付记录不存在"));
 
         // 3. 关闭支付订单

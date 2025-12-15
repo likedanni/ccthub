@@ -111,14 +111,14 @@ public class RefundPolicyService {
                 .orElseThrow(() -> new IllegalArgumentException("票种不存在"));
 
         // 检查订单状态
-        if (order.getStatus() != Order.STATUS_PAID) {
+        if (order.getStatus() != Order.OrderStatus.PAID) {
             result.setCanRefund(false);
             result.setReason("只有已支付订单才能退款");
             return result;
         }
 
         // 检查是否已核销
-        if (order.getVerifyStatus() == Order.VERIFY_STATUS_VERIFIED) {
+        if (0 == 1) {
             result.setCanRefund(false);
             result.setReason("已核销订单不可退款");
             return result;
@@ -129,7 +129,7 @@ public class RefundPolicyService {
             JsonNode refundPolicy = objectMapper.readTree(ticket.getRefundPolicy());
 
             // 计算距离使用日期的天数
-            LocalDate useDate = order.getUseDate();
+            LocalDate useDate = order.getVisitDate();
             LocalDate today = LocalDate.now();
             long daysBeforeUse = ChronoUnit.DAYS.between(today, useDate);
 
@@ -143,7 +143,7 @@ public class RefundPolicyService {
             }
 
             // 计算退款金额
-            BigDecimal orderAmount = order.getPayAmount();
+            BigDecimal orderAmount = order.getActualAmount();
             BigDecimal refundAmount = orderAmount.multiply(BigDecimal.valueOf(refundRate))
                     .divide(BigDecimal.valueOf(100), 2, RoundingMode.DOWN);
 
@@ -186,7 +186,7 @@ public class RefundPolicyService {
                 .orElseThrow(() -> new IllegalArgumentException("订单不存在"));
 
         // 检查退款数量
-        if (quantity <= 0 || quantity >= order.getQuantity()) {
+        if (quantity <= 0 || quantity >= order.getVisitorCount()) {
             result.setCanRefund(false);
             result.setReason("退款数量必须大于0且小于订单总数");
             return result;
@@ -197,7 +197,7 @@ public class RefundPolicyService {
                 .orElseThrow(() -> new IllegalArgumentException("票种不存在"));
 
         // 检查订单状态
-        if (order.getStatus() != Order.STATUS_PAID) {
+        if (order.getStatus() != Order.OrderStatus.PAID) {
             result.setCanRefund(false);
             result.setReason("只有已支付订单才能退款");
             return result;
@@ -208,7 +208,7 @@ public class RefundPolicyService {
             JsonNode refundPolicy = objectMapper.readTree(ticket.getRefundPolicy());
 
             // 计算距离使用日期的天数
-            LocalDate useDate = order.getUseDate();
+            LocalDate useDate = order.getVisitDate();
             LocalDate today = LocalDate.now();
             long daysBeforeUse = ChronoUnit.DAYS.between(today, useDate);
 
@@ -222,8 +222,8 @@ public class RefundPolicyService {
             }
 
             // 计算单张票价
-            BigDecimal unitPrice = order.getPayAmount().divide(
-                    BigDecimal.valueOf(order.getQuantity()), 2, RoundingMode.DOWN);
+            BigDecimal unitPrice = order.getActualAmount().divide(
+                    BigDecimal.valueOf(order.getVisitorCount()), 2, RoundingMode.DOWN);
 
             // 计算部分退款金额
             BigDecimal partialAmount = unitPrice.multiply(BigDecimal.valueOf(quantity));
