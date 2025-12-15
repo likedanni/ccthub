@@ -7,7 +7,7 @@ import request from "./request";
 // 创建票种
 export function createTicket(data) {
   return request({
-    url: "/api/tickets",
+    url: "/tickets",
     method: "post",
     data,
   });
@@ -16,7 +16,7 @@ export function createTicket(data) {
 // 更新票种
 export function updateTicket(id, data) {
   return request({
-    url: `/api/tickets/${id}`,
+    url: `/tickets/${id}`,
     method: "put",
     data,
   });
@@ -25,7 +25,7 @@ export function updateTicket(id, data) {
 // 删除票种
 export function deleteTicket(id) {
   return request({
-    url: `/api/tickets/${id}`,
+    url: `/tickets/${id}`,
     method: "delete",
   });
 }
@@ -33,7 +33,7 @@ export function deleteTicket(id) {
 // 获取票种详情
 export function getTicket(id) {
   return request({
-    url: `/api/tickets/${id}`,
+    url: `/tickets/${id}`,
     method: "get",
   });
 }
@@ -41,7 +41,7 @@ export function getTicket(id) {
 // 分页查询票种
 export function getTickets(params) {
   return request({
-    url: "/api/tickets",
+    url: "/tickets",
     method: "get",
     params,
   });
@@ -50,7 +50,7 @@ export function getTickets(params) {
 // 根据景区查询票种
 export function getTicketsByScenicSpot(scenicSpotId) {
   return request({
-    url: `/api/tickets/scenic-spot/${scenicSpotId}`,
+    url: `/tickets/scenic-spot/${scenicSpotId}`,
     method: "get",
   });
 }
@@ -58,7 +58,7 @@ export function getTicketsByScenicSpot(scenicSpotId) {
 // 根据景区和状态查询票种
 export function getTicketsByScenicSpotAndStatus(scenicSpotId, status) {
   return request({
-    url: `/api/tickets/scenic-spot/${scenicSpotId}/status/${status}`,
+    url: `/tickets/scenic-spot/${scenicSpotId}/status/${status}`,
     method: "get",
   });
 }
@@ -66,7 +66,7 @@ export function getTicketsByScenicSpotAndStatus(scenicSpotId, status) {
 // 更新票种状态
 export function updateTicketStatus(id, status) {
   return request({
-    url: `/api/tickets/${id}/status`,
+    url: `/tickets/${id}/status`,
     method: "patch",
     params: { status },
   });
@@ -79,7 +79,7 @@ export function updateTicketStatus(id, status) {
 // 创建或更新票价
 export function saveTicketPrice(data) {
   return request({
-    url: "/api/ticket-prices",
+    url: "/ticket-prices",
     method: "post",
     data,
   });
@@ -88,7 +88,7 @@ export function saveTicketPrice(data) {
 // 批量设置票价
 export function batchSaveTicketPrices(data) {
   return request({
-    url: "/api/ticket-prices/batch",
+    url: "/ticket-prices/batch",
     method: "post",
     data,
   });
@@ -97,7 +97,7 @@ export function batchSaveTicketPrices(data) {
 // 删除票价
 export function deleteTicketPrice(id) {
   return request({
-    url: `/api/ticket-prices/${id}`,
+    url: `/ticket-prices/${id}`,
     method: "delete",
   });
 }
@@ -105,7 +105,7 @@ export function deleteTicketPrice(id) {
 // 获取票价详情
 export function getTicketPrice(id) {
   return request({
-    url: `/api/ticket-prices/${id}`,
+    url: `/ticket-prices/${id}`,
     method: "get",
   });
 }
@@ -113,7 +113,7 @@ export function getTicketPrice(id) {
 // 根据票种查询所有票价
 export function getTicketPricesByTicket(ticketId) {
   return request({
-    url: `/api/ticket-prices/ticket/${ticketId}`,
+    url: `/ticket-prices/ticket/${ticketId}`,
     method: "get",
   });
 }
@@ -121,7 +121,7 @@ export function getTicketPricesByTicket(ticketId) {
 // 根据日期范围查询票价
 export function getTicketPricesByDateRange(ticketId, startDate, endDate) {
   return request({
-    url: `/api/ticket-prices/ticket/${ticketId}/date-range`,
+    url: `/ticket-prices/ticket/${ticketId}/date-range`,
     method: "get",
     params: { startDate, endDate },
   });

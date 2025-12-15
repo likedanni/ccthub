@@ -11,7 +11,7 @@ export const getScenicSpotList = (params) => {
  * 获取景区列表（分页）
  */
 export const getScenicSpots = (params) => {
-  return request.get("/scenic-spots", { params });
+  return request.get("/scenic-spots/list", { params });
 };
 
 /**
