@@ -43,6 +43,12 @@ public class OrderRefund {
     @Column(name = "refund_amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal refundAmount;
 
+    @Column(name = "refund_fee", precision = 10, scale = 2)
+    private BigDecimal refundFee; // 退款手续费
+
+    @Column(name = "actual_refund", precision = 10, scale = 2)
+    private BigDecimal actualRefund; // 实际到账金额
+
     @Column(name = "refund_reason", nullable = false, length = 200)
     private String refundReason;
 

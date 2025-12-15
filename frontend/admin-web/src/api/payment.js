@@ -1,4 +1,4 @@
-import request from "@/utils/request";
+import request from './request'
 
 /**
  * 创建支付订单

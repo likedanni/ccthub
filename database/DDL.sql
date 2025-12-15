@@ -474,6 +474,8 @@ CREATE TABLE `order_refunds` (
   `user_id` bigint NOT NULL COMMENT "用户ID",
   `refund_type` tinyint NOT NULL COMMENT "退款类型: 1-全额退款, 2-部分退款",
   `refund_amount` decimal(10, 2) NOT NULL COMMENT "退款金额",
+  `refund_fee` decimal(10, 2) DEFAULT 0 COMMENT "退款手续费",
+  `actual_refund` decimal(10, 2) COMMENT "实际到账金额",
   `refund_reason` varchar(200) NOT NULL COMMENT "退款原因",
   `refund_evidence` json COMMENT "退款凭证图片等，JSON格式",
   `status` tinyint DEFAULT 0 COMMENT "状态: 0-待审核, 1-审核通过, 2-审核拒绝, 3-退款中, 4-成功, 5-失败",

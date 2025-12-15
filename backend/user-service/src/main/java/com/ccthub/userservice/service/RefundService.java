@@ -30,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 public class RefundService {
 
     private final OrderRefundRepository refundRepository;
+    private final RefundPolicyService refundPolicyService;
 
     /**
      * 创建退款申请
@@ -46,18 +47,40 @@ public class RefundService {
                     throw new IllegalStateException("订单已有待处理的退款申请");
                 });
 
+        // 使用退款规则计算退款金额
+        RefundPolicyService.RefundCalculationResult calculation;
+        if (request.getRefundType() == OrderRefund.TYPE_PARTIAL) {
+            // 部分退款，需要传入退款数量
+            Integer quantity = request.getRefundQuantity();
+            if (quantity == null || quantity <= 0) {
+                throw new IllegalArgumentException("部分退款必须指定退款数量");
+            }
+            calculation = refundPolicyService.calculatePartialRefund(request.getOrderNo(), quantity);
+        } else {
+            // 全额退款
+            calculation = refundPolicyService.calculateRefund(request.getOrderNo());
+        }
+
+        // 检查是否允许退款
+        if (!calculation.isCanRefund()) {
+            throw new IllegalStateException(calculation.getReason());
+        }
+
         // 创建退款记录
         OrderRefund refund = new OrderRefund();
         refund.setOrderNo(request.getOrderNo());
         refund.setUserId(request.getUserId());
         refund.setRefundType(request.getRefundType());
-        refund.setRefundAmount(request.getRefundAmount());
+        refund.setRefundAmount(calculation.getRefundAmount()); // 使用计算出的退款金额
+        refund.setRefundFee(calculation.getRefundFee()); // 设置退款手续费
+        refund.setActualRefund(calculation.getActualRefund()); // 设置实际到账金额
         refund.setRefundReason(request.getRefundReason());
         refund.setRefundEvidence(request.getRefundEvidence());
         refund.setStatus(OrderRefund.STATUS_PENDING_AUDIT);
 
         OrderRefund saved = refundRepository.save(refund);
-        log.info("退款申请创建成功，refundNo={}", saved.getRefundNo());
+        log.info("退款申请创建成功，refundNo={}, refundAmount={}, refundFee={}, actualRefund={}", 
+                saved.getRefundNo(), saved.getRefundAmount(), saved.getRefundFee(), saved.getActualRefund());
 
         return convertToResponse(saved);
     }

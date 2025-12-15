@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ccthub.userservice.dto.payment.RefundAuditRequest;
 import com.ccthub.userservice.dto.payment.RefundRequest;
 import com.ccthub.userservice.dto.payment.RefundResponse;
+import com.ccthub.userservice.service.RefundPolicyService;
 import com.ccthub.userservice.service.RefundService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,6 +44,7 @@ import lombok.extern.slf4j.Slf4j;
 public class RefundController {
 
     private final RefundService refundService;
+    private final RefundPolicyService refundPolicyService;
 
     /**
      * 创建退款申请
@@ -52,6 +54,25 @@ public class RefundController {
     public ResponseEntity<RefundResponse> createRefund(@Valid @RequestBody RefundRequest request) {
         RefundResponse response = refundService.createRefund(request);
         return ResponseEntity.ok(response);
+    }
+
+    /**
+     * 退款预览
+     */
+    @GetMapping("/preview/{orderNo}")
+    @Operation(summary = "退款预览", description = "预览退款金额，包括退款金额、手续费、实际到账金额")
+    public ResponseEntity<RefundPolicyService.RefundCalculationResult> previewRefund(
+            @PathVariable String orderNo,
+            @RequestParam(required = false) Integer quantity) {
+        RefundPolicyService.RefundCalculationResult result;
+        if (quantity != null && quantity > 0) {
+            // 部分退款预览
+            result = refundPolicyService.calculatePartialRefund(orderNo, quantity);
+        } else {
+            // 全额退款预览
+            result = refundPolicyService.calculateRefund(orderNo);
+        }
+        return ResponseEntity.ok(result);
     }
 
     /**

@@ -36,6 +36,11 @@ public class RefundRequest {
     private BigDecimal refundAmount;
 
     /**
+     * 退款数量（部分退款时必填）
+     */
+    private Integer refundQuantity;
+
+    /**
      * 退款原因
      */
     @NotBlank(message = "退款原因不能为空")
