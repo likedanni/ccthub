@@ -14,22 +14,29 @@
                     <el-input v-model="searchForm.name" placeholder="请输入景区名称" clearable />
                 </el-form-item>
                 <el-form-item label="省份">
-                    <el-input v-model="searchForm.province" placeholder="请输入省份" clearable />
+                    <el-select v-model="searchForm.provinceCode" placeholder="请选择省份" clearable
+                        @change="handleProvinceChange" style="width: 100%">
+                        <el-option v-for="province in provinces" :key="province.code" :label="province.name"
+                            :value="province.code" />
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="城市">
-                    <el-input v-model="searchForm.city" placeholder="请输入城市" clearable />
+                    <el-select v-model="searchForm.city" placeholder="请选择城市" clearable
+                        :disabled="!searchForm.provinceCode" style="width: 100%">
+                        <el-option v-for="city in cities" :key="city.code" :label="city.name" :value="city.name" />
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="等级">
-                    <el-select v-model="searchForm.level" placeholder="请选择等级" clearable>
-                        <el-option label="A级" value="A" />
-                        <el-option label="AA级" value="AA" />
-                        <el-option label="AAA级" value="AAA" />
-                        <el-option label="AAAA级" value="AAAA" />
-                        <el-option label="AAAAA级(5A)" value="AAAAA" />
+                    <el-select v-model="searchForm.level" placeholder="请选择等级" clearable style="width: 150px">
+                        <el-option label="AAAAA" value="AAAAA" />
+                        <el-option label="AAAA" value="AAAA" />
+                        <el-option label="AAA" value="AAA" />
+                        <el-option label="AA" value="AA" />
+                        <el-option label="A" value="A" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="状态">
-                    <el-select v-model="searchForm.status" placeholder="请选择状态" clearable>
+                    <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 150px">
                         <el-option label="开放" value="ACTIVE" />
                         <el-option label="关闭" value="INACTIVE" />
                         <el-option label="维护中" value="MAINTENANCE" />
@@ -71,19 +78,21 @@
                         {{ formatDate(row.createTime) }}
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="250" fixed="right">
+                <el-table-column label="操作" width="280" fixed="right">
                     <template #default="{ row }">
-                        <el-button size="small" @click="handleView(row)">查看</el-button>
-                        <el-button size="small" type="primary" @click="handleEdit(row)">
-                            编辑
-                        </el-button>
-                        <el-button size="small" :type="row.status === 'ACTIVE' ? 'warning' : 'success'"
-                            @click="handleToggleStatus(row)">
-                            {{ row.status === "ACTIVE" ? "关闭" : "开放" }}
-                        </el-button>
-                        <el-button size="small" type="danger" @click="handleDelete(row)">
-                            删除
-                        </el-button>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px;">
+                            <el-button size="small" @click="handleView(row)">查看</el-button>
+                            <el-button size="small" type="primary" @click="handleEdit(row)">
+                                编辑
+                            </el-button>
+                            <el-button size="small" :type="row.status === 'ACTIVE' ? 'warning' : 'success'"
+                                @click="handleToggleStatus(row)">
+                                {{ row.status === "ACTIVE" ? "关闭" : "开放" }}
+                            </el-button>
+                            <el-button size="small" type="danger" @click="handleDelete(row)">
+                                删除
+                            </el-button>
+                        </div>
                     </template>
                 </el-table-column>
             </el-table>
@@ -109,6 +118,7 @@
 </template>
 
 <script setup>
+import { getCitiesByProvince, getProvinces } from "@/api/region";
 import {
     deleteScenicSpot,
     getScenicSpotList,
@@ -130,11 +140,46 @@ const currentId = ref(null);
 
 const searchForm = reactive({
     name: "",
+    provinceCode: "",
     province: "",
     city: "",
     level: "",
     status: "",
 });
+
+// 省市数据
+const provinces = ref([]);
+const cities = ref([]);
+
+// 加载省份列表
+const loadProvinces = async () => {
+    try {
+        const data = await getProvinces();
+        provinces.value = data;
+    } catch (error) {
+        console.error('加载省份列表失败', error);
+    }
+};
+
+// 省份变化处理
+const handleProvinceChange = async (provinceCode) => {
+    searchForm.city = '';
+    cities.value = [];
+
+    if (provinceCode) {
+        const selectedProvince = provinces.value.find(p => p.code === provinceCode);
+        searchForm.province = selectedProvince ? selectedProvince.name : '';
+
+        try {
+            const data = await getCitiesByProvince(provinceCode);
+            cities.value = data;
+        } catch (error) {
+            console.error('加载城市列表失败', error);
+        }
+    } else {
+        searchForm.province = '';
+    }
+};
 
 const pagination = reactive({
     page: 1,
@@ -188,7 +233,8 @@ const handleCreate = () => {
 const handleEdit = (row) => {
     dialogTitle.value = "编辑景区";
     isEdit.value = true;
-    currentRow.value = { ...row };
+    // 深拷贝避免引用问题
+    currentRow.value = JSON.parse(JSON.stringify(row));
     dialogVisible.value = true;
 };
 
@@ -292,6 +338,7 @@ const formatDate = (dateString) => {
 };
 
 onMounted(() => {
+    loadProvinces();
     loadData();
 });
 </script>
