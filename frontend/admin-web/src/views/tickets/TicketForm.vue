@@ -284,6 +284,7 @@ const rules = {
 const loadScenicSpots = async () => {
   try {
     const res = await getScenicSpots({ size: 1000 })
+    // 后端ApiResponse格式: {code, message, data: {content, totalElements, ...}}
     scenicSpots.value = res.data.content
   } catch (error) {
     ElMessage.error('加载景区列表失败')
@@ -297,10 +298,11 @@ const loadTicket = async () => {
   loading.value = true
   try {
     const res = await getTicket(route.params.id)
-    Object.assign(form, res.data)
+    // 后端直接返回TicketResponse对象
+    Object.assign(form, res)
     // 解析退改签规则
-    Object.assign(refundPolicy, res.data.refundPolicy)
-    Object.assign(changePolicy, res.data.changePolicy)
+    Object.assign(refundPolicy, res.refundPolicy || {})
+    Object.assign(changePolicy, res.changePolicy || {})
   } catch (error) {
     ElMessage.error('加载票种详情失败')
   } finally {

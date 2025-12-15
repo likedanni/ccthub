@@ -200,7 +200,7 @@ const batchRules = {
 const loadTicket = async () => {
   try {
     const res = await getTicket(ticketId)
-    ticketName.value = res.data.name
+    ticketName.value = res.name  // 后端直接返回TicketResponse对象
   } catch (error) {
     ElMessage.error('加载票种信息失败')
   }
@@ -211,7 +211,8 @@ const loadPrices = async () => {
   loading.value = true
   try {
     const res = await getTicketPricesByTicket(ticketId)
-    priceList.value = res.data.map(item => ({
+    // 后端直接返回数组
+    priceList.value = (res || []).map(item => ({
       ...item,
       occupancyRate: (item.inventorySold + item.inventoryLocked) / item.inventoryTotal * 100
     }))

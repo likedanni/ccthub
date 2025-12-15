@@ -182,8 +182,9 @@ const verifyForm = ref({
 const loadOrders = async () => {
   try {
     const response = await getAllOrders()
-    if (response.data.success) {
-      let list = response.data.data
+    // 后端返回{success: true, data: [...]}
+    if (response.success) {
+      let list = response.data || []
       
       // 前端过滤
       if (searchForm.value.orderNo) {
@@ -201,6 +202,7 @@ const loadOrders = async () => {
       orderList.value = list.slice(start, end)
     }
   } catch (error) {
+    console.error('OrderList loadOrders error:', error)
     ElMessage.error('加载订单列表失败')
   }
 }
@@ -209,11 +211,12 @@ const loadOrders = async () => {
 const handleView = async (row) => {
   try {
     const response = await getOrderDetail(row.id)
-    if (response.data.success) {
-      currentOrder.value = response.data.data
+    if (response.success) {
+      currentOrder.value = response.data
       detailVisible.value = true
     }
   } catch (error) {
+    console.error('OrderList handleView error:', error)
     ElMessage.error('加载订单详情失败')
   }
 }
@@ -227,7 +230,7 @@ const handleCancel = (row) => {
   }).then(async () => {
     try {
       const response = await cancelOrder(row.id)
-      if (response.data.success) {
+      if (response.success) {
         ElMessage.success('订单已取消')
         loadOrders()
       }
@@ -247,8 +250,8 @@ const handleBatchVerify = (row) => {
   }).then(async ({ value }) => {
     try {
       const response = await batchVerify(row.id, parseInt(value))
-      if (response.data.success) {
-        ElMessage.success(response.data.message)
+      if (response.success) {
+        ElMessage.success('批量核销成功')
         loadOrders()
       }
     } catch (error) {
