@@ -1,0 +1,215 @@
+<view class="page">
+  <!-- 顶部筛选 - 固定在头部 -->
+  <view class="filter-bar fixed-header">
+    <scroll-view scroll-x="true" class="filter-scroll" scroll-x>
+      <view class="filter-item active">全部</view>
+      <view class="filter-item">进行中</view>
+      <view class="filter-item">即将开始</view>
+      <view class="filter-item">已结束</view>
+    </scroll-view>
+  </view>
+
+  <!-- 活动列表 -->
+  <view class="activity-list">
+    <!-- 卡片1 -->
+    <view class="activity-card" bindtap="onCardTap" data-id="1">
+      <view class="card-image-container">
+        <image class="card-image" src="/images/temple-banner.png" mode="widthFix" />
+        <view class="card-tag">打卡</view>
+      </view>
+      <view class="card-content">
+        <text class="card-title">城市涂鸦艺术展打卡</text>
+        <view class="card-details">
+          <view class="detail-row">
+            <image class="detail-icon" src="/images/icons/chronic.png" />
+            <text>10.01 - 10.15</text>
+          </view>
+          <view class="detail-row">
+            <image class="detail-icon" src="/images/icons/location.png" />
+            <text>798 艺术区</text>
+          </view>
+        </view>
+        <view class="card-footer">
+          <view class="footer-left">
+            <image class="footer-icon" src="/images/icons/group.png" />
+            <text>2.3k</text>
+          </view>
+          <view class="footer-right">
+            <text class="status-badge hot">火热进行</text>
+            <button class="like-btn">
+              <image class="like-icon" src="/images/icons/heart-empty.png" />
+            </button>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 卡片2 -->
+    <view class="activity-card" bindtap="onCardTap" data-id="2">
+      <view class="card-image-container">
+        <image class="card-image" src="/images/via.png" mode="widthFix" />
+        <view class="card-tag">打卡</view>
+      </view>
+      <view class="card-content">
+        <text class="card-title">海滨度假村探店</text>
+        <view class="card-details">
+          <view class="detail-row">
+            <image class="detail-icon" src="/images/icons/chronic.png" />
+            <text>长期有效</text>
+          </view>
+          <view class="detail-row">
+            <image class="detail-icon" src="/images/icons/location.png" />
+            <text>三亚</text>
+          </view>
+        </view>
+        <view class="card-footer">
+          <view class="footer-left">
+            <image class="footer-icon" src="/images/icons/group.png" />
+            <text>892</text>
+          </view>
+          <view class="footer-right">
+            <text class="status-badge ongoing">进行中</text>
+            <button class="like-btn">
+              <image class="like-icon" src="/images/icons/heart-empty.png" />
+            </button>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 卡片3 -->
+    <view class="activity-card" bindtap="onCardTap" data-id="3">
+      <view class="card-image-container">
+        <image class="card-image" src="/images/temple-banner.png" mode="widthFix" />
+        <view class="card-tag">积分</view>
+      </view>
+      <view class="card-content">
+        <text class="card-title">周末博物馆奇妙夜</text>
+        <view class="card-details">
+          <view class="detail-row">
+            <image class="detail-icon" src="/images/icons/chronic.png" />
+            <text>10.12 18:00</text>
+          </view>
+          <view class="detail-row">
+            <image class="detail-icon" src="/images/icons/location.png" />
+            <text>国家博物馆</text>
+          </view>
+        </view>
+        <view class="card-footer">
+          <view class="footer-left">
+            <image class="footer-icon" src="/images/icons/group.png" />
+            <text>500</text>
+          </view>
+          <view class="footer-right">
+            <text class="status-badge upcoming">即将开始</text>
+            <button class="like-btn">
+              <image class="like-icon" src="/images/icons/heart-empty.png" />
+            </button>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 卡片4 -->
+    <view class="activity-card" bindtap="onCardTap" data-id="4">
+      <view class="card-image-container">
+        <image class="card-image" src="/images/via.png" mode="widthFix" />
+        <view class="card-tag">积分</view>
+      </view>
+      <view class="card-content">
+        <text class="card-title">社区环保知识讲座</text>
+        <view class="card-details">
+          <view class="detail-row">
+            <image class="detail-icon" src="/images/icons/chronic.png" />
+            <text>10.25 14:00</text>
+          </view>
+          <view class="detail-row">
+            <image class="detail-icon" src="/images/icons/location.png" />
+            <text>社区中心</text>
+          </view>
+        </view>
+        <view class="card-footer">
+          <view class="footer-left">
+            <image class="footer-icon" src="/images/icons/group.png" />
+            <text>120</text>
+          </view>
+          <view class="footer-right">
+            <text class="status-badge signing">报名中</text>
+            <button class="like-btn">
+              <image class="like-icon" src="/images/icons/heart-empty.png" />
+            </button>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 卡片5 -->
+    <view class="activity-card" bindtap="onCardTap" data-id="5">
+      <view class="card-image-container">
+        <image class="card-image" src="/images/temple-banner.png" mode="widthFix" />
+        <view class="card-tag">主题</view>
+      </view>
+      <view class="card-content">
+        <text class="card-title">草莓音乐节限定活动</text>
+        <view class="card-details">
+          <view class="detail-row">
+            <image class="detail-icon" src="/images/icons/chronic.png" />
+            <text>10.20 - 10.22</text>
+          </view>
+          <view class="detail-row">
+            <image class="detail-icon" src="/images/icons/location.png" />
+            <text>世园公园</text>
+          </view>
+        </view>
+        <view class="card-footer">
+          <view class="footer-left">
+            <image class="footer-icon" src="/images/icons/group.png" />
+            <text>10k+</text>
+          </view>
+          <view class="footer-right">
+            <text class="status-badge hot">火热报名</text>
+            <button class="like-btn active">
+              <image class="like-icon" src="/images/icons/heart-filled.png" />
+            </button>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 卡片6 -->
+    <view class="activity-card ended" bindtap="onCardTap" data-id="6">
+      <view class="card-image-container">
+        <image class="card-image ended" src="/images/via.png" mode="widthFix" />
+        <view class="card-tag ended">打卡</view>
+        <view class="ended-overlay">
+          <text>已结束</text>
+        </view>
+      </view>
+      <view class="card-content">
+        <text class="card-title ended">夜游锦江摄影赛</text>
+        <view class="card-details">
+          <view class="detail-row">
+            <image class="detail-icon ended" src="/images/icons/chronic.png" />
+            <text class="ended">09.10 - 09.30</text>
+          </view>
+          <view class="detail-row">
+            <image class="detail-icon ended" src="/images/icons/location.png" />
+            <text class="ended">锦江</text>
+          </view>
+        </view>
+        <view class="card-footer">
+          <view class="footer-left">
+            <image class="footer-icon ended" src="/images/icons/group.png" />
+            <text class="ended">5k+</text>
+          </view>
+          <view class="footer-right">
+            <text class="status-badge ended">回顾</text>
+            <button class="like-btn ended">
+              <image class="like-icon ended" src="/images/icons/heart-empty.png" />
+            </button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

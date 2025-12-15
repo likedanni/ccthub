@@ -1,0 +1,120 @@
+<view class="page">
+  <!-- Filter Section - 固定在头部 -->
+  <view class="filter-section fixed-header">
+    <!-- Filter Chips -->
+    <scroll-view scroll-x class="filter-chips" scroll-x enable-flex>
+      <view class="filter-chip active">全部</view>
+      <view class="filter-chip">招聘</view>
+      <view class="filter-chip">合作</view>
+    </scroll-view>
+    
+    <!-- Search Bar -->
+    <view class="search-bar">
+      <view class="search-container">
+        <image class="search-icon" src="/images/icons/search.png" />
+        <input 
+          class="search-input" 
+          placeholder="搜索供需信息" 
+          placeholder-style="color: #999;"
+          bindinput="onSearch"
+        />
+      </view>
+    </view>
+  </view>
+
+  <!-- Content List -->
+  <view class="content-list">
+    <!-- Card 1: Recruitment -->
+    <view class="supply-card" data-id="1" bind:tap="onCardTap">
+      <view class="card-main">
+        <!-- 左边：标题和描述 -->
+        <view class="card-left">
+          <text class="card-title">大理古城民宿招义工，包吃住，氛围超好</text>
+          <view class="card-subtitle">
+            <image class="card-icon" src="/images/icons/time.png" />
+            <text>刚刚发布 · 归去来兮民宿</text>
+          </view>
+          <text class="card-description">寻找有趣的灵魂！主要负责前台接待和简单的咖啡制作，工作轻松，老板nice，定期组织聚餐出游...</text>
+        </view>
+        
+        <!-- 右边：图片 -->
+        <image class="card-image" src="/images/temple-banner.png" mode="aspectFill" />
+      </view>
+      
+      <view class="card-footer">
+        <text class="card-tag recruitment">#招聘</text>
+        <button class="contact-btn" data-id="1" bind:tap="onContact">联系TA</button>
+      </view>
+    </view>
+
+    <!-- Card 2: Travel Partner -->
+    <view class="supply-card" data-id="2" bind:tap="onCardTap">
+      <view class="card-main">
+        <view class="card-left">
+          <text class="card-title">川西小环线自驾游，缺2人，AA制</text>
+          <view class="card-subtitle">
+            <image class="card-icon" src="/images/icons/time.png" />
+            <text>1小时前 · 爱旅行的小王</text>
+          </view>
+          <text class="card-description">计划下周五成都出发，已有车和老司机。希望你性格开朗，不矫情，喜欢拍照就更好了！行程自由...</text>
+        </view>
+        
+        <image class="card-image" src="/images/temple-banner.png" mode="aspectFill" />
+      </view>
+      
+      <view class="card-footer">
+        <text class="card-tag travel">#找搭子</text>
+        <button class="contact-btn" data-id="2" bind:tap="onContact">联系TA</button>
+      </view>
+    </view>
+
+    <!-- Card 3: Service -->
+    <view class="supply-card" data-id="3" bind:tap="onCardTap">
+      <view class="card-main">
+        <view class="card-left">
+          <text class="card-title">独立摄影师接单，擅长古风/日系写真</text>
+          <view class="card-subtitle">
+            <image class="card-icon" src="/images/icons/time.png" />
+            <text>3小时前 · 咔嚓Studio</text>
+          </view>
+          <text class="card-description">在这个美好的季节，想为你记录下最美的瞬间。价格美丽，出片快，提供服装和简单妆造...</text>
+        </view>
+        
+        <image class="card-image" src="/images/temple-banner.png" mode="aspectFill" />
+      </view>
+      
+      <view class="card-footer">
+        <text class="card-tag service">#服务</text>
+        <button class="contact-btn" data-id="3" bind:tap="onContact">联系TA</button>
+      </view>
+    </view>
+
+    <!-- Card 4: Cooperation -->
+    <view class="supply-card" data-id="4" bind:tap="onCardTap">
+      <view class="card-main">
+        <view class="card-left">
+          <text class="card-title">景区文创雪糕寻求源头工厂合作</text>
+          <view class="card-subtitle">
+            <image class="card-icon" src="/images/icons/time.png" />
+            <text>5小时前 · 云顶风景区运营部</text>
+          </view>
+          <text class="card-description">我们需要寻找一家有经验的文创雪糕生产商，要求能定制模具，保证食品安全，支持小批量打样...</text>
+        </view>
+        
+        <image class="card-image" src="/images/temple-banner.png" mode="aspectFill" />
+      </view>
+      
+      <view class="card-footer">
+        <text class="card-tag cooperation">#合作</text>
+        <button class="contact-btn" data-id="4" bind:tap="onContact">联系TA</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- Floating Action Button - 靠最下边 -->
+  
+  <view class="fab" bind:tap="onPublish">
+    <image class="fab-icon" src="/images/icons/add.png" />
+  </view>
+ 
+</view>

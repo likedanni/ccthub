@@ -1,0 +1,167 @@
+<!-- index.wxml -->
+<view class="page-container">
+  <scroll-view class="main-content" scroll-y>
+    <!-- 景点信息 -->
+    <view class="section">
+      <view class="flex gap-4 items-start">
+        <view class="thumbnail">
+          <image class="thumbnail-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXFPLLsdHZ4ALU-BHDlrlY5bqwqKJq5WomZIRFhM6ZbxMZRXeIFfV4hiW6gVRlZfBDx_wp4Wkb3YIhNtNBJJ944Tz_MDBzxjvkyVHrfBZtS1ZwqB1pirxfkIp-LUI13owrFHSbF1GdKhWMNtybfC-ZGXRcrHWvmYrP6ZMx6ei83AhitrVFEnhd1C7CkcxNhefD32quVmnSkVYF1bBIR9_zIr-rQr_c1JbTWmdfuEpHr-F3HHF-aI1X4z0lDCcnXRR5aAnVwC6Jw23Z" mode="aspectFill" />
+        </view>
+        <view class="flex-1">
+          <view class="text-xl font-bold leading-tight">北京环球影城</view>
+          <view class="badge">单日成人票</view>
+          <view class="text-sm text-gray-500 leading-snug">包含哈利波特园区快速通行证 | 无需换票扫码入园</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 日期选择 -->
+    <view class="section">
+      <view class="flex justify-between mb-4">
+        <view class="text-lg font-bold">选择游玩日期</view>
+      </view>
+      
+      <scroll-view class="date-scroll" scroll-x>
+        <view class="date-container">
+          <view class="date-item selected">
+            <image class="check-icon" src="/images/icons/check-circle.png" />
+            <view class="date-text">今天 10.24</view>
+            <view class="price">¥418</view>
+          </view>
+          <view class="date-item">
+            <view class="date-text">明天 10.25</view>
+            <view class="price">¥418</view>
+          </view>
+          <view class="date-item">
+            <view class="date-text">周六 10.26</view>
+            <view class="price">¥528</view>
+          </view>
+          <view class="date-item">
+            <view class="date-text">周日 10.27</view>
+            <view class="price">¥528</view>
+          </view>
+        </view>
+      </scroll-view>
+      
+      <view class="info-tip">
+        <image class="info-icon" src="/images/icons/info.png" />
+        需提前1天预订，今日可订明日票
+      </view>
+    </view>
+
+    <!-- 选择游客 -->
+    <view class="section">
+      <view class="flex justify-between mb-4">
+        <view class="text-lg font-bold">选择游客</view>
+        <view class="add-visitor-btn">
+          <image class="add-icon" src="/images/icons/add_2.png" />
+          新增游客
+        </view>
+      </view>
+      
+      <scroll-view class="visitor-tabs" scroll-x>
+        <view class="tabs-container">
+          <view class="tab-btn">张大伟</view>
+          <view class="tab-btn active">李小花</view>
+          <view class="tab-btn">王建国</view>
+        </view>
+      </scroll-view>
+      
+      <view class="visitor-list">
+        <label class="visitor-item selected">
+          <checkbox checked="{{true}}" color="#FBC02D" />
+          <view class="visitor-content">
+            <view class="visitor-header">
+              <view class="visitor-name">李小花</view>
+              <view class="verified-badge">
+                <image class="verified-icon" src="/images/icons/verified.png" />
+                已认证
+              </view>
+            </view>
+            <view class="visitor-id">身份证 110101********1234</view>
+          </view>
+          <view class="edit-btn">
+            <image class="edit-icon" src="/images/icons/edit.png" />
+          </view>
+        </label>
+        
+        <label class="visitor-item">
+          <checkbox color="#FBC02D" />
+          <view class="visitor-content">
+            <view class="visitor-header">
+              <view class="visitor-name">张大伟</view>
+              <view class="pending-badge">
+                <image class="pending-icon" src="/images/icons/pending.png" />
+                待核验
+              </view>
+            </view>
+            <view class="visitor-id">身份证 110101********5678</view>
+          </view>
+          <view class="edit-btn">
+            <image class="edit-icon" src="/images/icons/edit.png" />
+          </view>
+        </label>
+      </view>
+    </view>
+
+    <!-- 优惠券 -->
+    <view class="coupon-section">
+      <view class="coupon-btn">
+        <view class="coupon-left">
+          <view class="text-lg font-bold">优惠券</view>
+          <view class="coupon-count">1</view>
+        </view>
+        <view class="coupon-right">
+          <view class="coupon-amount">¥20 优惠券可用</view>
+          <image class="chevron-right" src="/images/icons/arrow-right.png" />
+        </view>
+      </view>
+    </view>
+
+    <!-- 价格明细 -->
+    <view class="price-detail">
+      <view class="price-item">
+        <view>票品总价</view>
+        <view class="price-value">¥418 × 1</view>
+      </view>
+      <view class="price-item discount">
+        <view class="discount-label">
+          <image class="discount-icon" src="/images/icons/discount.png" />
+          优惠抵扣
+        </view>
+        <view class="discount-value">-¥20</view>
+      </view>
+      <view class="divider"></view>
+      <view class="total-item">
+        <view class="total-label">实付金额</view>
+        <view class="total-price">¥398</view>
+      </view>
+    </view>
+
+    <!-- 协议 -->
+<!-- 在 index.wxml 中修改协议部分 -->
+<view class="agreement">
+  <label class="agreement-label">
+    <checkbox id="agreement" 
+              checked="{{agreementChecked}}" 
+              bindchange="toggleAgreement"
+              class="round-checkbox" />
+    <view class="agreement-text">
+      我已阅读并同意<text class="link">《用户服务协议》</text>和<text class="link">《隐私政策》</text>。未成年人需在监护人陪同下入园。
+    </view>
+  </label>
+</view>
+  </scroll-view>
+
+  <!-- 底部支付栏 -->
+  <view class="bottom-bar">
+    <view class="price-summary">
+      <view class="price-row">
+        <view class="price-label">实付</view>
+        <view class="final-price">¥398</view>
+      </view>
+      <view class="saved-text">已优惠 ¥20</view>
+    </view>
+    <button class="submit-btn">提交订单</button>
+  </view>
+</view>

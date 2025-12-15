@@ -1,0 +1,243 @@
+<!-- 容器 -->
+<view class="page-container">
+  <!-- 顶部固定导航 -->
+  <view class="top-nav fixed-top">
+    <view class="nav-back-btn" bindtap="goBack">
+      <image class="nav-icon" src="/images/icons/arrow_back.png"></image>
+    </view>
+  </view>
+
+  <!-- 主要内容区域 -->
+  <scroll-view class="main-content" scroll-y style="height: {{scrollHeight}}px">
+    
+    <!-- 景区主图 -->
+    <view class="main-image-container">
+      <image class="main-image" src="{{currentImage}}" mode="widthFix"></image>
+      <view class="image-indicator">
+        <image class="indicator-icon" src="/images/icons/photo.png"></image>
+        <text class="indicator-text">{{currentImageIndex + 1}}/{{imageList.length}}</text>
+      </view>
+    </view>
+
+    <!-- 基本信息卡片 -->
+    <view class="info-card">
+      <view class="card-divider"></view>
+      <view class="basic-info">
+        <view class="title-section">
+          <text class="scenic-title">{{scenicData.name}}</text>
+          <view class="tags-row">
+            <view class="tag level">{{scenicData.level}}</view>
+            <view class="tag category">{{scenicData.category}}</view>
+            <view class="tag must-visit">{{scenicData.mustVisit}}</view>
+          </view>
+        </view>
+        <view class="rating-box">
+          <view class="rating-score">
+            <image class="star-icon" src="/images/icons/star_full.png"></image>
+            <text class="score-text">{{scenicData.rating}}</text>
+          </view>
+          <text class="review-count">{{scenicData.reviewCount}} 点评</text>
+        </view>
+      </view>
+      <text class="description">{{scenicData.description}}</text>
+    </view>
+
+    <!-- 实用信息滚动区域 -->
+    <scroll-view class="practical-info-scroll" scroll-x>
+      <view class="practical-info-container">
+        <!-- 开放时间 -->
+        <view class="info-item">
+          <view class="icon-container time-icon">
+            <image class="info-icon" src="/images/icons/schedule.png"></image>
+          </view>
+          <view class="info-content">
+            <text class="info-label">开放时间</text>
+            <view class="info-value-row">
+              <text class="info-value">{{scenicData.openHours}}</text>
+              <view class="status-badge open">营业中</view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 联系电话 -->
+        <view class="info-item">
+          <view class="icon-container phone-icon">
+            <image class="info-icon" src="/images/icons/call.png"></image>
+          </view>
+          <view class="info-content">
+            <text class="info-label">咨询电话</text>
+            <text class="info-value">{{scenicData.phone}}</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 分隔条 -->
+    <view class="section-divider"></view>
+
+    <!-- 票型选择区域 -->
+    <view class="ticket-section">
+      <view class="section-header">
+        <text class="section-title">选择票型</text>
+        <view class="notice-btn" bindtap="showTicketNotice">
+          <text>购票须知</text>
+          <image class="notice-icon" src="/images/icons/info.png"></image>
+        </view>
+      </view>
+
+      <!-- 票型选项卡 -->
+      <view class="ticket-tabs">
+        <view class="tab {{activeTicketTab === 'single' ? 'active' : ''}}" bindtap="switchTicketTab" data-tab="single">
+          <text>单票</text>
+        </view>
+        <view class="tab {{activeTicketTab === 'combo' ? 'active' : ''}}" bindtap="switchTicketTab" data-tab="combo">
+          <text>联票</text>
+        </view>
+        <view class="tab {{activeTicketTab === 'package' ? 'active' : ''}}" bindtap="switchTicketTab" data-tab="package">
+          <text>套票</text>
+        </view>
+      </view>
+
+      <!-- 票型列表 -->
+      <view class="ticket-list">
+        <block wx:for="{{currentTickets}}" wx:key="id">
+          <view class="ticket-item">
+            <view class="ticket-header">
+              <text class="ticket-name">{{item.name}}</text>
+              <view class="ticket-tags">
+                <view class="tag-badge" wx:for="{{item.tags}}" wx:key="*this">
+                  <text>{{item}}</text>
+                </view>
+              </view>
+            </view>
+            <view class="ticket-footer">
+              <view class="price-container">
+                <text class="current-price">¥{{item.currentPrice}}</text>
+                <text class="original-price" wx:if="{{item.originalPrice}}">¥{{item.originalPrice}}</text>
+              </view>
+              <view class="book-ticket-btn {{item.available ? '' : 'disabled'}}" 
+                      bindtap="bookTicket" 
+                      data-id="{{item.id}}"
+                      disabled="{{!item.available}}">
+                <text>{{item.available ? '预订' : '售罄'}}</text>
+              </view>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <!-- 分隔条 -->
+    <view class="section-divider"></view>
+
+    <!-- 详情导航 -->
+    <view class="detail-nav">
+      <view class="nav-tab active">
+        <text>详情</text>
+        <view class="active-indicator"></view>
+      </view>
+      <view class="nav-tab" bindtap="goToReviews">
+        <text>评价 ({{scenicData.reviewCount}})</text>
+      </view>
+    </view>
+
+    <!-- 景区详情内容 -->
+    <view class="detail-content">
+      <!-- 地图预览 -->
+      <view class="map-preview" bindtap="viewFullMap">
+        <image class="map-image" src="{{scenicData.mapImage}}" mode="widthFix"></image>
+        <view class="map-overlay">
+          <view class="view-map-btn">
+            <image class="map-btn-icon" src="/images/icons/map.png"></image>
+            <text>查看地图</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 景区亮点 -->
+      <view class="highlight-section">
+        <text class="section-title">景区亮点</text>
+        <text class="highlight-text">{{scenicData.highlight}}</text>
+        
+        <view class="feature-cards">
+          <view class="feature-card">
+            <text class="feature-label">最佳季节</text>
+            <text class="feature-value">{{scenicData.bestSeason}}</text>
+          </view>
+          <view class="feature-card">
+            <text class="feature-label">建议游玩</text>
+            <text class="feature-value">{{scenicData.suggestedTime}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 分隔条 -->
+    <view class="section-divider"></view>
+
+    <!-- 用户评价预览 -->
+    <view class="review-preview">
+      <view class="review-header">
+        <text class="section-title">用户评价</text>
+        <view class="review-filters">
+          <view class="filter-btn active">有图</view>
+          <view class="filter-btn">最新</view>
+        </view>
+      </view>
+
+      <!-- 评价示例 -->
+      <view class="review-example">
+        <view class="reviewer-info">
+          <image class="avatar" src="{{sampleReview.avatar}}"></image>
+          <view class="reviewer-details">
+            <text class="reviewer-name">{{sampleReview.name}}</text>
+            <view class="rating-stars">
+              <image class="star" wx:for="{{5}}" wx:key="index" 
+                     src="{{index < sampleReview.rating ? '/images/icons/star_full.png' : '/images/icons/star_empty.png'}}">
+              </image>
+            </view>
+          </view>
+          <text class="review-time">{{sampleReview.time}}</text>
+        </view>
+        <text class="review-content">{{sampleReview.content}}</text>
+        
+        <!-- 评价图片 -->
+        <scroll-view class="review-images" scroll-x>
+          <view class="images-container">
+            <block wx:for="{{sampleReview.images}}" wx:key="index">
+              <image class="review-img" src="{{item}}" mode="aspectFill"></image>
+            </block>
+          </view>
+        </scroll-view>
+      </view>
+
+      <button class="view-all-btn" bindtap="viewAllReviews">
+        <text>查看全部评价</text>
+      </button>
+    </view>
+  </scroll-view>
+
+  <!-- 底部固定操作栏 -->
+  <view class="bottom-bar fixed-bottom">
+    <view class="bottom-content">
+      <view class="service-option" bindtap="contactCustomerService">
+        <image class="service-icon" src="/images/icons/support_agent.png"></image>
+        <text class="service-text">客服</text>
+      </view>
+      <button class="primary-booking-btn" bindtap="quickBook">
+        <view class="price-display">
+          <text class="price-label">仅需</text>
+          <view class="price-main">
+            <text class="currency">¥</text>
+            <text class="price">{{lowestPrice}}</text>
+            <text class="price-unit">起</text>
+          </view>
+        </view>
+        <view class="booking-action">
+          <text>立即预订</text>
+          <image class="action-arrow" src="/images/icons/send.png"></image>
+        </view>
+      </button>
+    </view>
+  </view>
+</view>

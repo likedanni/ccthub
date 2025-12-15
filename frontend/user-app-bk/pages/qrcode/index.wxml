@@ -1,0 +1,73 @@
+<!-- pages/qrcode/qrcode.wxml -->
+<view class="qrcode-page">
+  <!-- 渐变背景 -->
+  <view class="gradient-bg"></view>
+  
+  <!-- 页面标题 -->
+
+  
+  <!-- 二维码展示区域 -->
+  <view class="qrcode-container">
+    <!-- 二维码卡片 -->
+    <view class="qrcode-card">
+      <!-- 用户信息 -->
+      <view class="user-info">
+        <image class="user-avatar" src="{{userInfo.avatar || '/images/icons/default-avatar.png'}}" mode="aspectFill"></image>
+        <view class="user-details">
+          <text class="user-name">{{userInfo.name || '游客'}}</text>
+          <text class="user-id">ID: {{userInfo.id || '000000'}}</text>
+        </view>
+      </view>
+      
+      <!-- 二维码区域 -->
+      <view class="qrcode-area">
+        <image 
+          class="qrcode-image" 
+          src="{{qrcodeUrl || '/images/icons/default-qrcode.png'}}" 
+          mode="aspectFit"
+          bindtap="previewQrcode"
+        />
+        
+        <!-- 二维码有效期 -->
+        <view class="qrcode-expiry">
+          <image class="clock-icon" src="/images/icons/clock.png" mode="aspectFit"></image>
+          <text class="expiry-text">有效期: {{expiryTime}}</text>
+        </view>
+      </view>
+      
+      <!-- 二维码描述 -->
+      <view class="qrcode-desc">
+        <text>用微信扫描二维码，快速登录文旅平台</text>
+      </view>
+    </view>
+    
+    <!-- 二维码刷新提示 -->
+    <view class="refresh-tips" wx:if="{{showRefreshTip}}">
+      <text class="tips-text">二维码每分钟自动刷新，保障安全</text>
+    </view>
+  </view>
+  
+  <!-- 操作按钮区域 -->
+  <view class="action-buttons">
+    <button class="action-btn refresh-btn" bindtap="refreshQrcode">
+      <image class="btn-icon" src="/images/icons/refresh.png" mode="aspectFit"></image>
+      <text class="btn-text">刷新二维码</text>
+    </button>
+    
+    <button class="action-btn save-btn" bindtap="saveQrcode">
+      <image class="btn-icon" src="/images/icons/download.png" mode="aspectFit"></image>
+      <text class="btn-text">保存到相册</text>
+    </button>
+    
+    <button class="action-btn share-btn" bindtap="shareQrcode">
+      <image class="btn-icon" src="/images/icons/share.png" mode="aspectFit"></image>
+      <text class="btn-text">分享二维码</text>
+    </button>
+  </view>
+  
+  <!-- 安全提示 -->
+  <view class="security-tips">
+    <image class="security-icon" src="/images/icons/security.png" mode="aspectFit"></image>
+    <text class="security-text">请勿将二维码分享给陌生人，以防账号被盗</text>
+  </view>
+</view>

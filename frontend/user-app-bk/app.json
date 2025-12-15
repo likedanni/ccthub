@@ -1,0 +1,64 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/home/index",
+    "pages/activity/index",
+    "pages/qrcode/index",
+    "pages/supply/index",
+    "pages/supply/publish/index",
+    "pages/scenic/list",
+    "pages/scenic/detail",
+    "pages/activity/detail",
+    "pages/order/confirm",
+    "pages/address/index",
+    "pages/address/edit",
+    "pages/feedback/review",
+    "pages/punchIn/index",
+    "pages/user/index"
+  ],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarBackgroundColor": "#FBC02D"
+  },
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#FBC02D",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页",
+        "iconPath": "/images/tabbar/home.png",
+        "selectedIconPath": "/images/tabbar/home-active.png"
+      },
+      {
+        "pagePath": "pages/activity/index",
+        "text": "活动",
+        "iconPath": "/images/tabbar/activity.png",
+        "selectedIconPath": "/images/tabbar/activity-active.png"
+      },
+      {
+        "pagePath": "pages/qrcode/index",
+        "text": "二维码",
+        "iconPath": "/images/tabbar/qrcode.png",
+        "selectedIconPath": "/images/tabbar/qrcode-active.png"
+      },
+      {
+        "pagePath": "pages/supply/index",
+        "text": "供需",
+        "iconPath": "/images/tabbar/supply.png",
+        "selectedIconPath": "/images/tabbar/supply-active.png"
+      },
+      {
+        "pagePath": "pages/user/index",
+        "text": "我的",
+        "iconPath": "/images/tabbar/user.png",
+        "selectedIconPath": "/images/tabbar/user-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

@@ -5,7 +5,9 @@
         <div class="card-header">
           <span>用户列表</span>
           <el-button type="primary" @click="handleRefresh">
-            <el-icon><Refresh /></el-icon>
+            <el-icon>
+              <Refresh />
+            </el-icon>
             刷新
           </el-button>
         </div>
@@ -35,10 +37,12 @@
         <el-table-column prop="nickname" label="昵称" width="120" />
         <el-table-column label="会员等级" width="100">
           <template #default="{ row }">
-            <el-tag v-if="row.memberLevel === 1" type="info">普通</el-tag>
-            <el-tag v-else-if="row.memberLevel === 2">白银</el-tag>
-            <el-tag v-else-if="row.memberLevel === 3" type="warning">黄金</el-tag>
-            <el-tag v-else-if="row.memberLevel === 4" type="danger">钻石</el-tag>
+            <el-tag v-if="row.memberLevel === 'BRONZE'" type="info">青铜</el-tag>
+            <el-tag v-else-if="row.memberLevel === 'SILVER'">白银</el-tag>
+            <el-tag v-else-if="row.memberLevel === 'GOLD'" type="warning">黄金</el-tag>
+            <el-tag v-else-if="row.memberLevel === 'PLATINUM'" type="danger">铂金</el-tag>
+            <el-tag v-else-if="row.memberLevel === 'DIAMOND'" type="danger">钻石</el-tag>
+            <el-tag v-else type="info">{{ row.memberLevel }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="totalPoints" label="积分" width="100" />
@@ -57,11 +61,8 @@
         <el-table-column label="操作" fixed="right" width="150">
           <template #default="{ row }">
             <el-button type="primary" size="small" @click="handleView(row)">查看</el-button>
-            <el-button
-              :type="row.status === 'ACTIVE' ? 'danger' : 'success'"
-              size="small"
-              @click="handleToggleStatus(row)"
-            >
+            <el-button :type="row.status === 'ACTIVE' ? 'danger' : 'success'" size="small"
+              @click="handleToggleStatus(row)">
               {{ row.status === 'ACTIVE' ? '禁用' : '启用' }}
             </el-button>
           </template>
@@ -69,16 +70,10 @@
       </el-table>
 
       <!-- 分页 -->
-      <el-pagination
-        v-model:current-page="pagination.page"
-        v-model:page-size="pagination.pageSize"
-        :total="pagination.total"
-        :page-sizes="[10, 20, 50, 100]"
-        layout="total, sizes, prev, pager, next, jumper"
-        @size-change="handleSizeChange"
-        @current-change="handlePageChange"
-        style="margin-top: 20px; justify-content: flex-end"
-      />
+      <el-pagination v-model:current-page="pagination.page" v-model:page-size="pagination.pageSize"
+        :total="pagination.total" :page-sizes="[10, 20, 50, 100]" layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange" @current-change="handlePageChange"
+        style="margin-top: 20px; justify-content: flex-end" />
     </el-card>
 
     <!-- 用户详情对话框 -->
@@ -105,9 +100,9 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { getUserList, getUserProfile, updateUserStatus } from '@/api/user'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { getUserProfile } from '@/api/user'
+import { onMounted, reactive, ref } from 'vue'
 
 const loading = ref(false)
 const dialogVisible = ref(false)
@@ -126,31 +121,25 @@ const pagination = reactive({
 
 const tableData = ref([])
 
-// 模拟数据
-const mockData = [
-  {
-    id: 1,
-    phone: '13800138000',
-    nickname: '用户8000',
-    memberLevel: 1,
-    totalPoints: 100,
-    availablePoints: 100,
-    walletBalance: '0.00',
-    status: 'ACTIVE',
-    registerTime: '2025-12-12 10:00:00',
-    lastLoginTime: '2025-12-12 18:00:00',
-    realName: null,
-    growthValue: 0
-  }
-]
-
-const loadData = () => {
+const loadData = async () => {
   loading.value = true
-  setTimeout(() => {
-    tableData.value = mockData
-    pagination.total = 1
+  try {
+    const params = {
+      page: pagination.page - 1, // 后端从0开始
+      pageSize: pagination.pageSize,
+      phone: searchForm.phone || undefined,
+      status: searchForm.status || undefined
+    }
+
+    const data = await getUserList(params)
+    tableData.value = data.content
+    pagination.total = data.total
+  } catch (error) {
+    ElMessage.error('获取用户列表失败')
+    console.error(error)
+  } finally {
     loading.value = false
-  }, 500)
+  }
 }
 
 const handleSearch = () => {
@@ -180,18 +169,22 @@ const handleView = async (row) => {
 
 const handleToggleStatus = async (row) => {
   const action = row.status === 'ACTIVE' ? '禁用' : '启用'
+  const newStatus = row.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
+
   try {
     await ElMessageBox.confirm(`确定要${action}该用户吗?`, '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
     })
-    
-    // TODO: 调用API更新状态
+
+    await updateUserStatus(row.id, newStatus)
     ElMessage.success(`${action}成功`)
     loadData()
   } catch (error) {
-    // 取消操作
+    if (error !== 'cancel') {
+      ElMessage.error(`${action}失败`)
+    }
   }
 }
 

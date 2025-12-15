@@ -1,0 +1,415 @@
+/* pages/profile/profile.wxss */
+
+.profile-page {
+  background-color: #FFFFFF;
+  min-height: 100vh;
+  padding-bottom: 40px;
+  padding:  10px ;
+}
+
+/* 用户信息卡片 */
+.user-card {
+  position: relative;
+  background: linear-gradient(135deg, #FBC02D 0%, #F57F17 100%);
+  padding: 10px 10px 10px; /* 原来是 30px 20px 25px */
+  border-radius: 20px 20px 20px 20px;
+  overflow: hidden;
+}
+
+.user-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.user-bg::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  filter: blur(20px);
+}
+
+.user-bg::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  left: -40px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  filter: blur(15px);
+}
+
+.user-info {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* 头像区域 */
+.avatar-section {
+  position: relative;
+  margin-right: 16px;
+}
+
+.user-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  background-color: #FFFFFF;
+}
+
+.edit-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.edit-icon image {
+  width: 16px;
+  height: 16px;
+}
+
+/* 用户详情 */
+.user-details {
+  flex: 1;
+}
+.name-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  width: 100%; /* 确保占满宽度 */
+}
+
+.user-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-right: auto; /* 关键：右边距设为auto，推挤右边元素 */
+}
+
+.member-tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #F57F17;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap; /* 防止文字换行 */
+}
+.member-icon {
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+}
+
+.user-stats {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 10px 12px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.stat-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.4);
+  margin: 0 16px;
+}
+
+/* 成长值进度条 */
+.growth-section {
+  position: relative;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.growth-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.growth-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+.growth-tip {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #FFFFFF;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* 通用section样式 */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 20px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0D1B13;
+}
+
+.section-more {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #999999;
+}
+
+.arrow-right {
+  width: 12px;
+  height: 12px;
+  margin-left: 4px;
+}
+
+/* 我的订单 */
+.order-section {
+  padding: 20px 0;
+}
+
+.order-grid {
+  display: flex;
+  justify-content: space-between;
+}
+
+.order-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.order-icon {
+  width: 56px;
+  height: 56px;
+  background-color: #F8F9FA;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+.order-item:active .order-icon {
+  background-color: #FBC02D;
+  transform: scale(0.95);
+}
+
+.order-icon image {
+  width: 28px;
+  height: 28px;
+}
+
+.order-label {
+  font-size: 12px;
+  color: #666666;
+  font-weight: 500;
+}
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: 8px;
+  min-width: 16px;
+  height: 16px;
+  background-color: #FF6B6B;
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid #FFFFFF;
+}
+
+/* 分割线 */
+.divider {
+  height: 6px;
+  background-color: #F8F9FA;
+  margin: 0 20px;
+  border-radius: 4px;
+}
+
+/* 我的服务 */
+.service-section {
+  padding: 25px 10px;
+}
+
+.service-section .section-title {
+  margin-bottom: 20px;
+}
+
+.service-list {
+  background-color: #FFFFFF;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+.service-item {
+  display: flex;
+  align-items: center;
+  padding: 18px 20px;
+  position: relative;
+}
+
+.service-item:active {
+  background-color: #F8F9FA;
+}
+
+.service-item::after {
+  content: '';
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 0;
+  height: 1px;
+  background-color: #F0F0F0;
+}
+
+.service-item:last-child::after {
+  display: none;
+}
+
+.service-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+
+.service-icon.yellow {
+  background-color: rgba(251, 192, 45, 0.1);
+}
+
+.service-icon.teal {
+  background-color: rgba(78, 205, 196, 0.1);
+}
+
+.service-icon.red {
+  background-color: rgba(255, 107, 107, 0.1);
+}
+
+.service-icon.gray {
+  background-color: rgba(157, 157, 157, 0.1);
+}
+
+.service-icon image {
+  width: 20px;
+  height: 20px;
+}
+
+.service-label {
+  flex: 1;
+  font-size: 16px;
+  color: #0D1B13;
+  font-weight: 500;
+}
+
+.service-arrow {
+  width: 20px;
+  height: 20px;
+  opacity: 0.3;
+}
+
+/* 退出按钮 */
+.logout-section {
+  padding: 0 20px;
+  margin-top: 30px;
+}
+
+.logout-btn {
+  width: 100%;
+  height: 48px;
+  line-height: 32px;
+  background-color: transparent;
+  border: 1px solid #FBC02D;
+  border-radius: 12px;
+  color: #FBC02D;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:active {
+  background-color: #F8F9FA;
+  color: #FF6B6B;
+  border-color: #FF6B6B;
+}

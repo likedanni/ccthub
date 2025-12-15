@@ -1,0 +1,307 @@
+/* pages/login/login.wxss */
+
+.login-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* 装饰背景 */
+.decorative-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.bg-circle {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.bg-circle-1 {
+  width: 128px;
+  height: 128px;
+  background-color: rgba(58, 139, 233, 0.05);
+  top: 10%;
+  right: 10%;
+  /* 微信小程序兼容 blur */
+  opacity: 0.7;
+}
+
+.bg-circle-2 {
+  width: 160px;
+  height: 160px;
+  background-color: rgba(78, 205, 196, 0.05);
+  bottom: 50%;
+  left: 0;
+  /* 微信小程序兼容 blur */
+  opacity: 0.7;
+}
+
+/* 主要内容区域 */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 48px;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 24px;
+  width: 100%;
+  max-width: 400px;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+/* Logo区域 */
+.logo-container {
+  margin-bottom: 24px;
+}
+
+.logo-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+/* 修正：使用传统定位替代 inset */
+.logo-glow {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  background: linear-gradient(90deg, #3A8BE9, #4ECDC4);
+  border-radius: 28px;
+  opacity: 0.25;
+  /* 微信小程序不支持标准blur，使用透明度替代 */
+  filter: alpha(opacity=25);
+}
+
+.logo-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #FFFFFF;
+  border-radius: 26px;
+  padding: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.logo-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 22px;
+}
+
+/* 品牌文本 */
+.brand-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.brand-text {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.brand-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #0d1c14;
+}
+
+.brand-slogan {
+  font-size: 16px;
+  font-weight: 500;
+  color: #6b7280;
+  letter-spacing: 0.5px;
+}
+
+/* 底部操作区域 */
+.action-section {
+  width: 100%;
+  max-width: 400px;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 48px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+.login-buttons {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+}
+
+/* 微信登录按钮 */
+.wechat-login {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  background-color: #048f47;
+  border-radius: 28px;
+  border: none;
+  overflow: hidden;
+  padding: 0;
+  line-height: 56px;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(7, 193, 96, 0.2);
+}
+
+/* 修正：使用 hover-class 替代 :hover */
+.wechat-login-hover {
+  background-color: #035229;
+  transform: scale(0.98);
+}
+
+.button-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.wechat-icon {
+  width: 28px;
+  height: 28px;
+  margin-right: 12px;
+}
+
+.button-text {
+  color: #FFFFFF;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+/* 其他登录按钮 */
+.other-login-btn {
+  width: 100%;
+  height: 48px;
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0;
+  line-height: 48px;
+  transition: color 0.2s ease;
+}
+
+/* 修正：使用 hover-class 替代 :hover */
+.other-login-btn-hover {
+  color: #0d1c14;
+}
+
+/* 协议区域 */
+.agreement-section {
+  width: 100%;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+.agreement-label {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.agreement-checkbox {
+  flex-shrink: 0;
+  transform: scale(0.85);
+  margin-right: 8px;
+}
+
+.agreement-text-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+
+.agreement-text {
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.agreement-link {
+  color: #FBC02D;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.4;
+  margin-left: 2px;
+  margin-right: 2px;
+  /* 修正：移除 text-underline-offset，使用 padding 替代 */
+  text-decoration: underline;
+  padding-top: 1px;
+}
+
+/* 修正：移除 :active 伪类，使用 hover-class */
+.agreement-link-hover {
+  color: #FBC02D;
+}
+
+/* 安全区域 */
+.safe-area {
+  height: 8px;
+  width: 100%;
+}
+
+/* 响应式适配 */
+@media screen and (max-width: 320px) {
+  .brand-title {
+    font-size: 24px;
+  }
+  
+  .brand-slogan {
+    font-size: 14px;
+  }
+  
+  .agreement-text-container {
+    font-size: 11px;
+  }
+  
+  .agreement-text,
+  .agreement-link {
+    font-size: 11px;
+  }
+}
+
+@media screen and (min-width: 375px) {
+  .logo-wrapper {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .brand-title {
+    font-size: 32px;
+  }
+  
+  .agreement-text,
+  .agreement-link {
+    font-size: 13px;
+  }
+}

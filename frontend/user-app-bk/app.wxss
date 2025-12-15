@@ -1,0 +1,624 @@
+/* app.wxss - 全局样式 */
+
+/* ==================== 基础重置 ==================== */
+page {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+  background-color: #f7f8fa;
+  color: #333333;
+  height: 100%;
+  width: 100%;
+}
+
+/* 隐藏滚动条 */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+}
+
+/* 所有元素使用 border-box */
+view,
+scroll-view,
+image,
+button,
+label,
+text {
+  box-sizing: border-box;
+}
+
+/* ==================== 页面容器 ==================== */
+.page-container {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.page-white {
+  background-color: #ffffff;
+}
+
+.page-gray {
+  background-color: #f7f8fa;
+}
+
+.page-yellow-light {
+  background-color: #fffbe6;
+}
+
+/* ==================== 布局工具类 ==================== */
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-1 {
+  flex: 1;
+  min-width: 0;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+/* ==================== 间距工具类 ==================== */
+/* Margin */
+.m-0 {
+  margin: 0;
+}
+.m-2 {
+  margin: 8rpx;
+}
+.m-4 {
+  margin: 16rpx;
+}
+.m-6 {
+  margin: 24rpx;
+}
+
+.mt-2 {
+  margin-top: 8rpx;
+}
+.mt-4 {
+  margin-top: 16rpx;
+}
+.mt-6 {
+  margin-top: 24rpx;
+}
+
+.mb-2 {
+  margin-bottom: 8rpx;
+}
+.mb-4 {
+  margin-bottom: 16rpx;
+}
+.mb-6 {
+  margin-bottom: 24rpx;
+}
+
+.ml-2 {
+  margin-left: 8rpx;
+}
+.ml-4 {
+  margin-left: 16rpx;
+}
+
+.mr-2 {
+  margin-right: 8rpx;
+}
+.mr-4 {
+  margin-right: 16rpx;
+}
+
+/* Padding */
+.p-0 {
+  padding: 0;
+}
+.p-2 {
+  padding: 8rpx;
+}
+.p-4 {
+  padding: 16rpx;
+}
+.p-6 {
+  padding: 24rpx;
+}
+
+.pt-2 {
+  padding-top: 8rpx;
+}
+.pt-4 {
+  padding-top: 16rpx;
+}
+.pt-6 {
+  padding-top: 24rpx;
+}
+
+.pb-2 {
+  padding-bottom: 8rpx;
+}
+.pb-4 {
+  padding-bottom: 16rpx;
+}
+.pb-6 {
+  padding-bottom: 24rpx;
+}
+
+.pl-2 {
+  padding-left: 8rpx;
+}
+.pl-4 {
+  padding-left: 16rpx;
+}
+
+.pr-2 {
+  padding-right: 8rpx;
+}
+.pr-4 {
+  padding-right: 16rpx;
+}
+
+/* Gap */
+.gap-2 {
+  gap: 8rpx;
+}
+.gap-4 {
+  gap: 16rpx;
+}
+.gap-6 {
+  gap: 24rpx;
+}
+
+/* ==================== 文字样式 ==================== */
+/* 颜色 */
+.text-primary {
+  color: #fbc02d;
+}
+
+.text-golden {
+  color: #f57f17;
+}
+
+.text-blue {
+  color: #4a90e2;
+}
+
+.text-red {
+  color: #ff5252;
+}
+
+.text-gray {
+  color: #666666;
+}
+
+.text-gray-light {
+  color: #999999;
+}
+
+.text-dark {
+  color: #333333;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+/* 大小 */
+.text-xs {
+  font-size: 22rpx;
+}
+
+.text-sm {
+  font-size: 24rpx;
+}
+
+.text-base {
+  font-size: 28rpx;
+}
+
+.text-lg {
+  font-size: 32rpx;
+}
+
+.text-xl {
+  font-size: 36rpx;
+}
+
+.text-2xl {
+  font-size: 40rpx;
+}
+
+/* 权重 */
+.font-normal {
+  font-weight: normal;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+/* 对齐 */
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* ==================== 圆角工具类 ==================== */
+.rounded-sm {
+  border-radius: 8rpx;
+}
+
+.rounded {
+  border-radius: 12rpx;
+}
+
+.rounded-lg {
+  border-radius: 16rpx;
+}
+
+.rounded-xl {
+  border-radius: 20rpx;
+}
+
+.rounded-2xl {
+  border-radius: 24rpx;
+}
+
+.rounded-3xl {
+  border-radius: 30rpx;
+}
+
+.rounded-full {
+  border-radius: 50%;
+}
+
+/* ==================== 阴影效果 ==================== */
+.shadow-sm {
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+}
+
+.shadow {
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+.shadow-md {
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+.shadow-lg {
+  box-shadow: 0 8rpx 30rpx rgba(0, 0, 0, 0.1);
+}
+
+.shadow-xl {
+  box-shadow: 0 16rpx 60rpx -16rpx rgba(0, 0, 0, 0.15);
+}
+
+/* 特殊阴影 */
+.shadow-golden {
+  box-shadow: 0 4rpx 12rpx rgba(251, 192, 45, 0.3);
+}
+
+.shadow-blue {
+  box-shadow: 0 4rpx 12rpx rgba(74, 144, 226, 0.3);
+}
+
+/* ==================== 卡片样式 ==================== */
+.card {
+  background: #ffffff;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+.card-padding {
+  padding: 24rpx;
+}
+
+.card-golden {
+  background: linear-gradient(135deg, #fbc02d 0%, #f57f17 100%);
+}
+
+.card-blue {
+  background: linear-gradient(135deg, #4a90e2 0%, #3a7bd5 100%);
+}
+
+/* ==================== 按钮样式 ==================== */
+.btn {
+  border-radius: 12rpx;
+  border: none;
+  padding: 24rpx 48rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn::after {
+  border: none;
+}
+
+.btn-primary {
+  background: #fbc02d;
+  color: #ffffff;
+}
+
+.btn-secondary {
+  background: #f5f5f5;
+  color: #666666;
+}
+
+.btn-rounded {
+  border-radius: 40rpx;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* ==================== 固定定位 ==================== */
+.fixed-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.fixed-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+/* ==================== 固定头部 ==================== */
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #ffffff;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+}
+
+/* ==================== 筛选器 ==================== */
+.filter-scroll {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.filter-item {
+  display: inline-block;
+  padding: 16rpx 32rpx;
+  margin-right: 16rpx;
+  font-size: 28rpx;
+  color: #666666;
+  background: #f5f5f5;
+  border-radius: 40rpx;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.filter-item.active {
+  background: #fbc02d;
+  color: #ffffff;
+  font-weight: bold;
+  box-shadow: 0 4rpx 12rpx rgba(251, 192, 45, 0.3);
+}
+
+/* ==================== 导航栏 ==================== */
+.nav-back-btn {
+  width: 64rpx;
+  height: 64rpx;
+  background: rgba(5, 5, 5, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10rpx);
+  border: none;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+.nav-back-btn::after {
+  border: none;
+}
+
+.nav-icon {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+/* ==================== 标签/徽章 ==================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  font-weight: bold;
+}
+
+.badge-primary {
+  background: rgba(251, 192, 45, 0.1);
+  color: #fbc02d;
+}
+
+.badge-blue {
+  background: rgba(74, 144, 226, 0.1);
+  color: #4a90e2;
+}
+
+.badge-gray {
+  background: rgba(238, 238, 238, 0.9);
+  color: #999999;
+}
+
+/* ==================== 渐变背景 ==================== */
+.gradient-golden {
+  background: linear-gradient(135deg, #fbc02d 0%, #f57f17 100%);
+}
+
+.gradient-blue {
+  background: linear-gradient(135deg, #4a90e2 0%, #3a7bd5 100%);
+}
+
+.gradient-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1) 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+}
+
+/* ==================== 分割线 ==================== */
+.divider {
+  height: 1rpx;
+  background: #f0f0f0;
+}
+
+.divider-thick {
+  height: 2rpx;
+  background: #e0e0e0;
+}
+
+/* ==================== 图片样式 ==================== */
+.img-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.img-contain {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ==================== 宽度工具类 ==================== */
+.w-full {
+  width: 100%;
+}
+
+.w-half {
+  width: 50%;
+}
+
+/* ==================== 高度工具类 ==================== */
+.h-full {
+  height: 100%;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+/* ==================== 位置工具类 ==================== */
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+/* ==================== 溢出控制 ==================== */
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+
+/* ==================== 显示控制 ==================== */
+.hidden {
+  display: none;
+}
+
+.block {
+  display: block;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+/* ==================== 透明度 ==================== */
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.opacity-70 {
+  opacity: 0.7;
+}
+
+.opacity-90 {
+  opacity: 0.9;
+}
+
+/* ==================== 禁用状态 ==================== */
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

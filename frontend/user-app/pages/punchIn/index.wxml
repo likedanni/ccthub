@@ -1,0 +1,101 @@
+<view class="page-container">
+  <!-- 顶部进度卡片 -->
+  <view class="progress-card">
+    <view class="progress-card-bg"></view>
+    <view class="progress-card-content">
+      <view class="progress-header">
+        <view>
+          <text class="progress-label">当前进度</text>
+          <text class="progress-text">已完成 {{progress}}/{{total}} 站</text>
+        </view>
+        <view class="points-badge">
+          <image class="icon-small" src="/images/icons/star.png" />
+          <text class="points-text">总奖池 {{totalPoints}}分</text>
+        </view>
+      </view>
+      
+      <view class="progress-bar">
+        <view class="progress-fill" style="width: {{(progress/total)*100}}%"></view>
+      </view>
+      
+      <text class="progress-tip">完成全部打卡点即可自动领取通关大奖</text>
+    </view>
+  </view>
+
+  <!-- 任务列表标题 -->
+  <view class="section-title">
+    <view class="title-dot"></view>
+    <text class="title-text">今日任务列表</text>
+  </view>
+
+  <!-- 任务时间线 -->
+  <view class="timeline">
+    <block wx:for="{{tasks}}" wx:key="id">
+      <view class="timeline-item {{item.locked ? 'locked' : ''}} {{index === 1 ? 'current' : ''}}">
+        <!-- 时间线连接线 -->
+        <view class="timeline-line" wx:if="{{index !== tasks.length - 1}}"></view>
+        
+        <!-- 图标圆圈 -->
+        <view class="timeline-icon {{item.status === '进行中' ? 'active-icon' : ''}}">
+          <image 
+            class="icon-medium" 
+            src="{{'/images/icons/' + item.icon + '.png'}}" 
+            wx:if="{{!['check', 'my_location', 'hourglass_top', 'lock'].includes(item.icon)}}"
+          />
+          <text class="icon-text" wx:else>
+            {{item.status === '进行中' ? '📍' : ''}}
+            {{item.status === '已完成' ? '✓' : ''}}
+            {{item.status === '审核中' ? '⏳' : ''}}
+            {{item.locked ? '🔒' : ''}}
+          </text>
+        </view>
+
+        <!-- 任务卡片 -->
+        <view class="task-card {{item.status === '进行中' ? 'active-card' : ''}}">
+          <view class="task-header">
+            <view>
+              <view class="status-row">
+                <text class="status-badge {{item.status === '已完成' ? 'completed' : item.status === '进行中' ? 'active' : item.status === '审核中' ? 'reviewing' : item.status === '未解锁' ? 'locked' : 'final'}}">
+                  {{item.status}}
+                </text>
+                <text class="points-label">+{{item.points}} 积分</text>
+              </view>
+              <text class="task-title {{item.status === '已完成' ? 'completed' : ''}}">{{item.title}}</text>
+            </view>
+          </view>
+
+          <text class="task-desc">{{item.desc}}</text>
+
+          <!-- 审核中状态 -->
+          <view class="review-box" wx:if="{{item.status === '审核中' && item.reviewImage}}">
+            <image class="review-image" src="{{item.reviewImage}}" />
+            <view class="review-info">
+              <text class="review-title">凭证已提交</text>
+              <text class="review-time">预计 5 分钟内完成审核，请耐心等待</text>
+            </view>
+          </view>
+
+          <!-- 进行中状态按钮 -->
+          <view class="action-buttons" wx:if="{{item.status === '进行中'}}">
+            <view class="upload-btn" bindtap="uploadImage">
+              <image class="btn-icon" src="/images/icons/camera.png" />
+              <text>上传凭证</text>
+            </view>
+            <view class="nav-btn" bindtap="openNavigation">
+              <image class="btn-icon" src="/images/icons/navigation.png" />
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 底部规则栏 -->
+  <view class="rules-bar">
+    <image class="info-icon" src="/images/icons/info.png" />
+    <text class="rules-text">
+      <text class="rules-title">活动规则：</text>
+      请按顺序前往指定地点打卡，上传照片需包含地标建筑。完成所有任务后，积分奖励将自动发放至您的账户。
+    </text>
+  </view>
+</view>

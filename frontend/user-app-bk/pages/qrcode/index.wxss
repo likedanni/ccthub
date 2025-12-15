@@ -1,0 +1,219 @@
+/* pages/qrcode/qrcode.wxss */
+
+.qrcode-page {
+  width: 100vw;
+  height: 100vh;
+  background-color: #FFFFFF;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 渐变背景 */
+.gradient-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 300px;
+  background: linear-gradient(180deg, #FFD166 0%, #FFE699 35%, #FFFFFF 100%);
+  z-index: 0;
+}
+
+/* 页面标题 */
+.page-header {
+  position: relative;
+  z-index: 1;
+  padding-top: 60px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 8px;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: #666666;
+}
+
+/* 二维码展示区域 */
+.qrcode-container {
+  flex: 1;
+  padding: 0 10px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 二维码卡片 */
+.qrcode-card {
+  width: 100%;
+  max-width: 320px;
+  background: #FFFFFF;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+/* 用户信息 */
+.user-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #F0F0F0;
+}
+
+.user-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  margin-right: 16px;
+  border: 2px solid #FFD166;
+}
+
+.user-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 4px;
+}
+
+.user-id {
+  font-size: 14px;
+  color: #666666;
+}
+
+/* 二维码区域 */
+.qrcode-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.qrcode-image {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 16px;
+  border: 8px solid #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.qrcode-expiry {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 209, 102, 0.1);
+  padding: 8px 16px;
+  border-radius: 20px;
+}
+
+.clock-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+.expiry-text {
+  font-size: 12px;
+  color: #FF9800;
+  font-weight: 500;
+}
+
+/* 二维码描述 */
+.qrcode-desc {
+  text-align: center;
+  padding: 16px 0;
+  border-top: 1px solid #F0F0F0;
+}
+
+.qrcode-desc text {
+  font-size: 14px;
+  color: #666666;
+  line-height: 1.5;
+}
+
+/* 刷新提示 */
+.refresh-tips {
+  margin-top: 16px;
+  padding: 8px 16px;
+  background: rgba(255, 209, 102, 0.05);
+  border-radius: 12px;
+}
+
+.tips-text {
+  font-size: 12px;
+  color: #999999;
+}
+
+/* 操作按钮区域 */
+.action-buttons {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px 30px 30px;
+  background: #FFFFFF;
+  border-top: 1px solid #F0F0F0;
+}
+
+.action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  line-height: normal;
+}
+
+.btn-icon {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 8px;
+}
+
+.btn-text {
+  font-size: 12px;
+  color: #807d7d;
+}
+
+
+/* 安全提示 */
+.security-tips {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 30px 30px;
+  background: #FFFFFF;
+}
+
+.security-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+.security-text {
+  font-size: 12px;
+  color: #666666;
+  text-align: center;
+  line-height: 1.4;
+}

@@ -1,10 +1,20 @@
 package com.ccthub.userservice.service;
 
-import com.ccthub.userservice.dto.ChangePasswordRequest;
-import com.ccthub.userservice.dto.UpdateProfileRequest;
-import com.ccthub.userservice.dto.UserProfileResponse;
-import com.ccthub.userservice.model.User;
-import com.ccthub.userservice.repository.UserRepository;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.math.BigDecimal;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,13 +22,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.math.BigDecimal;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import com.ccthub.userservice.dto.ChangePasswordRequest;
+import com.ccthub.userservice.dto.UpdateProfileRequest;
+import com.ccthub.userservice.dto.UserProfileResponse;
+import com.ccthub.userservice.model.User;
+import com.ccthub.userservice.repository.UserRepository;
 
 class UserServiceProfileTest {
 
@@ -36,7 +44,7 @@ class UserServiceProfileTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        
+
         testUser = new User();
         testUser.setId(10L);
         testUser.setPhone("13800138000");
@@ -61,7 +69,7 @@ class UserServiceProfileTest {
         assertEquals(1, response.getMemberLevel());
         assertEquals(new BigDecimal("100.00"), response.getWalletBalance());
         assertEquals(50, response.getAvailablePoints());
-        
+
         verify(userRepository, times(1)).findById(10L);
     }
 
@@ -89,7 +97,7 @@ class UserServiceProfileTest {
 
         assertNotNull(response);
         assertEquals("新昵称", testUser.getNickname());
-        
+
         verify(userRepository, times(2)).findById(10L); // updateProfile calls getUserProfile internally
         verify(userRepository, times(1)).save(testUser);
     }
@@ -150,7 +158,7 @@ class UserServiceProfileTest {
     @Test
     void testVerifyPaymentPassword_Success() throws Exception {
         testUser.setPaymentPassword("$2a$10$paymentHashedPassword");
-        
+
         when(userRepository.findById(10L)).thenReturn(Optional.of(testUser));
         when(passwordEncoder.matches("888888", testUser.getPaymentPassword())).thenReturn(true);
 
@@ -164,7 +172,7 @@ class UserServiceProfileTest {
     @Test
     void testVerifyPaymentPassword_WrongPassword() throws Exception {
         testUser.setPaymentPassword("$2a$10$paymentHashedPassword");
-        
+
         when(userRepository.findById(10L)).thenReturn(Optional.of(testUser));
         when(passwordEncoder.matches("123456", testUser.getPaymentPassword())).thenReturn(false);
 

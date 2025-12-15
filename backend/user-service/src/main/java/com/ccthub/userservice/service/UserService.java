@@ -3,17 +3,25 @@ package com.ccthub.userservice.service;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ccthub.userservice.dto.ChangePasswordRequest;
+import com.ccthub.userservice.dto.DashboardStatsResponse;
 import com.ccthub.userservice.dto.LoginRequest;
+import com.ccthub.userservice.dto.PageResponse;
 import com.ccthub.userservice.dto.RegisterRequest;
 import com.ccthub.userservice.dto.RegisterResponse;
 import com.ccthub.userservice.dto.UpdateProfileRequest;
+import com.ccthub.userservice.dto.UserListResponse;
 import com.ccthub.userservice.dto.UserProfileResponse;
 import com.ccthub.userservice.model.User;
 import com.ccthub.userservice.repository.UserRepository;
@@ -80,10 +88,15 @@ public class UserService {
         User user = userRepository.findByPhone(request.getPhone())
                 .orElseThrow(() -> new Exception("User not found"));
 
-        // TODO: 临时禁用密码验证以便测试
-        // if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-        // throw new Exception("Invalid password");
-        // }
+        // 验证密码
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new Exception("Invalid password");
+        }
+
+        // 如果是管理员登录,验证是否有管理员权限
+        if (request.isAdminLogin() && !"ADMIN".equals(user.getRole())) {
+            throw new Exception("Only administrators can login to admin panel");
+        }
 
         // 更新最后登录时间
         user.setLastLoginTime(LocalDateTime.now());
@@ -257,6 +270,124 @@ public class UserService {
             return hexString.toString();
         } catch (Exception e) {
             throw new RuntimeException("Failed to encrypt idCard", e);
+        }
+    }
+
+    /**
+     * 获取仪表盘统计数据
+     */
+    public DashboardStatsResponse getDashboardStats() {
+        DashboardStatsResponse stats = new DashboardStatsResponse();
+
+        // 总用户数
+        stats.setTotalUsers(userRepository.count());
+
+        // 今日活跃用户数(最近登录时间在今天的用户)
+        LocalDateTime todayStart = LocalDateTime.now().toLocalDate().atStartOfDay();
+        stats.setActiveToday(userRepository.countByLastLoginTimeAfter(todayStart));
+
+        // 本月订单数(暂时返回0,后续订单服务实现后对接)
+        stats.setMonthlyOrders(0L);
+
+        // 本月收入(暂时返回0,后续订单服务实现后对接)
+        stats.setMonthlyRevenue(0.0);
+
+        return stats;
+    }
+
+    /**
+     * 获取用户列表(分页)
+     */
+    public Page<User> getUserList(String phone, String status, Pageable pageable) {
+        if (phone != null && !phone.isEmpty() && status != null && !status.isEmpty()) {
+            return userRepository.findByPhoneContainingAndStatus(phone, status, pageable);
+        } else if (phone != null && !phone.isEmpty()) {
+            return userRepository.findByPhoneContaining(phone, pageable);
+        } else if (status != null && !status.isEmpty()) {
+            return userRepository.findByStatus(status, pageable);
+        } else {
+            return userRepository.findAll(pageable);
+        }
+    }
+
+    /**
+     * 转换为PageResponse
+     */
+    public PageResponse<UserListResponse> convertToPageResponse(Page<User> userPage) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        List<UserListResponse> content = userPage.getContent().stream()
+                .map(user -> {
+                    UserListResponse response = new UserListResponse();
+                    response.setId(user.getId());
+                    response.setPhone(user.getPhone());
+                    response.setNickname(user.getNickname());
+
+                    // 转换会员等级
+                    String memberLevelStr = getMemberLevelString(user.getMemberLevel());
+                    response.setMemberLevel(memberLevelStr);
+
+                    response.setTotalPoints(user.getTotalPoints());
+                    response.setAvailablePoints(user.getAvailablePoints());
+                    response.setWalletBalance(
+                            user.getWalletBalance() != null ? user.getWalletBalance().doubleValue() : 0.0);
+                    response.setStatus(user.getStatus());
+                    response.setRegisterTime(
+                            user.getRegisterTime() != null ? user.getRegisterTime().format(formatter) : null);
+                    response.setLastLoginTime(
+                            user.getLastLoginTime() != null ? user.getLastLoginTime().format(formatter) : null);
+                    response.setRealName(user.getRealName());
+                    response.setGrowthValue(user.getGrowthValue());
+                    response.setRole(user.getRole());
+
+                    return response;
+                })
+                .collect(Collectors.toList());
+
+        PageResponse<UserListResponse> response = new PageResponse<>();
+        response.setContent(content);
+        response.setPage(userPage.getNumber());
+        response.setPageSize(userPage.getSize());
+        response.setTotal(userPage.getTotalElements());
+        response.setTotalPages(userPage.getTotalPages());
+
+        return response;
+    }
+
+    /**
+     * 更新用户状态
+     */
+    public void updateUserStatus(Long userId, String newStatus) throws Exception {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new Exception("用户不存在"));
+
+        if (!"ACTIVE".equals(newStatus) && !"INACTIVE".equals(newStatus)) {
+            throw new Exception("无效的状态值");
+        }
+
+        user.setStatus(newStatus);
+        userRepository.save(user);
+    }
+
+    /**
+     * 获取会员等级字符串
+     */
+    private String getMemberLevelString(Integer level) {
+        if (level == null)
+            return "BRONZE";
+        switch (level) {
+            case 1:
+                return "BRONZE";
+            case 2:
+                return "SILVER";
+            case 3:
+                return "GOLD";
+            case 4:
+                return "PLATINUM";
+            case 5:
+                return "DIAMOND";
+            default:
+                return "BRONZE";
         }
     }
 }

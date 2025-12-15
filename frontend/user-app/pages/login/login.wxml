@@ -1,0 +1,82 @@
+<!-- pages/login/login.wxml -->
+<view class="login-page">
+  <!-- 主要内容区域 -->
+  <view class="main-content">
+    <!-- Logo区域 -->
+    <view class="logo-container">
+      <view class="logo-wrapper">
+        <view class="logo-glow"></view>
+        <view class="logo-bg">
+          <!-- 这里使用你自己的图片 -->
+          <image 
+            class="logo-image" 
+            src="/images/logo.png" 
+            mode="aspectFit"
+          />
+        </view>
+      </view>
+    </view>
+
+    <!-- 品牌文本 -->
+    <view class="brand-section">
+      <view class="brand-text">
+        <text class="brand-title">文旅</text>
+        <text class="brand-title text-primary">App</text>
+      </view>
+      <text class="brand-slogan">探索世界，发现美好</text>
+    </view>
+  </view>
+
+  <!-- 底部操作区域 -->
+  <view class="action-section">
+    <!-- 登录按钮 -->
+    <view class="login-buttons">
+      <!-- 微信登录按钮 -->
+      <view 
+        class="login-button wechat-login" 
+        bindtap="handleWechatLogin"
+        hover-class="wechat-login-hover"
+      >
+        <view class="button-content">
+          <!-- 微信图标 - 替换为你自己的图标 -->
+          <image 
+            class="wechat-icon" 
+            src="/images/icons/wechat-icon.png"
+            mode="widthFix"
+          />
+          <text class="button-text">微信一键登录</text>
+        </view>
+      </view>
+
+      <!-- 其他登录方式 -->
+      <button 
+        class="other-login-btn" 
+        bindtap="handleOtherLogin"
+        hover-class="other-login-btn-hover"
+      >
+        <text>其他登录方式</text>
+      </button>
+    </view>
+
+    <!-- 协议勾选 -->
+    <view class="agreement-section">
+      <label class="agreement-label">
+        <checkbox 
+          class="agreement-checkbox" 
+          checked="{{isAgreed}}" 
+          bindchange="handleAgreementChange"
+          color="#3A8BE9"
+        />
+        <view class="agreement-text-container" bindtap="toggleAgreement">
+          <text class="agreement-text">我已阅读并同意</text>
+          <text class="agreement-link" bindtap="navigateToServiceAgreement">《服务协议》</text>
+          <text class="agreement-text">和</text>
+          <text class="agreement-link" bindtap="navigateToPrivacyPolicy">《隐私政策》</text>
+        </view>
+      </label>
+    </view>
+
+    <!-- iOS安全区域占位 -->
+    <view class="safe-area"></view>
+  </view>
+</view>

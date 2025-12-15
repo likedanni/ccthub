@@ -5,7 +5,9 @@
         <el-card shadow="hover">
           <el-statistic title="注册用户数" :value="stats.totalUsers">
             <template #prefix>
-              <el-icon style="color: #409EFF"><User /></el-icon>
+              <el-icon style="color: #409EFF">
+                <User />
+              </el-icon>
             </template>
           </el-statistic>
         </el-card>
@@ -14,7 +16,9 @@
         <el-card shadow="hover">
           <el-statistic title="今日活跃" :value="stats.activeToday">
             <template #prefix>
-              <el-icon style="color: #67C23A"><TrendCharts /></el-icon>
+              <el-icon style="color: #67C23A">
+                <TrendCharts />
+              </el-icon>
             </template>
           </el-statistic>
         </el-card>
@@ -23,7 +27,9 @@
         <el-card shadow="hover">
           <el-statistic title="本月订单" :value="stats.monthlyOrders">
             <template #prefix>
-              <el-icon style="color: #E6A23C"><ShoppingCart /></el-icon>
+              <el-icon style="color: #E6A23C">
+                <ShoppingCart />
+              </el-icon>
             </template>
           </el-statistic>
         </el-card>
@@ -32,7 +38,9 @@
         <el-card shadow="hover">
           <el-statistic title="本月收入(元)" :value="stats.monthlyRevenue" :precision="2">
             <template #prefix>
-              <el-icon style="color: #F56C6C"><Money /></el-icon>
+              <el-icon style="color: #F56C6C">
+                <Money />
+              </el-icon>
             </template>
           </el-statistic>
         </el-card>
@@ -60,7 +68,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { getDashboardStats } from '@/api/user'
+import { ElMessage } from 'element-plus'
+import { onMounted, ref } from 'vue'
 
 const stats = ref({
   totalUsers: 0,
@@ -69,14 +79,18 @@ const stats = ref({
   monthlyRevenue: 0
 })
 
-onMounted(() => {
-  // 这里后续调用真实API获取数据
-  stats.value = {
-    totalUsers: 1234,
-    activeToday: 156,
-    monthlyOrders: 892,
-    monthlyRevenue: 45678.90
+const loadStats = async () => {
+  try {
+    const data = await getDashboardStats()
+    stats.value = data
+  } catch (error) {
+    ElMessage.error('获取统计数据失败')
+    console.error(error)
   }
+}
+
+onMounted(() => {
+  loadStats()
 })
 </script>
 

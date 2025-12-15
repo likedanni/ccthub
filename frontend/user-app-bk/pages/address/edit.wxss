@@ -1,0 +1,420 @@
+/* 页面基础样式 */
+page {
+  background-color: #FFFFFF;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 页面容器 */
+.page-container {
+  height: 100vh;
+  background: #FFFFFF;
+}
+
+/* 自定义导航栏 */
+.custom-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30rpx;
+  height: 88rpx;
+  background: #FFFFFF;
+  border-bottom: 2rpx solid #F5F5F5;
+  position: relative;
+}
+
+.nav-back {
+  width: 80rpx;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.nav-icon {
+  width: 48rpx;
+  height: 48rpx;
+}
+
+.nav-placeholder {
+  width: 80rpx;
+}
+
+/* 表单内容区域 */
+.form-content {
+  height: calc(100vh  - 120rpx); /* 减去导航栏和底部按钮高度 */
+  padding: 30rpx;
+  box-sizing: border-box;
+}
+
+.form-section {
+  padding-bottom: 30rpx;
+}
+
+/* 表单项 */
+.form-item {
+  margin-bottom: 40rpx;
+}
+
+.form-label {
+  display: block;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 16rpx;
+}
+
+/* 输入框包装器 */
+.input-wrapper {
+  position: relative;
+}
+
+.form-input {
+  width: 100%;
+  height: 88rpx;
+  padding: 0 30rpx;
+  background: #F8FAFC;
+  border: 2rpx solid #E2E8F0;
+  border-radius: 20rpx;
+  font-size: 30rpx;
+  color: #333333;
+  font-weight: 500;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  border-color: #FBC02D;
+  background: #FFFFFF;
+}
+
+/* 清除按钮 */
+.clear-btn {
+  position: absolute;
+  right: 30rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-icon {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+/* 地区选择器 */
+.region-picker {
+  width: 100%;
+  height: 88rpx;
+  padding: 0 30rpx;
+  background: #F8FAFC;
+  border: 2rpx solid #E2E8F0;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.region-text {
+  font-size: 30rpx;
+  color: #333333;
+  font-weight: 500;
+}
+
+.region-picker .region-text:empty:before {
+  content: '请选择所在地区';
+  color: #94A3B8;
+}
+
+.arrow-icon {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+/* 文本域包装器 */
+.textarea-wrapper {
+  position: relative;
+}
+
+.form-textarea {
+  width: 100%;
+  min-height: 160rpx;
+  padding: 30rpx;
+  background: #F8FAFC;
+  border: 2rpx solid #E2E8F0;
+  border-radius: 20rpx;
+  font-size: 30rpx;
+  color: #333333;
+  font-weight: 500;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+.form-textarea:focus {
+  border-color: #FBC02D;
+  background: #FFFFFF;
+}
+
+.location-icon {
+  position: absolute;
+  right: 20rpx;
+  bottom: 20rpx;
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.location-icon-img {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+/* 标签容器 */
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.tag-item {
+  padding: 20rpx 40rpx;
+  border-radius: 100rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.tag-item.active-tag {
+  background: #FBC02D;
+  box-shadow: 0 4rpx 12rpx rgba(251, 192, 45, 0.3);
+}
+
+.tag-item:not(.active-tag):not(.custom-tag) {
+  background: #FFFFFF;
+  border: 2rpx solid #E2E8F0;
+  color: #64748B;
+}
+
+.tag-text {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.tag-item.active-tag .tag-text {
+  color: #1E293B;
+}
+
+.tag-item:not(.active-tag) .tag-text {
+  color: #64748B;
+}
+
+/* 自定义标签 */
+.custom-tag {
+  background: #F8FAFC;
+  border: 2rpx solid #E2E8F0;
+  padding: 20rpx 30rpx;
+}
+
+.custom-tag-text {
+  font-size: 28rpx;
+  color: #94A3B8;
+  margin-left: 8rpx;
+}
+
+.add-icon {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+/* 默认地址开关 */
+.default-switch-container {
+  background: #FFFFFF;
+  border: 2rpx solid #F1F5F9;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20rpx;
+}
+
+.switch-info {
+  flex: 1;
+}
+
+.switch-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 8rpx;
+}
+
+.switch-desc {
+  display: block;
+  font-size: 24rpx;
+  color: #94A3B8;
+}
+
+.default-switch {
+  transform: scale(1.2);
+}
+
+/* 底部留白 */
+.bottom-spacer {
+  height: 120rpx;
+}
+
+/* 保存按钮容器 */
+.save-button-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20rpx 30rpx 40rpx;
+  background: #FFFFFF;
+  border-top: 2rpx solid #F5F5F5;
+  z-index: 100;
+}
+
+.save-button {
+  width: 100%;
+  height: 100rpx;
+  background: #FBC02D;
+  border-radius: 50rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 30rpx rgba(251, 192, 45, 0.4);
+  transition: all 0.2s;
+}
+
+.save-button:active {
+  background: #F9A825;
+  transform: scale(0.98);
+}
+
+.save-button-text {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #1E293B;
+}
+
+/* 弹窗样式 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 30rpx;
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+.modal-container {
+  width: 100%;
+  max-width: 640rpx;
+}
+
+.modal-content {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 60rpx 40rpx 40rpx;
+  text-align: center;
+  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.2);
+}
+
+.modal-icon {
+  width: 96rpx;
+  height: 96rpx;
+  background: #FEF2F2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 40rpx;
+}
+
+.delete-icon {
+  width: 48rpx;
+  height: 48rpx;
+}
+
+.modal-text {
+  margin-bottom: 40rpx;
+}
+
+.modal-title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #1E293B;
+  margin-bottom: 16rpx;
+}
+
+.modal-desc {
+  display: block;
+  font-size: 28rpx;
+  color: #64748B;
+  line-height: 1.4;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.modal-btn {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.cancel-btn {
+  background: #FFFFFF;
+  border: 2rpx solid #E2E8F0;
+}
+
+.cancel-btn:active {
+  background: #F8FAFC;
+}
+
+.confirm-btn {
+  background: #FBC02D;
+}
+
+.confirm-btn:active {
+  background: #F9A825;
+}
+
+.btn-text {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.cancel-btn .btn-text {
+  color: #64748B;
+}
+
+.confirm-btn .btn-text {
+  color: #1E293B;
+}

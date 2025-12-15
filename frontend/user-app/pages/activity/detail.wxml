@@ -1,0 +1,188 @@
+<!-- index.wxml -->
+<view class="page-container">
+
+<!-- 顶部操作按钮 -->
+    <view class="banner-actions">
+      <view class="action-btn" bindtap="goBack">
+        <image class="action-icon" src="/images/icons/arrow_back.png" mode="aspectFit" />
+      </view>
+    </view>
+
+  <scroll-view class="content-scroll" scroll-y>
+  <!-- 顶部banner -->
+  <view class="banner">
+    <image class="banner-bg" src="/images/temple-banner.png" mode="aspectFill" />
+    <view class="banner-overlay"></view>
+  </view>
+
+  <!-- 内容区域 -->
+
+    <view class="content">
+      <!-- 分隔条 -->
+      <view class="drag-handle"></view>
+      
+      <!-- 标题区域 -->
+      <view class="title-section">
+        <view class="title">{{activity.title}}</view>
+        <view class="tags">
+          <view class="tag active">
+            <view class="tag-dot"></view>
+            报名进行中
+          </view>
+          <view class="tag">城市漫游</view>
+        </view>
+      </view>
+
+      <!-- 主办方信息 -->
+      <view class="organizer-card">
+        <view class="organizer-info">
+          <image class="organizer-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-JNgmqVdhmnAs33GkpkgGyg7WmM3lV-oYMQcQSa_dzJOk2jS00QIzZPveoqFLxktfZa7RDmhv0VOKHYJ_aNL9I50IwyDiuJ7ndZmSf-KBuHESJSQhroNt2iCNyPucNgjQutLq-uTfo6_kBtzsZMmxnz4_V5mUN6a_urqb9TiYdK6uycsk-g_7_F9Cj-Th2NchJp10ZxlpXdfKVjj9ctU2zKkxNHQA78WIo40N5-Vyv7WSdWZSIku8slm4JBHIozeLT4q3jOWP8BCW" mode="aspectFill" />
+          <view class="organizer-details">
+            <view class="organizer-name">
+              {{activity.organizer.name}}
+              <image class="verified-icon" src="/images/icons/verified.png" mode="aspectFit" />
+            </view>
+            <view class="organizer-cert">认证主办方</view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 活动时间 -->
+      <view class="info-row">
+        <view class="info-icon">
+          <image class="icon-img" src="/images/icons/calendar.png" mode="aspectFit" />
+        </view>
+        <view class="info-content">
+          <view class="info-title">{{activity.date}}</view>
+          <view class="info-sub">{{activity.time}}</view>
+        </view>
+      </view>
+
+      <!-- 活动地点 -->
+      <view class="info-row">
+        <view class="info-icon">
+          <image class="icon-img" src="/images/icons/location_on_FBC02D.png" mode="aspectFit" />
+        </view>
+        <view class="info-content">
+          <view class="info-title">{{activity.location}}</view>
+          <view class="info-sub">{{activity.locationDetail}}</view>
+        </view>
+        <view class="location-arrow" bindtap="viewLocation">
+          <image class="arrow-icon" src="/images/icons/arrow-right.png" mode="aspectFit" />
+        </view>
+      </view>
+
+      <view class="divider"></view>
+
+      <!-- 折叠区域：活动规则 -->
+      <view class="accordion {{rulesOpen ? 'open' : ''}}">
+        <view class="accordion-header" bindtap="toggleRules">
+          <view class="accordion-title">
+            <image class="accordion-icon" src="/images/icons/rules.png" mode="aspectFit" />
+            <view class="accordion-text">活动规则</view>
+          </view>
+          <image class="accordion-arrow" src="/images/icons/arrow-down.png" mode="aspectFit" />
+        </view>
+        <view class="accordion-content" wx:if="{{rulesOpen}}">
+          <view class="rule-item">1. 在公园内3个指定打卡点完成打卡。</view>
+          <view class="rule-item">2. 带话题 #夏日漫步2024 上传照片至活动页。</view>
+          <view class="rule-item">3. 18:00前回至起点领取奖励。</view>
+          <view class="rule-note">* 请穿着舒适的步行鞋并携带饮用水。</view>
+        </view>
+      </view>
+
+      <!-- 折叠区域：奖励说明 -->
+      <view class="accordion {{rewardsOpen ? 'open' : ''}}">
+        <view class="accordion-header" bindtap="toggleRewards">
+          <view class="accordion-title">
+            <image class="accordion-icon" src="/images/icons/rewards.png" mode="aspectFit" />
+            <view class="accordion-text">奖励说明</view>
+          </view>
+          <image class="accordion-arrow" src="/images/icons/arrow-down.png" mode="aspectFit" />
+        </view>
+        <view class="accordion-content" wx:if="{{rewardsOpen}}">
+          <scroll-view class="rewards-scroll" scroll-x>
+            <view class="rewards-list">
+              <view class="reward-item">
+                <view class="reward-icon">
+                  <image class="reward-img" src="/images/icons/badge.png" mode="aspectFit" />
+                </view>
+                <view class="reward-name">限定徽章</view>
+              </view>
+              <view class="reward-item">
+                <view class="reward-icon">
+                  <image class="reward-img" src="/images/icons/gift.png" mode="aspectFit" />
+                </view>
+                <view class="reward-name">惊喜礼包</view>
+              </view>
+              <view class="reward-item">
+                <view class="reward-icon">
+                  <image class="reward-img" src="/images/icons/points.png" mode="aspectFit" />
+                </view>
+                <view class="reward-name">50 积分</view>
+              </view>
+            </view>
+          </scroll-view>
+        </view>
+      </view>
+
+      <!-- 折叠区域：常见问题 -->
+      <view class="accordion {{faqOpen ? 'open' : ''}}">
+        <view class="accordion-header" bindtap="toggleFaq">
+          <view class="accordion-title">
+            <image class="accordion-icon" src="/images/icons/faq.png" mode="aspectFit" />
+            <view class="accordion-text">常见问题</view>
+          </view>
+          <image class="accordion-arrow" src="/images/icons/arrow-down.png" mode="aspectFit" />
+        </view>
+        <view class="accordion-content" wx:if="{{faqOpen}}">
+          <view class="faq-item">
+            <view class="faq-question">Q：需要自带装备吗？</view>
+            <view class="faq-answer">A：不需要，带上手机用于打卡即可。</view>
+          </view>
+          <view class="faq-item">
+            <view class="faq-question">Q：可以带宠物吗？</view>
+            <view class="faq-answer">A：可以，公园允许宠物入内！</view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 已报名用户 -->
+      <view class="participants-section">
+        <view class="section-header">
+          <view class="section-title">已报名</view>
+          <view class="section-count">{{activity.participants.current}}/{{activity.participants.total}} 人</view>
+        </view>
+        <view class="participants-card">
+          <view class="participants-avatars">
+            <image class="avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCR0VQ_BuiP9XiWP6PBOxf1dDtNlBrwvX_2baPgUUMXTjNfC-gh5bKbXu12HlbH4M9RyNvpa0rcaWJlkYxYcEJvKFMVqT_qx2zx69lLbDIsAEa5N2XeOX23WFkM0KS7qzx4Zdy_1AJ5vcybbBrCrXRehd0t0ghtFxrPKjNwpy54EoclmrF2wopFtLMOPzgK64J1y6tE6K1Gl499Y40wEh6r7nbBiWhBIh1gqgZBNsF3_qq89MNk3RPZ--7m60enAffXGFazIb2Mbnoj" mode="aspectFill" />
+            <image class="avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHBuQSXMZCsyTu03NI5TkP2tg26FsiXFjC9k5xcGis7_nOFa_W7n_sJ6NV6SVRlH5aw-oQXCAvHrHBUmXO029SIDDHhldfHP6vVyl71JHYqGnkjg3saI0r4Q4gXEopYlVaHPbilgtyvXkTLnhN8iH5NGrKlSTxfeAjc8Xs2IJVY7XqVM0-05rZNUv35STIlsEpPn4X70WRBhaW57G58kZ7aRZZ25_vZi-B4qnfXyhdhy99GnT5mAJDanWbb8O9d0MLZtO-BWjEsxMd" mode="aspectFill" />
+            <image class="avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAICdAdjVK4tI8vFkoFSDBthjeHxOWE6uQNhcQfdEbeCV-TTiWFlngUrlu69CmtH_SxOlp8z-BlsF9Mu4BQzBKQMQEvW8qHFqpqIjS3BD7i9eMPddXBNyPuORJDHnkNBRw9HVVBNHTHo0f2rKHv5iDko-K3OuAKyvISKg3s9uzIB5WzTw8R8nHkGb-UN3CN8NbX1R53PXqkINKzKlvJrjz7tCmWM1iqvQZZkXlU1juTvRyNoHxFp5OpIMsY7L1MqRI10dHFS5IaxHL0" mode="aspectFill" />
+            <image class="avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAm6F0FrCNnYsx_cO9GJhHqzFmTOQJ7Jujpo645Xa6WggctoHVhL5OaOTYs6LUsTc8UttMm6e7WFqsDgPT7gKvYM_sA031sRCuloqZYB1LZPOE4-CY8u8_7U2jghdNnnawBUM_BbzrbqrIvRMAlDXmphgd3bk2J2OTFchSZY2BqIr_9Ds1XPd0j1_pwtioa4K88ms-m4ojaqOWgFhtU6aAJKfHfoHuTDHy3ZMwjbeZKbbdzoB9DyC4_qXHYTsdEbaPW-iJ3ro4MuXpf" mode="aspectFill" />
+            <view class="more-count">+{{activity.participants.more}}</view>
+          </view>
+          <view class="view-all-btn" bindtap="viewAllParticipants">
+            查看全部
+            <image class="view-all-icon" src="/images/icons/arrow-right.png" mode="aspectFit" />
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 底部导航栏 -->
+  <view class="bottom-nav">
+    <view class="nav-item" bindtap="contactService">
+      <view class="nav-icon-container">
+        <image class="nav-icon" src="/images/icons/support_agent.png" mode="aspectFit" />
+        <view class="nav-badge"></view>
+      </view>
+      <view class="nav-label">咨询客服</view>
+    </view>
+    
+    <view class="join-btn" bindtap="joinActivity">
+      <view class="free-badge">免费参与</view>
+      <view class="join-text">立即报名</view>
+    </view>
+  </view>
+</view>

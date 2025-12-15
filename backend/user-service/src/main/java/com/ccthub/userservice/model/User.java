@@ -60,6 +60,9 @@ public class User {
     @Column(nullable = false)
     private String status = "ACTIVE";
 
+    @Column(nullable = false, length = 20)
+    private String role = "USER"; // ADMIN or USER
+
     @Column(name = "register_time")
     private LocalDateTime registerTime;
 
@@ -195,6 +198,14 @@ public class User {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public LocalDateTime getRegisterTime() {

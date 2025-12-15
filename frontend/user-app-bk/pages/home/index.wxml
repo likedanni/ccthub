@@ -1,0 +1,185 @@
+<!-- pages/index/index.wxml -->
+<view class="page-container page-gray">
+  <!-- 顶部大图banner -->
+  <view class="top-banner">
+    <image 
+      class="banner-image" 
+      src="/images/temple-banner.png" 
+      mode="aspectFill"
+    />
+    <view class="banner-overlay"></view>
+    <view class="banner-content">
+      <text class="banner-title">功夫熊猫带您游山西</text>
+      <view class="banner-tag">
+        <text>打卡有好礼</text>
+      </view>
+    </view>
+    <view class="banner-indicators">
+      <view class="indicator active"></view>
+      <view class="indicator"></view>
+    </view>
+  </view>
+
+  <!-- 功能入口网格 -->
+  <view class="function-grid">
+    <view class="card p-4 rounded-xl shadow">
+      <view class="grid-row flex gap-2">
+        <view class="grid-card flex items-center" bindtap="navigateToScenic">
+          <image class="grid-icon" src="/images/icons/temple.png" mode="aspectFit"></image>
+          <view class="grid-text">
+            <text class="grid-title text-dark font-bold block">景区</text>
+            <text class="grid-subtitle block">Scenic area</text>
+          </view>
+        </view>
+        
+        <view class="grid-card flex items-center" bindtap="navigateToCatering">
+          <image class="grid-icon" src="/images/icons/restaurant.png" mode="aspectFit"></image>
+          <view class="grid-text">
+            <text class="grid-title text-dark font-bold block">餐饮</text>
+            <text class="grid-subtitle block">Catering</text>
+          </view>
+        </view>
+      </view>
+      
+      <view class="grid-row flex gap-2">
+        <view class="grid-card flex items-center" bindtap="navigateToFreshFood">
+          <image class="grid-icon" src="/images/icons/food.png" mode="aspectFit"></image>
+          <view class="grid-text">
+            <text class="grid-title text-dark font-bold block">生鲜</text>
+            <text class="grid-subtitle block">fresh food</text>
+          </view>
+        </view>
+        
+        <view class="grid-card flex items-center" bindtap="navigateToCulture">
+          <image class="grid-icon" src="/images/icons/culture.png" mode="aspectFit"></image>
+          <view class="grid-text">
+            <text class="grid-title text-dark font-bold block">文创</text>
+            <text class="grid-subtitle block">Cultural</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最热活动 -->
+  <view class="section px-2 mt-6">
+    <view class="section-header flex justify-between items-center mb-3">
+      <text class="section-title text-lg font-bold text-dark">最热活动</text>
+      <view class="section-more flex items-center text-gray" bindtap="navigateToAllActivities">
+        <text>全部</text>
+        <!-- 使用 image 标签替代背景图 -->
+        <image class="arrow-right" src="/images/icons/arrow-right.png" mode="aspectFit"></image>
+      </view>
+    </view>
+    
+    <scroll-view class="activity-scroll" scroll-x="true" scroll-with-animation="true">
+      <view class="activity-list">
+        <view class="activity-card card p-3 rounded-lg flex shadow-sm" bindtap="navigateToActivityDetail" data-id="1">
+          <view class="activity-image">
+            <image 
+              src="/images/temple-banner.png" 
+              mode="aspectFill"
+            />
+          </view>
+          <view class="activity-info flex flex-col justify-between">
+            <text class="activity-title text-sm font-bold text-dark">功夫熊猫来看大佛了</text>
+            <view class="activity-location flex items-center text-xs text-gray mt-1">
+              <!-- 使用 image 标签替代背景图 -->
+              <image class="location-icon" src="/images/icons/location.png" mode="aspectFit"></image>
+              <text>景区入口处</text>
+            </view>
+            <view class="activity-footer flex justify-between items-end mt-2">
+              <text class="activity-date text-xs text-gray">12月30日-2月30日</text>
+              <button class="activity-btn btn-rounded btn-primary text-xs font-bold" >报名</button>
+            </view>
+          </view>
+        </view>
+        
+        <view class="activity-card card p-3 rounded-lg flex shadow-sm" bindtap="navigateToActivityDetail" data-id="2">
+          <view class="activity-image">
+            <image 
+              src="/images/temple-banner.png" 
+              mode="aspectFill"
+            />
+          </view>
+          <view class="activity-info flex flex-col justify-between">
+            <text class="activity-title text-sm font-bold text-dark">春节祈福庙会活动</text>
+            <view class="activity-location flex items-center text-xs text-gray mt-1">
+              <image class="location-icon" src="/images/icons/location.png" mode="aspectFit"></image>
+              <text>太原古县城</text>
+            </view>
+            <view class="activity-footer flex justify-between items-end mt-2">
+              <text class="activity-date text-xs text-gray">1月15日-2月15日</text>
+              <button class="activity-btn btn-rounded btn-primary text-xs font-bold" >报名</button>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 景区票务 -->
+  <view class="section px-2 mt-6">
+    <view class="section-header flex justify-between items-center mb-3">
+      <text class="section-title text-lg font-bold text-dark">景区票务</text>
+      <view class="section-more flex items-center text-gray" bindtap="navigateToAllTickets">
+        <text>全部</text>
+        <image class="arrow-right" src="/images/icons/arrow-right.png" mode="aspectFit"></image>
+      </view>
+    </view>
+    
+    <view class="ticket-list mt-2">
+      <view class="ticket-card card p-3 rounded-lg flex mb-3 shadow-sm" bindtap="navigateToTicketDetail" data-id="1">
+        <view class="ticket-image">
+          <image 
+            src="/images/temple-banner.png" 
+            mode="aspectFill"
+          />
+        </view>
+        <view class="ticket-info flex flex-col justify-between">
+          <view class="ticket-header flex justify-between">
+            <text class="ticket-title text-md font-bold text-dark flex-1">山西晋祠博物馆</text>
+            <view class="ticket-tag">
+              <text>4A</text>
+            </view>
+          </view>
+          <view class="ticket-desc">
+            <text>山西文化旅游的名片</text>
+          </view>
+          <text class="ticket-address text-xs text-gray">晋中市平遥县照壁南街58号</text>
+          <view class="ticket-price mt-2">
+            <text class="price-symbol font-bold">¥</text>
+            <text class="price-number font-bold">100</text>
+            <text class="price-unit text-xs">起</text>
+          </view>
+        </view>
+      </view>
+      
+      <view class="ticket-card card p-3 rounded-lg flex mb-3 shadow-sm" bindtap="navigateToTicketDetail" data-id="2">
+        <view class="ticket-image">
+          <image 
+            src="/images/temple-banner.png" 
+            mode="aspectFill"
+          />
+        </view>
+        <view class="ticket-info flex flex-col justify-between">
+          <view class="ticket-header flex justify-between">
+            <text class="ticket-title text-md font-bold text-dark flex-1">平遥古城</text>
+            <view class="ticket-tag">
+              <text>4A</text>
+            </view>
+          </view>
+          <view class="ticket-desc">
+            <text>山西文化旅游的名片</text>
+          </view>
+          <text class="ticket-address text-xs text-gray">晋中市平遥县照壁南街58号</text>
+          <view class="ticket-price mt-2">
+            <text class="price-symbol font-bold">¥</text>
+            <text class="price-number font-bold">100</text>
+            <text class="price-unit text-xs">起</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

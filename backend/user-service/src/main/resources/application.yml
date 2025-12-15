@@ -1,6 +1,11 @@
 spring:
   application:
     name: user-service
+  # 文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 2MB # 单个文件最大2MB
+      max-request-size: 2MB # 整个请求最大2MB
   jpa:
     hibernate:
       ddl-auto: update

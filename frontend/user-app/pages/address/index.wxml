@@ -1,0 +1,76 @@
+<view class="page-container">
+  <!-- 自定义导航栏 -->
+ 
+  <!-- 地址列表 -->
+  <scroll-view class="address-list" scroll-y>
+    <block wx:for="{{addresses}}" wx:key="id">
+      <view class="address-item {{item.isDefault ? 'default-address' : ''}}">
+        <!-- 默认地址标签 -->
+        <view class="default-tag" wx:if="{{item.isDefault}}">
+          <text class="tag-text">默认地址</text>
+        </view>
+        
+        <view class="address-header">
+          <view class="address-info">
+            <view class="name-phone">
+              <text class="name">{{item.name}}</text>
+              <text class="phone">{{item.phone}}</text>
+            </view>
+            <view class="address-tag" wx:if="{{item.tag}}">
+              <text class="tag {{item.isDefault ? 'default-tag-badge' : 'normal-tag'}}">{{item.tag}}</text>
+            </view>
+            <view class="address-tag-placeholder" wx:else>
+              <text></text>
+            </view>
+          </view>
+          
+          <view class="address-actions">
+            <view class="action-btn edit-btn" bindtap="editAddress" data-id="{{item.id}}">
+              <image class="action-icon" src="/images/icons/edit_square.png" />
+            </view>
+            <view class="action-btn delete-btn" bindtap="deleteAddress" data-id="{{item.id}}">
+              <image class="action-icon" src="/images/icons/delete.png" />
+            </view>
+          </view>
+        </view>
+        
+        <view class="divider"></view>
+        
+        <text class="address-text">{{item.address}}</text>
+      </view>
+    </block>
+    
+    <!-- 底部留白 -->
+    <view class="bottom-spacer"></view>
+  </scroll-view>
+
+  <!-- 添加地址按钮 -->
+  <view class="add-btn-container">
+    <view class="add-btn" bindtap="addAddress">
+      <image class="add-icon" src="/images/icons/add.png" />
+    </view>
+  </view>
+
+  <!-- 删除确认弹窗 -->
+  <view class="modal-overlay {{showDeleteModal ? 'show' : ''}}">
+    <view class="modal-container">
+      <view class="modal-content">
+        <view class="modal-icon">
+          <image class="warning-icon" src="/images/icons/warning.png" />
+        </view>
+        <view class="modal-text">
+          <text class="modal-title">确认删除?</text>
+          <text class="modal-desc">删除后将无法恢复该地址信息。</text>
+        </view>
+        <view class="modal-actions">
+          <view class="modal-btn cancel-btn" bindtap="cancelDelete">
+            <text class="btn-text">取消</text>
+          </view>
+          <view class="modal-btn confirm-btn" bindtap="confirmDelete">
+            <text class="btn-text">删除</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

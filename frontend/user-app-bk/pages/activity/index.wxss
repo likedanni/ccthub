@@ -1,0 +1,356 @@
+/* 页面基础样式 - 防止左右滑动 */
+.page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #FFFBE6;
+  padding-top: 120rpx; /* 为固定头部留出空间 */
+  box-sizing: border-box;
+  overflow-x: hidden; /* 防止左右滑动 */
+}
+
+/* 筛选栏 - 固定在头部 */
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: white;
+  border-radius: 0 0 20rpx 20rpx;
+  padding: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+}
+
+.filter-bar {
+  width: 100%;
+}
+
+/* scroll-view 修复：确保内容在一行 */
+.filter-scroll {
+  width: 100%;
+  white-space: nowrap; /* 关键：确保子元素不换行 */
+}
+
+.filter-scroll .filter-item {
+  display: inline-block; /* 行内块元素 */
+}
+
+.filter-item {
+  padding: 16rpx 32rpx;
+  margin-right: 16rpx;
+  font-size: 28rpx;
+  color: #666666;
+  background: #F5F5F5;
+  border-radius: 40rpx;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.filter-item.active {
+  background: #FBC02D;
+  color: #FFFFFF;
+  font-weight: bold;
+  box-shadow: 0 4rpx 12rpx rgba(251, 192, 45, 0.3);
+}
+
+.filter-item:last-child {
+  margin-right: 0;
+}
+
+/* 活动列表 - 瀑布流 */
+.activity-list {
+  column-count: 2;
+  column-gap: 20rpx;
+  width: 100%;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+}
+
+.activity-card {
+  break-inside: avoid;
+  background: #FFFFFF;
+  border-radius: 36rpx;
+  overflow: hidden;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+.activity-card.ended {
+  opacity: 0.8;
+}
+
+/* 图片容器 */
+.card-image-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* 图片样式 - 使用 widthFix，高度自适应 */
+.card-image {
+  width: 100%;
+  height: auto; /* 高度自动 */
+  display: block;
+  border-top-left-radius: 36rpx;
+  border-top-right-radius: 36rpx;
+  background-color: #f5f5f5; /* 图片加载前的背景色 */
+}
+
+.card-image.ended {
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+
+/* 图片标签 */
+.card-tag {
+  position: absolute;
+  top: 16rpx;
+  left: 16rpx;
+  background: rgba(255, 255, 255, 0.9);
+  color: #e7a90c;
+  font-size: 22rpx;
+  font-weight: bold;
+  padding: 6rpx 20rpx;
+  border-radius: 20rpx;
+  backdrop-filter: blur(10rpx);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+.card-tag.ended {
+  background: rgba(238, 238, 238, 0.9);
+  color: #999999;
+}
+
+/* 已结束覆盖层 */
+.ended-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ended-overlay text {
+  background: rgba(153, 153, 153, 0.8);
+  color: white;
+  font-size: 28rpx;
+  font-weight: bold;
+  padding: 12rpx 24rpx;
+  border-radius: 40rpx;
+  border: 2rpx solid white;
+}
+
+/* 卡片内容 */
+.card-content {
+  padding: 24rpx;
+}
+
+/* 标题 */
+.card-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333333;
+  line-height: 1.4;
+  margin-bottom: 16rpx;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-title.ended {
+  color: #999999;
+}
+
+/* 详情区域 */
+.card-details {
+  margin-bottom: 20rpx;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.detail-row:last-child {
+  margin-bottom: 0;
+}
+
+.detail-icon {
+  width: 28rpx;
+  height: 28rpx;
+  margin-right: 8rpx;
+  flex-shrink: 0;
+}
+
+.detail-icon.ended {
+  opacity: 0.4;
+}
+
+.detail-row text {
+  font-size: 24rpx;
+  color: #666666;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.detail-row .ended {
+  color: #999999;
+}
+
+/* 卡片底部 - 修复对齐问题 */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1rpx solid #F0F0F0;
+  padding-top: 16rpx;
+  min-height: 48rpx; /* 确保有足够高度 */
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  font-size: 22rpx;
+  color: #999999;
+  flex-shrink: 0; /* 不收缩 */
+  margin-right: 16rpx; /* 添加间距 */
+}
+
+.footer-icon {
+  width: 24rpx;
+  height: 24rpx;
+  margin-right: 6rpx;
+  flex-shrink: 0;
+}
+
+.footer-icon.ended {
+  opacity: 0.4;
+}
+
+.footer-left .ended {
+  color: #BBBBBB;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  min-width: 140rpx; /* 确保有足够空间显示两个元素 */
+  gap: 12rpx;
+}
+
+/* 状态徽章 - 修复堆叠问题 */
+.status-badge {
+  font-size: 22rpx;
+  font-weight: 600;
+  padding: 6rpx 12rpx;
+  border-radius: 20rpx;
+  white-space: nowrap;
+  margin-right: 12rpx;
+  flex-shrink: 0; /* 不收缩 */
+  text-align: center;
+  line-height: 1.2;
+}
+
+.status-badge.hot {
+  background: rgba(251, 192, 45, 0.15);
+  color: #FBC02D;
+  border: 1rpx solid rgba(251, 192, 45, 0.3);
+}
+
+.status-badge.ongoing {
+  background: rgba(76, 175, 80, 0.15);
+  color: #4CAF50;
+  border: 1rpx solid rgba(76, 175, 80, 0.3);
+}
+
+.status-badge.upcoming {
+  background: rgba(33, 150, 243, 0.15);
+  color: #2196F3;
+  border: 1rpx solid rgba(33, 150, 243, 0.3);
+}
+
+.status-badge.signing {
+  background: rgba(156, 39, 176, 0.15);
+  color: #9C27B0;
+  border: 1rpx solid rgba(156, 39, 176, 0.3);
+}
+
+.status-badge.ended {
+  background: #EEEEEE;
+  color: #999999;
+  border: 1rpx solid #DDDDDD;
+}
+
+/* 点赞按钮 */
+.like-btn {
+  width: 40rpx;
+  height: 40rpx;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 20rpx;
+  max-width: 60rpx;
+  background: transparent;
+  margin-left: auto; /* 关键：这个会让按钮推到最右边background: transparent; */
+}
+
+.like-btn:active {
+  transform: scale(0.9);
+}
+
+.like-btn.active .like-icon {
+  filter: drop-shadow(0 0 4rpx rgba(251, 192, 45, 0.5));
+}
+
+.like-icon {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+.like-icon.ended {
+  opacity: 0.3;
+}
+
+/* 响应式调整 */
+@media screen and (max-width: 320px) {
+  .page {
+    padding-top: 100rpx;
+  }
+  
+  .activity-list {
+    column-gap: 16rpx;
+    padding: 0 16rpx;
+  }
+  
+  .activity-card {
+    margin-bottom: 16rpx;
+  }
+  
+  .card-content {
+    padding: 20rpx;
+  }
+  
+  .card-title {
+    font-size: 28rpx;
+  }
+  
+  .status-badge {
+    font-size: 20rpx;
+    padding: 4rpx 8rpx;
+  }
+  
+  .footer-left {
+    font-size: 20rpx;
+  }
+}

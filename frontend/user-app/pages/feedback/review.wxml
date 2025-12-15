@@ -1,0 +1,241 @@
+<view class="page-container">
+  <!-- Tab导航 -->
+  <view class="tab-container">
+    <view class="tab-header">
+      <block wx:for="{{tabs}}" wx:key="index">
+        <view 
+          class="tab-item {{currentTab === index ? 'active-tab' : ''}}" 
+          data-index="{{index}}" 
+          bindtap="switchTab"
+        >
+          <text class="tab-text">{{item}}</text>
+          <view class="tab-indicator" wx:if="{{currentTab === index}}"></view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 内容区域 -->
+  <scroll-view class="content-scroll" scroll-y>
+    <!-- 待评价页面 -->
+    <view class="tab-content" wx:if="{{currentTab === 0}}">
+      <!-- 待评价订单列表 -->
+      <view class="order-list">
+        <block wx:for="{{toRateOrders}}" wx:key="id" wx:for-item="order" wx:for-index="orderIndex">
+          <!-- 订单卡片 -->
+          <view class="order-card">
+            <view class="order-header">
+              <image class="order-image" src="{{order.image}}" mode="aspectFill" />
+              <view class="order-info">
+                <text class="order-title">{{order.title}}</text>
+                <text class="order-date">{{order.date}}</text>
+                <view class="order-tag">
+                  <text class="tag-text">{{order.type}}</text>
+                </view>
+              </view>
+              <view class="order-action" bindtap="startRate" data-id="{{order.id}}">
+                <text class="action-text">{{order.showRate ? '收起评价' : '去评价'}}</text>
+              </view>
+            </view>
+            
+            <!-- 评价卡片 - 直接显示在对应订单下面 -->
+            <view class="rate-card" wx:if="{{order.showRate}}">
+              <view class="rate-header">
+                <image class="rate-image" src="{{order.image}}" mode="aspectFill" />
+                <view class="rate-info">
+                  <text class="rate-title">{{order.title}}</text>
+                  <text class="rate-desc">您的评价将帮助更多小伙伴</text>
+                </view>
+                <view class="rate-close" bindtap="closeRateCard" data-id="{{order.id}}">
+                  <image class="close-icon" src="/images/icons/close_718096.png" />
+                </view>
+              </view>
+              
+              <view class="rate-content">
+                <!-- 星级评分 - 修正变量名 -->
+                <view class="star-rating">
+                  <view class="stars-container">
+                    <block wx:for="{{starArray}}" wx:key="*this" wx:for-item="star" wx:for-index="starIndex">
+                      <view 
+                        class="star-item {{star <= order.stars ? 'active-star' : ''}}" 
+                        data-stars="{{star}}" 
+                        data-orderid="{{order.id}}" 
+                        bindtap="selectStar"
+                      >
+                        <image 
+                          class="star-icon" 
+                          src="{{star <= order.stars ? '/images/icons/star_128_full.png' : '/images/icons/star_128_empty.png'}}" 
+                        />
+                      </view>
+                    </block>
+                  </view>
+                  <text class="star-text">{{order.starText}}</text>
+                </view>
+
+                <!-- 评价内容 -->
+                <view class="comment-container">
+                  <textarea 
+                    class="comment-textarea" 
+                    placeholder="这次体验怎么样？快来分享你的感受吧，满15字可获得积分奖励哦~"
+                    value="{{order.comment}}"
+                    data-orderid="{{order.id}}"
+                    bindinput="onCommentInput"
+                    maxlength="200"
+                  />
+                  <text class="word-count">{{order.comment.length}}/200</text>
+                </view>
+
+                <!-- 图片上传 -->
+                <view class="image-upload">
+                  <text class="upload-title">添加图片 (最多{{maxImages}}张)</text>
+                  <view class="image-list">
+                    <block wx:for="{{order.selectedImages}}" wx:key="id" wx:for-item="image" wx:for-index="imageIndex">
+                      <view class="image-item">
+                        <image class="uploaded-image" src="{{image.url}}" mode="aspectFill" />
+                        <view class="delete-image" bindtap="deleteImage" data-orderid="{{order.id}}" data-imageid="{{image.id}}">
+                          <image class="delete-icon" src="/images/icons/close.png" />
+                        </view>
+                      </view>
+                    </block>
+                    
+                    <view class="image-item upload-btn" bindtap="uploadImage" data-orderid="{{order.id}}" wx:if="{{order.selectedImages.length < maxImages}}">
+                      <image class="add-icon" src="/images/icons/add_a_photo.png" />
+                      <text class="upload-text">上传凭证</text>
+                    </view>
+                  </view>
+                </view>
+
+                <!-- 提交按钮 -->
+                <view class="submit-rate" bindtap="submitRate" data-orderid="{{order.id}}">
+                  <text class="submit-text">提交评价</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </block>
+      </view>
+
+      <view class="bottom-spacer"></view>
+    </view>
+
+    <!-- 意见反馈页面 -->
+    <view class="tab-content" wx:if="{{currentTab === 1}}">
+      <view class="feedback-form">
+        <!-- 反馈类型 -->
+        <view class="form-item">
+          <view class="form-label">
+            <view class="label-dot"></view>
+            <text class="label-text">反馈类型</text>
+          </view>
+          <view class="type-buttons">
+            <block wx:for="{{feedbackTypes}}" wx:key="*this" wx:for-item="fbType" wx:for-index="typeIndex">
+              <view 
+                class="type-btn {{feedbackType === fbType ? 'active-type' : ''}}"
+                data-type="{{fbType}}"
+                bindtap="selectFeedbackType"
+              >
+                <text class="type-text">{{fbType}}</text>
+              </view>
+            </block>
+          </view>
+        </view>
+
+        <!-- 关联订单 -->
+        <view class="form-item">
+          <view class="form-label">
+            <view class="label-dot gray-dot"></view>
+            <text class="label-text">关联订单</text>
+            <text class="label-optional">(选填)</text>
+          </view>
+          <view class="order-selector">
+            <text class="selector-text">{{selectedOrder ? selectedOrder.title : '请选择相关订单'}}</text>
+            <image class="arrow-down" src="/images/icons/arrow-down.png" />
+          </view>
+        </view>
+
+        <!-- 反馈内容 -->
+        <view class="form-item">
+          <view class="form-label">
+            <view class="label-dot"></view>
+            <text class="label-text">反馈内容</text>
+          </view>
+          <textarea 
+            class="feedback-textarea" 
+            placeholder="请详细描述您遇到的问题或建议..."
+            value="{{feedbackContent}}"
+            bindinput="onFeedbackInput"
+          />
+        </view>
+
+        <!-- 图片上传 -->
+        <view class="form-item">
+          <view class="form-label">
+            <view class="label-dot gray-dot"></view>
+            <text class="label-text">图片上传</text>
+            <text class="label-optional">(选填)</text>
+          </view>
+          <view class="feedback-images">
+            <block wx:for="{{feedbackImages}}" wx:key="id" wx:for-item="fbImage" wx:for-index="fbImageIndex">
+              <image class="feedback-image" src="{{fbImage.url}}" mode="aspectFill" />
+            </block>
+            <view class="feedback-upload-btn" bindtap="uploadFeedbackImage" wx:if="{{feedbackImages.length < 9}}">
+              <image class="add-feedback-icon" src="/images/icons/add_9BA8BC.png" />
+            </view>
+          </view>
+        </view>
+
+        <!-- 联系方式 -->
+        <view class="form-item">
+          <view class="form-label">
+            <view class="label-dot"></view>
+            <text class="label-text">联系方式</text>
+          </view>
+          <input 
+            class="contact-input" 
+            type="number" 
+            value="{{contactPhone}}"
+            bindinput="onContactInput"
+            placeholder="请输入联系方式"
+          />
+        </view>
+
+        <!-- 提交按钮 -->
+        <view class="submit-feedback" bindtap="submitFeedback">
+          <text class="submit-feedback-text">提交反馈</text>
+        </view>
+      </view>
+
+      <!-- 反馈历史 -->
+      <view class="feedback-history">
+        <view class="history-header" bindtap="toggleHistory">
+          <text class="history-title">我的反馈历史</text>
+          <view class="history-info">
+            <text class="history-count">{{feedbackHistory.length}}条</text>
+            <image class="history-arrow" src="/images/icons/arrow-down.png" />
+          </view>
+        </view>
+        
+        <view class="history-list" wx:if="{{showHistory}}">
+          <block wx:for="{{feedbackHistory}}" wx:key="id" wx:for-item="history" wx:for-index="historyIndex">
+            <view class="history-item">
+              <view class="history-content">
+                <view class="history-tag-date">
+                  <text class="history-tag {{history.statusColor === 'red' ? 'red-tag' : 'yellow-tag'}}">
+                    {{history.type}}
+                  </text>
+                  <text class="history-date">{{history.date}}</text>
+                </view>
+                <text class="history-desc">{{history.content}}</text>
+              </view>
+              <text class="history-status {{history.statusColor === 'red' ? 'red-status' : 'gray-status'}}">
+                {{history.status}}
+              </text>
+            </view>
+          </block>
+        </view>
+      </view>
+
+      <view class="bottom-spacer"></view>
+    </view>
+  </scroll-view>
+</view>

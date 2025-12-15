@@ -1,0 +1,450 @@
+# User Service API 文档
+
+> 本文档供 AI 开发工具(如 Codex)使用,包含所有接口的请求参数和响应格式
+
+**Base URL:** `http://localhost:8080`
+
+---
+
+## 1️⃣ 用户认证
+
+### 用户注册
+
+```http
+POST /api/users/register
+Content-Type: application/json
+```
+
+**请求体:**
+
+```json
+{
+  "phone": "13800138000",
+  "password": "password123",
+  "verificationCode": "123456"
+}
+```
+
+**响应:**
+
+```json
+{
+  "code": 200,
+  "message": "注册成功",
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "userId": 1,
+    "phone": "13800138000"
+  }
+}
+```
+
+### 用户登录
+
+```http
+POST /api/users/login
+Content-Type: application/json
+```
+
+**请求体:**
+
+```json
+{
+  "phone": "13800138000",
+  "password": "password123"
+}
+```
+
+**响应:**
+
+```json
+{
+  "code": 200,
+  "message": "登录成功",
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "userId": 1,
+    "nickname": "用户138****8000",
+    "avatarUrl": "http://localhost:8080/api/files/avatars/xxx.jpg",
+    "memberLevel": "BRONZE",
+    "points": 0,
+    "balance": 0.0
+  }
+}
+```
+
+---
+
+## 2️⃣ 用户信息
+
+### 获取基本信息
+
+```http
+GET /api/users/{id}
+```
+
+**响应:**
+
+```json
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "id": 1,
+    "phone": "138****8000",
+    "nickname": "张三",
+    "avatarUrl": "http://localhost:8080/api/files/avatars/xxx.jpg",
+    "memberLevel": "BRONZE"
+  }
+}
+```
+
+### 获取详细资料
+
+```http
+GET /api/users/{id}/profile
+```
+
+**响应:**
+
+```json
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "id": 1,
+    "phone": "138****8000",
+    "nickname": "张三",
+    "avatarUrl": "http://localhost:8080/api/files/avatars/xxx.jpg",
+    "realName": "张三",
+    "idCard": "110101199001011234",
+    "memberLevel": "BRONZE",
+    "growthValue": 0,
+    "totalPoints": 0,
+    "availablePoints": 0,
+    "walletBalance": 0.0,
+    "registerTime": "2024-01-01T10:00:00",
+    "lastLoginTime": "2024-01-15T14:30:00"
+  }
+}
+```
+
+### 更新用户资料 ⭐
+
+```http
+PUT /api/users/{id}/profile
+Content-Type: application/json
+```
+
+**请求体 (支持部分更新,传哪个更新哪个):**
+
+```json
+{
+  "nickname": "新昵称", // 可选,单独更新昵称
+  "avatarUrl": "https://...", // 可选,单独更新头像URL
+  "realName": "张三", // 可选,单独更新真实姓名
+  "idCard": "110101199001011234" // 可选,单独更新身份证(会加密存储)
+}
+```
+
+**示例 - 只更新昵称:**
+
+```json
+{
+  "nickname": "新昵称"
+}
+```
+
+**响应:**
+
+```json
+{
+  "code": 200,
+  "message": "更新成功",
+  "data": {
+    "id": 1,
+    "nickname": "新昵称",
+    "avatarUrl": "http://localhost:8080/api/files/avatars/xxx.jpg",
+    "realName": "张三",
+    "idCard": "110101********1234",
+    "memberLevel": "BRONZE",
+    "growthValue": 0,
+    "totalPoints": 0,
+    "availablePoints": 0,
+    "walletBalance": 0.0
+  }
+}
+```
+
+---
+
+## 3️⃣ 文件上传 🆕
+
+### 上传头像
+
+```http
+POST /api/files/upload/avatar
+Content-Type: multipart/form-data
+```
+
+**请求参数:**
+
+- `file`: 图片文件 (JPG/JPEG/PNG, 最大 2MB)
+
+**响应:**
+
+```json
+{
+  "code": 200,
+  "message": "上传成功",
+  "data": "http://localhost:8080/api/files/avatars/550e8400-e29b-41d4-a716-446655440000.jpg"
+}
+```
+
+**完整流程 - 上传并更新头像:**
+
+```javascript
+// 1. 先上传图片
+const uploadResponse = await fetch("/api/files/upload/avatar", {
+  method: "POST",
+  body: formData, // FormData with file
+});
+const { data: avatarUrl } = await uploadResponse.json();
+
+// 2. 更新用户资料中的头像URL
+await fetch(`/api/users/${userId}/profile`, {
+  method: "PUT",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ avatarUrl }),
+});
+```
+
+### 获取头像图片
+
+```http
+GET /api/files/avatars/{filename}
+```
+
+---
+
+## 4️⃣ 密码管理
+
+### 修改登录密码
+
+```http
+POST /api/users/{id}/change-password
+Content-Type: application/json
+```
+
+**请求体:**
+
+```json
+{
+  "oldPassword": "oldpass123",
+  "newPassword": "newpass456"
+}
+```
+
+**响应:**
+
+```json
+{
+  "code": 200,
+  "message": "密码修改成功",
+  "data": null
+}
+```
+
+### 设置/修改支付密码
+
+```http
+POST /api/users/{id}/payment-password
+Content-Type: application/json
+```
+
+**请求体:**
+
+```json
+{
+  "paymentPassword": "123456" // 必须是6位数字
+}
+```
+
+**响应:**
+
+```json
+{
+  "code": 200,
+  "message": "支付密码设置成功",
+  "data": null
+}
+```
+
+### 验证支付密码
+
+```http
+POST /api/users/{id}/verify-payment-password
+Content-Type: application/json
+```
+
+**请求体:**
+
+```json
+{
+  "paymentPassword": "123456"
+}
+```
+
+**响应:**
+
+```json
+{
+  "code": 200,
+  "message": "验证成功",
+  "data": true
+}
+```
+
+---
+
+## 📋 通用响应格式
+
+所有接口都使用统一的响应格式:
+
+```json
+{
+  "code": 200, // HTTP状态码
+  "message": "成功", // 提示信息
+  "data": {} // 具体数据(根据接口不同而不同)
+}
+```
+
+**常见错误码:**
+
+- `400` - 请求参数错误
+- `401` - 未授权(需要登录)
+- `404` - 资源不存在
+- `500` - 服务器内部错误
+
+---
+
+## 🔐 认证说明
+
+需要认证的接口需要在请求头中携带 JWT Token:
+
+```http
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Accept: application/json
+```
+
+**获取 Token 的方式:**
+
+1. 用户注册 (`/api/users/register`) 后返回 token
+2. 用户登录 (`/api/users/login`) 后返回 token
+
+---
+
+## 💡 Codex 使用建议
+
+### 在微信小程序中调用示例:
+
+```javascript
+// 1. 用户登录
+wx.request({
+  url: "http://localhost:8080/api/users/login",
+  method: "POST",
+  data: {
+    phone: "13800138000",
+    password: "password123",
+  },
+  success(res) {
+    // 保存token
+    wx.setStorageSync("token", res.data.data.token);
+    wx.setStorageSync("userId", res.data.data.userId);
+  },
+});
+
+// 2. 获取用户资料(需要token)
+wx.request({
+  url: `http://localhost:8080/api/users/${userId}/profile`,
+  method: "GET",
+  header: {
+    Authorization: "Bearer " + wx.getStorageSync("token"),
+  },
+  success(res) {
+    console.log("用户资料:", res.data.data);
+  },
+});
+
+// 3. 上传头像
+wx.chooseImage({
+  count: 1,
+  success(res) {
+    wx.uploadFile({
+      url: "http://localhost:8080/api/files/upload/avatar",
+      filePath: res.tempFilePaths[0],
+      name: "file",
+      header: {
+        Authorization: "Bearer " + wx.getStorageSync("token"),
+      },
+      success(uploadRes) {
+        const avatarUrl = JSON.parse(uploadRes.data).data;
+
+        // 4. 更新用户资料中的头像URL
+        wx.request({
+          url: `http://localhost:8080/api/users/${userId}/profile`,
+          method: "PUT",
+          header: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + wx.getStorageSync("token"),
+          },
+          data: {
+            avatarUrl: avatarUrl,
+          },
+          success() {
+            wx.showToast({ title: "头像更新成功" });
+          },
+        });
+      },
+    });
+  },
+});
+
+// 5. 单独更新昵称
+wx.request({
+  url: `http://localhost:8080/api/users/${userId}/profile`,
+  method: "PUT",
+  header: {
+    "Content-Type": "application/json",
+    Authorization: "Bearer " + wx.getStorageSync("token"),
+  },
+  data: {
+    nickname: "新昵称", // 只传需要更新的字段
+  },
+  success() {
+    wx.showToast({ title: "昵称更新成功" });
+  },
+});
+```
+
+---
+
+## 📝 数据库字段说明
+
+**users 表字段:**
+
+- `id` - 用户 ID
+- `phone_encrypted` - 加密的手机号
+- `password` - 加密的登录密码
+- `nickname` - 昵称
+- `avatar_url` - 头像 URL
+- `real_name` - 真实姓名
+- `id_card_encrypted` - 加密的身份证号
+- `member_level` - 会员等级 (BRONZE/SILVER/GOLD/PLATINUM/DIAMOND)
+- `growth_value` - 成长值
+- `total_points` - 累计积分
+- `available_points` - 可用积分
+- `wallet_balance` - 钱包余额
+- `payment_password` - 支付密码
+- `register_time` - 注册时间
+- `last_login_time` - 最后登录时间

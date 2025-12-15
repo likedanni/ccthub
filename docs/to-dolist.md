@@ -1202,6 +1202,7 @@ chore: 构建/工具变更
 - [系统方案.md](./系统方案.md) - 完整系统设计方案
 - [DDL.sql](../database/DDL.sql) - 数据库表结构定义
 - [长治文旅平台 PRD](./长治文旅大生态服务平台_PRD_v1.1.md) - 产品需求文档
+- [长治文旅平台 API】https://www.dcloud.io/
 
 ### 技术文档
 
@@ -1222,9 +1223,40 @@ chore: 构建/工具变更
 
 ---
 
-## ✅ 最近已完成的工作（2025-12-12）
+## ✅ 最近已完成的工作
 
-### Sprint 0: 基础设施搭建 ✅
+### 2025-12-15: Sprint 1 管理后台完善 ✅
+
+- ✅ 管理后台仪表盘真实数据集成
+  - ✅ 创建 DashboardStatsResponse DTO
+  - ✅ 实现 GET /api/users/dashboard/stats 端点（总用户数、今日活跃、月订单、月收入）
+  - ✅ 前端 Dashboard.vue 集成真实 API
+- ✅ 用户列表功能完善
+  - ✅ 创建 UserListResponse DTO（13个字段包含role）
+  - ✅ 创建 PageResponse<T> 通用分页响应
+  - ✅ 实现 GET /api/users/list 端点（支持分页、手机号搜索、状态过滤）
+  - ✅ 实现 PUT /api/users/{id}/status 端点（启用/禁用用户）
+  - ✅ 前端 UserList.vue 集成真实 API
+  - ✅ 修复会员等级显示（numeric → BRONZE/SILVER/GOLD/PLATINUM/DIAMOND）
+- ✅ 基于角色的访问控制
+  - ✅ 数据库迁移 V5: 添加 role 字段（ADMIN/USER）
+  - ✅ User 实体添加 role 字段
+  - ✅ LoginRequest 添加 isAdminLogin 标识
+  - ✅ UserService.login() 实现管理员权限验证
+  - ✅ 前端 auth.js 发送管理员登录标识
+- ✅ BCrypt 密码加密
+  - ✅ 启用密码验证（移除临时 TODO 注释）
+  - ✅ 测试密码验证（错误密码→401，正确密码→JWT）
+  - ✅ 测试管理员登录限制（普通用户被拒绝）
+- ✅ 修复 DTO Lombok 问题
+  - ✅ 移除 @Data 注解，手动添加 getters/setters
+  - ✅ 修复 LoginRequest setter 命名（setAdminLogin → setIsAdminLogin）
+- ✅ 端到端测试
+  - ✅ 后端 API 测试通过（仪表盘、用户列表、状态更新）
+  - ✅ 用户认证测试通过（注册、登录、权限验证）
+  - ✅ 前端服务器启动（http://localhost:3000）
+
+### 2025-12-12: Sprint 0 基础设施搭建 ✅
 
 - ✅ user-service 项目初始化（Spring Boot 3.1.4）
 - ✅ 数据库迁移系统（Flyway）
@@ -1248,4 +1280,4 @@ chore: 构建/工具变更
 
 ---
 
-**下一步行动**: 开始 Sprint 1 - 用户服务完善 ⏳
+**下一步行动**: 开始 Sprint 2 - 商户服务开发 ⏳

@@ -1,0 +1,326 @@
+/* supply-demand.wxss */
+
+/* 页面基础样式 */
+.page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #FFFFFF;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  padding-top: 180rpx; /* 为固定头部留出空间 */
+}
+
+/* Filter Section - 固定在头部 */
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #FFFFFF;
+  padding: 20rpx 24rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+  border-bottom: 1rpx solid #F0F0F0;
+  box-sizing: border-box; /* 关键：包含内边距和边框 */
+  width: 100%; /* 确保宽度100% */
+}
+
+.filter-section {
+  width: 100%;
+  box-sizing: border-box; /* 关键：包含内边距和边框 */
+}
+
+/* Filter Chips */
+.filter-chips {
+  width: 100%;
+  white-space: nowrap;
+  margin-bottom: 20rpx;
+  display: flex;
+  max-height: 70rpx;
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16rpx 32rpx;
+  margin-right: 20rpx;
+  font-size: 28rpx;
+  color: #666666;
+  background: #F5F5F5;
+  border-radius: 36rpx;
+  flex-shrink: 0;
+  height: 36rpx;
+}
+
+.filter-chip.active {
+  background: #FBC02D;
+  color: #FFFFFF;
+  font-weight: bold;
+  box-shadow: 0 4rpx 12rpx rgba(251, 192, 45, 0.3);
+}
+
+/* Search Bar - 修复超出屏幕问题 */
+.search-bar {
+  width: 100%;
+  box-sizing: border-box; /* 关键：包含内边距和边框 */
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  width: 100%; /* 使用100%宽度 */
+  height: 88rpx;
+  background: #F8F8F8;
+  border: 1rpx solid #F0F0F0;
+  border-radius: 20rpx;
+  padding: 0 24rpx;
+  box-sizing: border-box; /* 关键：包含内边距和边框 */
+}
+
+.search-icon {
+  width: 44rpx;
+  height: 44rpx;
+  margin-right: 16rpx;
+  opacity: 0.5;
+}
+
+.search-input {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333333;
+  height: 100%;
+}
+
+/* Content List */
+.content-list {
+  padding: 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+  padding-bottom: 140rpx; /* 为底部按钮留出空间 */
+  padding-top: 60rpx;
+}
+
+/* Supply Card */
+.supply-card {
+  background: #FFFFFF;
+  border: 1rpx solid #F0F0F0;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+  padding: 32rpx;
+}
+
+/* 主要卡片内容 - 修复对齐问题 */
+.card-main {
+  display: flex;
+  justify-content: space-between;
+  gap: 24rpx;
+  margin-bottom: 24rpx;
+}
+
+/* 左边：文本内容 */
+.card-left {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 标题 */
+.card-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333333;
+  line-height: 1.4;
+  margin-bottom: 12rpx;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 副标题 - 确保在同一行对齐 */
+.card-subtitle {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.card-icon {
+  width: 28rpx;
+  height: 28rpx;
+  margin-right: 8rpx;
+  flex-shrink: 0;
+}
+
+.card-subtitle text {
+  font-size: 24rpx;
+  color: #999999;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 描述 */
+.card-description {
+  font-size: 28rpx;
+  color: #666666;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 右边：图片 - 与标题顶部对齐 */
+.card-image {
+  width: 192rpx;
+  height: 192rpx;
+  border-radius: 36rpx;
+  flex-shrink: 0;
+  background: #F5F5F5;
+  /* 关键：与左边内容顶部对齐 */
+  align-self: flex-start;
+}
+
+/* Card Footer - 修复布局 */
+.card-footer {
+  position: relative; /* 创建相对定位的容器 */
+  display: flex;
+  align-items: center;
+  padding-top: 24rpx;
+  border-top: 1rpx solid #F0F0F0;
+  min-height: 64rpx;
+  width: 100%;
+}
+
+/* Tags */
+.card-tag {
+  padding: 8rpx 20rpx;
+  border-radius: 16rpx;
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.card-tag.recruitment {
+  background: rgba(66, 133, 244, 0.1);
+  color: #4285F4;
+  border: 1rpx solid rgba(66, 133, 244, 0.2);
+}
+
+.card-tag.travel {
+  background: rgba(52, 168, 83, 0.1);
+  color: #34A853;
+  border: 1rpx solid rgba(52, 168, 83, 0.2);
+}
+
+.card-tag.service {
+  background: rgba(156, 39, 176, 0.1);
+  color: #9C27B0;
+  border: 1rpx solid rgba(156, 39, 176, 0.2);
+}
+
+.card-tag.cooperation {
+  background: rgba(255, 109, 0, 0.1);
+  color: #FF6D00;
+  border: 1rpx solid rgba(255, 109, 0, 0.2);
+}
+
+/* Contact Button - 放在本行最右边 */
+.contact-btn {
+  position: absolute; /* 关键：绝对定位 */
+  right: 0; /* 关键：紧贴右边 */
+  top: 24rpx; /* 与容器顶部对齐 */
+  background: #FBC02D;
+  color: #FFFFFF;
+  font-size: 28rpx;
+  font-weight: bold;
+  border-radius: 20rpx;
+  height: 64rpx;
+  padding: 0 40rpx;
+  line-height: 64rpx;
+  border: none;
+  box-shadow: 0 4rpx 12rpx rgba(251, 192, 45, 0.3);
+  max-width: 150px;
+}
+
+.contact-btn:active {
+  opacity: 0.9;
+  transform: scale(0.98);
+}
+
+/* Floating Action Button - 靠最下边 */
+/* 带外发光效果的圆形按钮 */
+.fab {
+  position: fixed;
+  bottom: 10rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #FBC02D;
+  color: #FFFFFF;
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 多重阴影创造外发光效果 */
+  box-shadow: 
+    0 0 0 6rpx rgba(251, 192, 45, 0.2),
+    0 8rpx 32rpx rgba(251, 192, 45, 0.3),
+    0 12rpx 48rpx rgba(251, 192, 45, 0.2);
+  z-index: 1000;
+  border: none;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+.fab:active {
+  transform: translateX(-50%) scale(0.92);
+  box-shadow: 
+    0 0 0 6rpx rgba(251, 192, 45, 0.3),
+    0 4rpx 16rpx rgba(251, 192, 45, 0.4);
+}
+
+.fab-icon {
+  width: 56rpx;
+  height: 56rpx;
+  filter: brightness(0) invert(1);
+}
+
+
+/* Responsive */
+@media screen and (max-width: 320px) {
+  .page {
+    padding-top: 160rpx;
+  }
+  
+  .content-list {
+    padding: 20rpx;
+    gap: 20rpx;
+    padding-bottom: 100rpx;
+  }
+  
+  .supply-card {
+    padding: 24rpx;
+  }
+  
+  .card-title {
+    font-size: 30rpx;
+  }
+  
+  .card-description {
+    font-size: 26rpx;
+  }
+  
+  .card-image {
+    width: 160rpx;
+    height: 160rpx;
+  }
+  
+  /* 其他代码保持不变 */
+
+}

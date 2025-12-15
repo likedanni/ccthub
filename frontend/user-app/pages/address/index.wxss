@@ -1,0 +1,347 @@
+/* 页面基础样式 */
+page {
+  background-color: #FFFFFF;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 页面容器 */
+.page-container {
+  height: 100vh;
+  background: #FFFFFF;
+}
+
+/* 自定义导航栏 */
+.custom-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30rpx;
+  height: 88rpx;
+  background: #FFFFFF;
+  border-bottom: 2rpx solid #F5F5F5;
+  position: relative;
+}
+
+.nav-back {
+  width: 80rpx;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.nav-icon {
+  width: 48rpx;
+  height: 48rpx;
+}
+
+.nav-title {
+  flex: 1;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #1E293B;
+  /* 标题已删除，留空 */
+}
+
+.nav-placeholder {
+  width: 80rpx;
+}
+
+/* 地址列表 */
+.address-list {
+  height: calc(100vh - 88rpx);
+  padding: 30rpx;
+  box-sizing: border-box;
+}
+
+.address-item {
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  padding: 40rpx;
+  margin-bottom: 30rpx;
+  position: relative;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.04);
+  border: 2rpx solid #F1F5F9;
+}
+
+.default-address {
+  border: 4rpx solid #FBC02D;
+  box-shadow: 0 8rpx 30rpx rgba(251, 192, 45, 0.2);
+}
+
+/* 默认地址标签 */
+.default-tag {
+  position: absolute;
+  top: -2rpx;
+  left: -2rpx;
+  background: #FBC02D;
+  border-radius: 12rpx 0 12rpx 0;
+  padding: 12rpx 24rpx;
+}
+
+.tag-text {
+  font-size: 20rpx;
+  font-weight: bold;
+  color: #1E293B;
+  letter-spacing: 1rpx;
+}
+
+/* 地址头部 */
+.address-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 8rpx;
+}
+
+.address-info {
+  flex: 1;
+}
+
+.name-phone {
+  display: flex;
+  align-items: baseline;
+  gap: 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.name {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #1E293B;
+}
+
+.phone {
+  font-size: 28rpx;
+  color: #64748B;
+  font-weight: 500;
+}
+
+/* 地址标签 */
+.address-tag {
+  margin-bottom: 8rpx;
+}
+
+.tag {
+  font-size: 22rpx;
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  display: inline-block;
+}
+
+.default-tag-badge {
+  background: rgba(251, 192, 45, 0.1);
+  color: #FBC02D;
+  font-weight: bold;
+}
+
+.normal-tag {
+  background: #F1F5F9;
+  color: #64748B;
+}
+
+.address-tag-placeholder {
+  height: 36rpx;
+}
+
+/* 地址操作按钮 */
+.address-actions {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.action-btn {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.edit-btn {
+  background: #FFFFFF;
+}
+
+.edit-btn:active {
+  background: rgba(251, 192, 45, 0.1);
+}
+
+.delete-btn {
+  background: #FFFFFF;
+}
+
+.delete-btn:active {
+  background: rgba(255, 107, 107, 0.1);
+}
+
+.action-icon {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+/* 分割线 */
+.divider {
+  height: 2rpx;
+  background: #F1F5F9;
+  margin: 24rpx 0;
+}
+
+/* 地址文本 */
+.address-text {
+  display: block;
+  font-size: 28rpx;
+  color: #64748B;
+  line-height: 1.5;
+}
+
+/* 底部留白 */
+.bottom-spacer {
+  height: 160rpx;
+}
+
+/* 添加地址按钮 */
+.add-btn-container {
+  position: fixed;
+  bottom: 40rpx;
+  right: 40rpx;
+  z-index: 99;
+}
+
+.add-btn {
+  width: 112rpx;
+  height: 112rpx;
+  background: #FBC02D;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12rpx 40rpx rgba(251, 192, 45, 0.4);
+  transition: all 0.2s;
+}
+
+.add-btn:active {
+  transform: scale(0.95);
+  background: #F9A825;
+}
+
+.add-icon {
+  width: 48rpx;
+  height: 48rpx;
+}
+
+/* 弹窗样式 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 30rpx;
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+.modal-container {
+  width: 100%;
+  max-width: 640rpx;
+}
+
+.modal-content {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 60rpx 40rpx 40rpx;
+  text-align: center;
+  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.2);
+}
+
+.modal-icon {
+  width: 96rpx;
+  height: 96rpx;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 40rpx;
+}
+
+.warning-icon {
+  width: 48rpx;
+  height: 48rpx;
+}
+
+.modal-text {
+  margin-bottom: 40rpx;
+}
+
+.modal-title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #1E293B;
+  margin-bottom: 16rpx;
+}
+
+.modal-desc {
+  display: block;
+  font-size: 28rpx;
+  color: #64748B;
+  line-height: 1.4;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.modal-btn {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.cancel-btn {
+  background: #FFFFFF;
+  border: 2rpx solid #F1F5F9;
+}
+
+.cancel-btn:active {
+  background: #F8FAFC;
+}
+
+.confirm-btn {
+  background: #FF6B6B;
+}
+
+.confirm-btn:active {
+  background: #E05555;
+}
+
+.btn-text {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.cancel-btn .btn-text {
+  color: #64748B;
+}
+
+.confirm-btn .btn-text {
+  color: #FFFFFF;
+}

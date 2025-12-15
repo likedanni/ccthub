@@ -1,0 +1,125 @@
+<view class="container">
+  <!-- 温馨提示 -->
+  <view class="tip-container">
+    <image class="tip-icon" src="/images/icons/info.png"></image>
+    <text class="tip-text">温馨提示：发布后需经过后台审核通过方可展示，请确保内容真实合法。</text>
+  </view>
+
+  <form class="form">
+    <!-- 标题 -->
+    <view class="form-group">
+      <text class="form-label">标题 <text class="required">*</text></text>
+      <view class="input-wrapper">
+        <input 
+          class="form-input" 
+          maxlength="30" 
+          placeholder="请输入标题（限30字）" 
+          value="{{title}}" 
+          bindinput="onTitleInput"
+        />
+        <text class="char-count">{{titleLength}}/30</text>
+      </view>
+    </view>
+
+    <!-- 分类 -->
+    <view class="form-group">
+      <text class="form-label">分类 <text class="required">*</text></text>
+      <view class="select-wrapper">
+        <picker 
+          range="{{categoryOptions}}" 
+          range-key="label"
+          value="{{categoryIndex}}" 
+          bindchange="onCategoryChange"
+        >
+          <view class="picker {{categoryIndex >= 0 ? 'has-value' : ''}}">
+            <text>{{categoryIndex >= 0 ? categoryOptions[categoryIndex].label : '请选择分类'}}</text>
+            <image class="dropdown-icon" src="/images/icons/dropdown.png"></image>
+          </view>
+        </picker>
+      </view>
+      <view class="category-tags">
+        <view 
+          wx:for="{{firstThreeCategories}}" 
+          wx:key="value"
+          class="tag {{selectedCategoryValue === item.value ? 'tag-active' : ''}}"
+          bindtap="onTagTap"
+          data-value="{{item.value}}"
+        >
+          {{item.label}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 内容详情 -->
+    <view class="form-group">
+      <text class="form-label">内容详情 <text class="required">*</text></text>
+      <textarea 
+        class="form-textarea" 
+        placeholder="请详细描述您的需求或提供的服务，包括具体时间、地点及要求等..." 
+        value="{{content}}"
+        bindinput="onContentInput"
+      />
+    </view>
+
+    <!-- 图片上传 -->
+    <view class="form-group">
+      <text class="form-label">
+        图片上传
+        <text class="sub-label">(最多9张)</text>
+      </text>
+      <view class="image-upload-container">
+        <view 
+          class="upload-btn {{images.length >= 9 ? 'disabled' : ''}}"
+          bindtap="onAddImage"
+          wx:if="{{images.length < 9}}"
+        >
+          <image class="upload-icon" src="/images/icons/camera.png"></image>
+          <text class="upload-text">添加图片</text>
+        </view>
+        
+        <view 
+          class="image-preview" 
+          wx:for="{{images}}" 
+          wx:key="*this"
+        >
+          <image class="preview-image" src="{{item}}" mode="aspectFill"></image>
+          <view class="remove-btn" bindtap="onRemoveImage" data-index="{{index}}">
+            <image class="remove-icon" src="/images/icons/close.png"></image>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 联系方式 -->
+    <view class="form-group">
+      <text class="form-label">联系方式 <text class="required">*</text></text>
+      <view class="phone-input-wrapper">
+        <view class="phone-input">
+          <image class="phone-icon" src="/images/icons/phone.png"></image>
+          <input 
+            class="phone-input-field"
+            type="number"
+            placeholder="请输入手机号"
+            value="{{phone}}"
+            bindinput="onPhoneInput"
+          />
+        </view>
+        <view class="auto-fill-btn" bindtap="onAutoFill">
+          <text>自动填充</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 提交按钮 -->
+    <view class="submit-section">
+      <button 
+        class="submit-btn {{!canSubmit ? 'disabled' : ''}}" 
+        bindtap="onSubmit"
+        disabled="{{!canSubmit}}"
+      >
+        <text>提交发布</text>
+        <image class="submit-icon" src="/images/icons/send.png"></image>
+      </button>
+    </view>
+  </form>
+</view>

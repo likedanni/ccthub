@@ -1,0 +1,185 @@
+<!-- pages/index/index.wxml -->
+<view class="index-page">
+  <!-- 顶部大图banner -->
+  <view class="top-banner">
+    <image 
+      class="banner-image" 
+      src="/images/temple-banner.png" 
+      mode="aspectFill"
+    />
+    <view class="banner-overlay"></view>
+    <view class="banner-content">
+      <text class="banner-title">功夫熊猫带您游山西</text>
+      <view class="banner-tag">
+        <text>打卡有好礼</text>
+      </view>
+    </view>
+    <view class="banner-indicators">
+      <view class="indicator active"></view>
+      <view class="indicator"></view>
+    </view>
+  </view>
+
+  <!-- 功能入口网格 -->
+  <view class="function-grid">
+    <view class="grid-container">
+      <view class="grid-row">
+        <view class="grid-card" bindtap="navigateToScenic">
+          <image class="grid-icon" src="/images/icons/temple.png" mode="aspectFit"></image>
+          <view class="grid-text">
+            <text class="grid-title">景区</text>
+            <text class="grid-subtitle">Scenic area</text>
+          </view>
+        </view>
+        
+        <view class="grid-card" bindtap="navigateToCatering">
+          <image class="grid-icon" src="/images/icons/restaurant.png" mode="aspectFit"></image>
+          <view class="grid-text">
+            <text class="grid-title">餐饮</text>
+            <text class="grid-subtitle">Catering</text>
+          </view>
+        </view>
+      </view>
+      
+      <view class="grid-row">
+        <view class="grid-card" bindtap="navigateToFreshFood">
+          <image class="grid-icon" src="/images/icons/food.png" mode="aspectFit"></image>
+          <view class="grid-text">
+            <text class="grid-title">生鲜</text>
+            <text class="grid-subtitle">fresh food</text>
+          </view>
+        </view>
+        
+        <view class="grid-card" bindtap="navigateToCulture">
+          <image class="grid-icon" src="/images/icons/culture.png" mode="aspectFit"></image>
+          <view class="grid-text">
+            <text class="grid-title">文创</text>
+            <text class="grid-subtitle">Cultural</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最热活动 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">最热活动</text>
+      <view class="section-more" bindtap="navigateToAllActivities">
+        <text>全部</text>
+        <!-- 使用 image 标签替代背景图 -->
+        <image class="arrow-right" src="/images/icons/arrow-right.png" mode="aspectFit"></image>
+      </view>
+    </view>
+    
+    <scroll-view class="activity-scroll" scroll-x="true" scroll-with-animation="true">
+      <view class="activity-list">
+        <view class="activity-card" bindtap="navigateToActivityDetail" data-id="1">
+          <view class="activity-image">
+            <image 
+              src="/images/temple-banner.png" 
+              mode="aspectFill"
+            />
+          </view>
+          <view class="activity-info">
+            <text class="activity-title">功夫熊猫来看大佛了</text>
+            <view class="activity-location">
+              <!-- 使用 image 标签替代背景图 -->
+              <image class="location-icon" src="/images/icons/location.png" mode="aspectFit"></image>
+              <text>景区入口处</text>
+            </view>
+            <view class="activity-footer">
+              <text class="activity-date">12月30日-2月30日</text>
+              <button class="activity-btn" >报名</button>
+            </view>
+          </view>
+        </view>
+        
+        <view class="activity-card" bindtap="navigateToActivityDetail" data-id="2">
+          <view class="activity-image">
+            <image 
+              src="/images/temple-banner.png" 
+              mode="aspectFill"
+            />
+          </view>
+          <view class="activity-info">
+            <text class="activity-title">春节祈福庙会活动</text>
+            <view class="activity-location">
+              <image class="location-icon" src="/images/icons/location.png" mode="aspectFit"></image>
+              <text>太原古县城</text>
+            </view>
+            <view class="activity-footer">
+              <text class="activity-date">1月15日-2月15日</text>
+              <button class="activity-btn" >报名</button>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 景区票务 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">景区票务</text>
+      <view class="section-more" bindtap="navigateToAllTickets">
+        <text>全部</text>
+        <image class="arrow-right" src="/images/icons/arrow-right.png" mode="aspectFit"></image>
+      </view>
+    </view>
+    
+    <view class="ticket-list">
+      <view class="ticket-card" bindtap="navigateToTicketDetail" data-id="1">
+        <view class="ticket-image">
+          <image 
+            src="/images/temple-banner.png" 
+            mode="aspectFill"
+          />
+        </view>
+        <view class="ticket-info">
+          <view class="ticket-header">
+            <text class="ticket-title">山西晋祠博物馆</text>
+            <view class="ticket-tag">
+              <text>4A</text>
+            </view>
+          </view>
+          <view class="ticket-desc">
+            <text>山西文化旅游的名片</text>
+          </view>
+          <text class="ticket-address">晋中市平遥县照壁南街58号</text>
+          <view class="ticket-price">
+            <text class="price-symbol">¥</text>
+            <text class="price-number">100</text>
+            <text class="price-unit">起</text>
+          </view>
+        </view>
+      </view>
+      
+      <view class="ticket-card" bindtap="navigateToTicketDetail" data-id="2">
+        <view class="ticket-image">
+          <image 
+            src="/images/temple-banner.png" 
+            mode="aspectFill"
+          />
+        </view>
+        <view class="ticket-info">
+          <view class="ticket-header">
+            <text class="ticket-title">平遥古城</text>
+            <view class="ticket-tag">
+              <text>4A</text>
+            </view>
+          </view>
+          <view class="ticket-desc">
+            <text>山西文化旅游的名片</text>
+          </view>
+          <text class="ticket-address">晋中市平遥县照壁南街58号</text>
+          <view class="ticket-price">
+            <text class="price-symbol">¥</text>
+            <text class="price-number">100</text>
+            <text class="price-unit">起</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

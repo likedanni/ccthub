@@ -2,8 +2,8 @@ package com.ccthub.userservice.controller;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -18,10 +18,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.ccthub.userservice.config.TestContainersConfig;
+import com.ccthub.userservice.dto.ChangePasswordRequest;
 import com.ccthub.userservice.dto.LoginRequest;
 import com.ccthub.userservice.dto.RegisterRequest;
 import com.ccthub.userservice.dto.UpdateProfileRequest;
-import com.ccthub.userservice.dto.ChangePasswordRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @AutoConfigureMockMvc
@@ -96,7 +96,7 @@ public class UserControllerIntegrationTest extends TestContainersConfig {
                 .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isUnauthorized());
     }
-    
+
     @Test
     void testGetUserProfile() throws Exception {
         // 先注册用户
@@ -110,9 +110,9 @@ public class UserControllerIntegrationTest extends TestContainersConfig {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        
+
         Long userId = objectMapper.readTree(responseBody).get("id").asLong();
-        
+
         // 获取用户资料
         mockMvc.perform(get("/api/users/" + userId + "/profile"))
                 .andExpect(status().isOk())
@@ -120,7 +120,7 @@ public class UserControllerIntegrationTest extends TestContainersConfig {
                 .andExpect(jsonPath("$.phone").value("13800000010"))
                 .andExpect(jsonPath("$.memberLevel").value(1));
     }
-    
+
     @Test
     void testUpdateUserProfile() throws Exception {
         // 先注册用户
@@ -134,14 +134,14 @@ public class UserControllerIntegrationTest extends TestContainersConfig {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        
+
         Long userId = objectMapper.readTree(responseBody).get("id").asLong();
-        
+
         // 更新用户资料
         UpdateProfileRequest updateRequest = new UpdateProfileRequest();
         updateRequest.setNickname("新昵称");
         updateRequest.setAvatarUrl("https://example.com/avatar.jpg");
-        
+
         mockMvc.perform(put("/api/users/" + userId + "/profile")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateRequest)))
@@ -149,7 +149,7 @@ public class UserControllerIntegrationTest extends TestContainersConfig {
                 .andExpect(jsonPath("$.nickname").value("新昵称"))
                 .andExpect(jsonPath("$.avatarUrl").value("https://example.com/avatar.jpg"));
     }
-    
+
     @Test
     void testChangePassword() throws Exception {
         // 先注册用户
@@ -163,21 +163,21 @@ public class UserControllerIntegrationTest extends TestContainersConfig {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        
+
         Long userId = objectMapper.readTree(responseBody).get("id").asLong();
-        
+
         // 修改密码
         ChangePasswordRequest changeRequest = new ChangePasswordRequest();
         changeRequest.setOldPassword("password123");
         changeRequest.setNewPassword("newPassword456");
-        
+
         mockMvc.perform(post("/api/users/" + userId + "/change-password")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(changeRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.message").value("Password changed successfully"));
-                
+
         // 用新密码登录验证
         LoginRequest loginRequest = new LoginRequest("13800000012", "newPassword456");
         mockMvc.perform(post("/api/users/login")
@@ -186,7 +186,7 @@ public class UserControllerIntegrationTest extends TestContainersConfig {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.access_token", notNullValue()));
     }
-    
+
     @Test
     void testPaymentPassword() throws Exception {
         // 先注册用户
@@ -200,9 +200,9 @@ public class UserControllerIntegrationTest extends TestContainersConfig {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        
+
         Long userId = objectMapper.readTree(responseBody).get("id").asLong();
-        
+
         // 设置支付密码
         Map<String, String> setRequest = Map.of("paymentPassword", "123456");
         mockMvc.perform(post("/api/users/" + userId + "/payment-password")
@@ -210,7 +210,7 @@ public class UserControllerIntegrationTest extends TestContainersConfig {
                 .content(objectMapper.writeValueAsString(setRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true));
-        
+
         // 验证正确的支付密码
         Map<String, String> verifyRequest = Map.of("paymentPassword", "123456");
         mockMvc.perform(post("/api/users/" + userId + "/verify-payment-password")
@@ -218,7 +218,7 @@ public class UserControllerIntegrationTest extends TestContainersConfig {
                 .content(objectMapper.writeValueAsString(verifyRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true));
-                
+
         // 验证错误的支付密码
         Map<String, String> wrongRequest = Map.of("paymentPassword", "999999");
         mockMvc.perform(post("/api/users/" + userId + "/verify-payment-password")
