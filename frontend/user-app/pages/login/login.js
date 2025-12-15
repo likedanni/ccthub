@@ -52,7 +52,7 @@ Page({
     const url = `${base}/api/users/login`;
     const payload = {
       phone: '13900139000',
-      password: '123456'
+      password: 'admin123'
     };
 
     wx.request({

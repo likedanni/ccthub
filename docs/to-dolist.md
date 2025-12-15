@@ -156,23 +156,28 @@
 
 #### 任务列表
 
-**2.1 景区基础服务**
+**2.1 景区基础服务** ✅ (已完成 2025-12-15)
 
-- [ ] 创建 scenic-service 模块
-  - [ ] 景区实体设计（参考 DDL.sql scenic_spots 表）
-  - [ ] 景区 CRUD API
-    - [ ] 创建景区（管理员）
-    - [ ] 编辑景区信息
-    - [ ] 上下架景区
-  - [ ] 景区查询 API
-    - [ ] 景区列表（分页）
-    - [ ] 景区详情
-    - [ ] 按城市/等级筛选
+- [x] 创建 scenic-service 模块
+  - [x] 景区实体设计（参考 DDL.sql scenic_spots 表）
+  - [x] 景区 CRUD API
+    - [x] 创建景区（管理员）
+    - [x] 编辑景区信息
+    - [x] 上下架景区
+  - [x] 景区查询 API
+    - [x] 景区列表（分页）
+    - [x] 景区详情
+    - [x] 按城市/等级筛选
     - [ ] 按距离排序（基于 GPS 定位）
-  - [ ] 图片管理
-    - [ ] 封面图上传
-    - [ ] 多图上传（最多 10 张）
-    - [ ] 图片删除
+  - [x] 图片管理
+    - [x] 封面图上传
+    - [x] 多图上传（最多 10 张）
+    - [x] 图片删除
+  - [x] 管理后台景区管理页面（中文 UI）
+    - [x] 景区列表页面（搜索、筛选、分页）
+    - [x] 景区表单页面（创建/编辑）
+    - [x] 景区详情页面
+    - [x] 状态管理（开放/关闭/维护中）
 
 **2.2 票种模板管理**
 
@@ -1225,6 +1230,88 @@ chore: 构建/工具变更
 
 ## ✅ 最近已完成的工作
 
+### 2025-12-15: Sprint 2.1 景区管理功能开发 ✅
+
+**后端实现**:
+
+- ✅ 数据库设计
+  - ✅ 创建 V7\_\_create_scenic_spots.sql 迁移文件
+  - ✅ scenic_spots 表（23 字段含 JSON 类型）
+  - ✅ 3 条测试数据（太行山大峡谷、八路军太行纪念馆、通天峡景区）
+- ✅ 实体与 DTO 设计
+  - ✅ ScenicSpot.java 实体（24 字段，含 @PrePersist/@PreUpdate）
+  - ✅ ScenicSpotRequest.java（创建/更新请求 DTO）
+  - ✅ ScenicSpotResponse.java（列表展示 DTO，11 字段）
+  - ✅ ScenicSpotDetailResponse.java（详情 DTO，22 字段）
+- ✅ 数据访问层
+  - ✅ ScenicSpotRepository.java（9 个自定义查询方法）
+  - ✅ 支持按状态、城市、省份、等级、名称筛选
+- ✅ 业务逻辑层
+  - ✅ ScenicSpotService.java（6 个核心方法）
+  - ✅ 分页查询（支持 10 种筛选组合）
+  - ✅ 详情查询（自动增加浏览次数）
+  - ✅ 创建/更新（JSON 字段转换）
+  - ✅ 状态管理（ACTIVE/INACTIVE/MAINTENANCE）
+  - ✅ 删除操作（含存在性检查）
+- ✅ REST API 接口
+  - ✅ ScenicSpotController.java（6 个端点）
+  - ✅ GET /api/scenic-spots/list（分页 + 多条件筛选）
+  - ✅ GET /api/scenic-spots/{id}（详情 + 浏览计数）
+  - ✅ POST /api/scenic-spots（创建，管理员权限）
+  - ✅ PUT /api/scenic-spots/{id}（更新，管理员权限）
+  - ✅ PUT /api/scenic-spots/{id}/status（状态切换）
+  - ✅ DELETE /api/scenic-spots/{id}（删除）
+- ✅ 问题修复
+  - ✅ 修复 longitude/latitude 字段映射错误（移除 precision/scale）
+  - ✅ 修复 ApiResponse.success() 参数顺序问题（6 处）
+
+**前端实现**:
+
+- ✅ API 客户端
+  - ✅ scenic.js（6 个 API 方法）
+- ✅ 管理后台页面（100% 中文 UI）
+  - ✅ ScenicList.vue（景区列表页）
+    - ✅ 搜索表单（名称、省份、城市、等级、状态）
+    - ✅ 数据表格（9 列）
+    - ✅ 分页控制（10/20/50/100 条/页）
+    - ✅ 操作按钮（查看、编辑、状态切换、删除）
+    - ✅ 确认对话框（状态变更、删除）
+  - ✅ ScenicForm.vue（创建/编辑表单）
+    - ✅ 基础信息（名称、等级、省市区、地址）
+    - ✅ 位置信息（经纬度）
+    - ✅ 联系信息（营业时间、联系电话）
+    - ✅ 详细信息（简介、票务、交通、须知）
+    - ✅ 分类信息（标签、设施）
+    - ✅ 图片上传（封面图 + 多图）
+    - ✅ 状态选择（开放/关闭/维护中）
+  - ✅ ScenicDetail.vue（详情页）
+    - ✅ 描述列表（2 列布局）
+    - ✅ 图片预览
+    - ✅ 标签/设施徽章
+- ✅ 路由集成
+  - ✅ 添加 /scenic 路由（景区管理菜单）
+
+**测试验证**:
+
+- ✅ 后端服务启动成功（Spring Boot 3.1.4）
+- ✅ API 测试通过
+  - ✅ 列表查询（返回 3 条测试数据）
+  - ✅ 详情查询（浏览计数 +1）
+  - ✅ 城市筛选（正确返回筛选结果）
+- ✅ 前端服务启动成功（Vite，http://localhost:3001）
+
+**技术亮点**:
+
+- ✅ JSON 字段存储（images/tags/facilities）
+- ✅ 浏览次数自动递增
+- ✅ 多条件组合查询优化（10 种筛选组合）
+- ✅ 图片上传复用 FileController
+- ✅ 完整的中文 UI 实现
+
+**修复内容**:
+
+- ✅ 管理员登录错误提示优化（"请使用管理员账户登录"）
+
 ### 2025-12-15: Sprint 1 管理后台完善 ✅
 
 - ✅ 管理后台仪表盘真实数据集成
@@ -1232,7 +1319,7 @@ chore: 构建/工具变更
   - ✅ 实现 GET /api/users/dashboard/stats 端点（总用户数、今日活跃、月订单、月收入）
   - ✅ 前端 Dashboard.vue 集成真实 API
 - ✅ 用户列表功能完善
-  - ✅ 创建 UserListResponse DTO（13个字段包含role）
+  - ✅ 创建 UserListResponse DTO（13 个字段包含 role）
   - ✅ 创建 PageResponse<T> 通用分页响应
   - ✅ 实现 GET /api/users/list 端点（支持分页、手机号搜索、状态过滤）
   - ✅ 实现 PUT /api/users/{id}/status 端点（启用/禁用用户）
@@ -1246,7 +1333,7 @@ chore: 构建/工具变更
   - ✅ 前端 auth.js 发送管理员登录标识
 - ✅ BCrypt 密码加密
   - ✅ 启用密码验证（移除临时 TODO 注释）
-  - ✅ 测试密码验证（错误密码→401，正确密码→JWT）
+  - ✅ 测试密码验证（错误密码 →401，正确密码 →JWT）
   - ✅ 测试管理员登录限制（普通用户被拒绝）
 - ✅ 修复 DTO Lombok 问题
   - ✅ 移除 @Data 注解，手动添加 getters/setters
@@ -1280,4 +1367,4 @@ chore: 构建/工具变更
 
 ---
 
-**下一步行动**: 开始 Sprint 2 - 商户服务开发 ⏳
+**下一步行动**: 开始 Sprint 2 -景区与票务服务 ⏳

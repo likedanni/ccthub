@@ -34,7 +34,7 @@
           />
           <view class="member-tag">
             <image class="member-icon" src="/images/icons/crown.png" mode="aspectFit"></image>
-            <text>黄金会员</text>
+            <text>{{memberLabel}}</text>
           </view>
         </view>
         

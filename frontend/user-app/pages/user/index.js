@@ -11,6 +11,7 @@ Page({
       balance: 0
     },
     originalName: '',
+    memberLabel: '会员',
     growthProgress: 75,
     unreadTicketCount: 1,
     unreadProductCount: 2,
@@ -71,6 +72,7 @@ Page({
           const balance = this.formatMoney(profile.walletBalance ?? profile.balance ?? 0);
           const points = profile.availablePoints ?? profile.totalPoints ?? 0;
           const name = profile.nickname || profile.realName || profile.phone || '用户';
+          const memberLabel = this.mapMemberLevel(profile.memberLevel);
 
           this.setData({
             userInfo: {
@@ -80,6 +82,7 @@ Page({
               balance
             },
             originalName: name,
+            memberLabel,
             growthProgress: progress,
             growthTip: remaining === 0 ? '成长值已满级' : `还需 ${remaining} 成长值升级`
           });
@@ -97,6 +100,21 @@ Page({
         });
       }
     });
+  },
+
+  /**
+   * 会员等级映射
+   */
+  mapMemberLevel(level) {
+    if (level === null || level === undefined) return '会员';
+    const map = {
+      1: '普通会员',
+      2: '白银会员',
+      3: '黄金会员',
+      4: '钻石会员'
+    };
+    const key = Number.isFinite(Number(level)) ? Number(level) : level;
+    return map[key] || '会员';
   },
 
   /**

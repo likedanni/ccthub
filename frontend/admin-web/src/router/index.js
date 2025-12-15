@@ -35,6 +35,20 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/scenic",
+    component: Layout,
+    redirect: "/scenic/list",
+    meta: { title: "景区管理", icon: "Location" },
+    children: [
+      {
+        path: "list",
+        name: "ScenicList",
+        component: () => import("@/views/scenic/ScenicList.vue"),
+        meta: { title: "景区列表" },
+      },
+    ],
+  },
 ];
 
 const router = createRouter({

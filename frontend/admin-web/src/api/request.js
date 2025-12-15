@@ -42,10 +42,18 @@ request.interceptors.response.use(
   (error) => {
     if (error.response) {
       const status = error.response.status;
+      const config = error.config;
+
       if (status === 401) {
-        ElMessage.error("登录已过期，请重新登录");
-        localStorage.removeItem("token");
-        router.push("/login");
+        // 如果是登录接口返回401，说明是管理员权限不足
+        if (config.url && config.url.includes("/users/login")) {
+          ElMessage.error("请使用管理员账户登录");
+        } else {
+          // 其他接口401，说明token过期
+          ElMessage.error("登录已过期，请重新登录");
+          localStorage.removeItem("token");
+          router.push("/login");
+        }
       } else if (status === 403) {
         ElMessage.error("没有权限访问");
       } else if (status === 404) {
