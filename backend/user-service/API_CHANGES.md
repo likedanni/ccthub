@@ -2,6 +2,96 @@
 
 更新日期: 2025-12-15
 
+## 最新变更 (2025-12-15)
+
+### 票务管理功能
+
+新增票种与票价管理的完整 REST API，支持门票产品配置、价格日历管理和库存控制。
+
+#### 票种管理接口
+
+- `POST /api/tickets`
+
+  - 描述: 创建新的门票产品
+  - 请求体: JSON格式，包含景区ID、票种名称、类型、有效期、退改签规则、限购设置等
+  - 返回: 创建的票种详情（含ID、创建时间等）
+
+- `PUT /api/tickets/{id}`
+
+  - 描述: 更新指定票种的信息
+  - 请求体: 完整票种信息（JSON）
+
+- `GET /api/tickets/{id}`
+
+  - 描述: 获取票种详细信息
+
+- `DELETE /api/tickets/{id}`
+
+  - 描述: 删除指定票种
+
+- `GET /api/tickets`
+
+  - 描述: 分页查询票种列表
+  - 参数: page, size, sort（支持排序）
+
+- `GET /api/tickets/scenic-spot/{scenicSpotId}`
+
+  - 描述: 获取指定景区的所有票种
+
+- `GET /api/tickets/scenic-spot/{scenicSpotId}/status/{status}`
+
+  - 描述: 获取指定景区指定状态的票种（status: 0-下架, 1-上架）
+
+- `PATCH /api/tickets/{id}/status`
+  - 描述: 更新票种状态（上架/下架）
+  - 参数: status（0或1）
+
+#### 票价管理接口
+
+- `POST /api/ticket-prices`
+
+  - 描述: 创建或更新单个票价（支持幂等操作）
+  - 请求体: 包含票种ID、日期、价格类型、原价、售价、库存等
+  - 返回: 保存的票价信息
+
+- `POST /api/ticket-prices/batch`
+
+  - 描述: 批量设置票价（日历批量设置）
+  - 请求体: 票价数组（JSON）
+
+- `GET /api/ticket-prices/{id}`
+
+  - 描述: 获取票价详情
+
+- `DELETE /api/ticket-prices/{id}`
+
+  - 描述: 删除指定票价
+
+- `GET /api/ticket-prices/ticket/{ticketId}`
+
+  - 描述: 获取指定票种的所有票价
+
+- `GET /api/ticket-prices/ticket/{ticketId}/date-range`
+  - 描述: 获取指定日期范围内的票价
+  - 参数: startDate, endDate（格式: yyyy-MM-dd）
+
+#### 数据库变更
+
+- 新增表 `tickets`（票种模板表）：17字段，包含景区关联、类型、有效期、退改签规则、限购设置等
+- 新增表 `ticket_prices`（票价库存日历表）：13字段，包含价格类型、原价/售价、库存管理、乐观锁 version 字段
+
+#### 关键特性
+
+- **库存防超卖**: 使用乐观锁（@Version）+ 三段式库存（总库存、可用、锁定）
+- **退改签规则**: JSON 配置（退款比例、改签费用、提前时间）
+- **价格类型**: 支持成人票、学生票、儿童票、老年票
+- **票种类型**: 单票、联票、套票
+- **有效期类型**: 指定日期（单日有效）、有效天数（多日有效）
+
+---
+
+## 历史变更 (2025-12-15 之前)
+
 简要说明:
 
 - 新增通用文件上传接口并统一返回与历史兼容的字符串 URL。
