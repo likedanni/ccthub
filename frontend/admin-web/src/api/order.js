@@ -7,7 +7,7 @@ import request from "./request";
 // 创建订单
 export function createOrder(data) {
   return request({
-    url: "/api/orders",
+    url: "/orders",
     method: "post",
     data,
   });
@@ -16,7 +16,7 @@ export function createOrder(data) {
 // 支付订单
 export function payOrder(id) {
   return request({
-    url: `/api/orders/${id}/pay`,
+    url: `/orders/${id}/pay`,
     method: "post",
   });
 }
@@ -24,7 +24,7 @@ export function payOrder(id) {
 // 取消订单
 export function cancelOrder(id) {
   return request({
-    url: `/api/orders/${id}/cancel`,
+    url: `/orders/${id}/cancel`,
     method: "post",
   });
 }
@@ -32,7 +32,7 @@ export function cancelOrder(id) {
 // 查询订单详情
 export function getOrderDetail(id) {
   return request({
-    url: `/api/orders/${id}`,
+    url: `/orders/${id}`,
     method: "get",
   });
 }
@@ -40,7 +40,7 @@ export function getOrderDetail(id) {
 // 根据订单号查询
 export function getOrderByOrderNo(orderNo) {
   return request({
-    url: `/api/orders/by-no/${orderNo}`,
+    url: `/orders/by-no/${orderNo}`,
     method: "get",
   });
 }
@@ -48,7 +48,7 @@ export function getOrderByOrderNo(orderNo) {
 // 查询用户订单
 export function getUserOrders(userId) {
   return request({
-    url: `/api/orders/user/${userId}`,
+    url: `/orders/user/${userId}`,
     method: "get",
   });
 }
@@ -56,7 +56,7 @@ export function getUserOrders(userId) {
 // 查询所有订单
 export function getAllOrders() {
   return request({
-    url: "/api/orders",
+    url: "/orders",
     method: "get",
   });
 }
@@ -64,7 +64,7 @@ export function getAllOrders() {
 // 查询核销码信息
 export function getVerificationInfo(verificationCode) {
   return request({
-    url: `/api/verifications/${verificationCode}`,
+    url: `/verifications/${verificationCode}`,
     method: "get",
   });
 }
@@ -72,7 +72,7 @@ export function getVerificationInfo(verificationCode) {
 // 核销票券
 export function verifyTicket(verificationCode, staffId) {
   return request({
-    url: `/api/verifications/${verificationCode}/verify`,
+    url: `/verifications/${verificationCode}/verify`,
     method: "post",
     params: { staffId },
   });
@@ -81,7 +81,7 @@ export function verifyTicket(verificationCode, staffId) {
 // 批量核销
 export function batchVerify(orderId, staffId) {
   return request({
-    url: `/api/verifications/batch/${orderId}`,
+    url: `/verifications/batch/${orderId}`,
     method: "post",
     params: { staffId },
   });
