@@ -11,28 +11,34 @@
 #### 订单管理接口
 
 - `POST /api/orders`
+
   - 描述: 创建订单（购票下单）
-  - 请求体: 包含用户ID、景区ID、票种ID、游玩日期、联系人、游客信息列表等
+  - 请求体: 包含用户 ID、景区 ID、票种 ID、游玩日期、联系人、游客信息列表等
   - 功能: 自动扣减库存（乐观锁）、生成订单号、创建电子票券
   - 返回: 完整订单信息（含订单项列表）
 
 - `POST /api/orders/{id}/pay`
+
   - 描述: 支付订单
   - 功能: 更新订单状态为"待使用"，释放锁定库存
 
 - `POST /api/orders/{id}/cancel`
+
   - 描述: 取消订单
   - 功能: 释放锁定库存，更新订单状态为"已取消"
   - 限制: 仅支持待支付订单
 
 - `GET /api/orders/{id}`
+
   - 描述: 查询订单详情
   - 返回: 订单信息 + 订单项列表（含核销码）
 
 - `GET /api/orders/by-no/{orderNo}`
+
   - 描述: 根据订单号查询订单
 
 - `GET /api/orders/user/{userId}`
+
   - 描述: 查询用户的所有订单
 
 - `GET /api/orders`
@@ -45,32 +51,34 @@
 #### 核销接口
 
 - `GET /api/verifications/{verificationCode}`
+
   - 描述: 查询核销码信息
   - 返回: 游客信息、票价、核销状态等
 
 - `POST /api/verifications/{verificationCode}/verify`
+
   - 描述: 核销电子票券
-  - 参数: staffId（核销员ID）
+  - 参数: staffId（核销员 ID）
   - 功能: 更新核销状态、记录核销时间和核销员
 
 - `POST /api/verifications/batch/{orderId}`
   - 描述: 批量核销订单中的所有票券
-  - 参数: staffId（核销员ID）
+  - 参数: staffId（核销员 ID）
 
 #### 数据库变更
 
-- 新增表 `orders`（订单表）：19字段，包含订单号、用户、景区、票种、游玩日期、金额、状态、时间戳等
-- 新增表 `order_items`（订单项/电子票券表）：13字段，包含游客信息、核销码（UUID）、核销状态、核销时间等
+- 新增表 `orders`（订单表）：19 字段，包含订单号、用户、景区、票种、游玩日期、金额、状态、时间戳等
+- 新增表 `order_items`（订单项/电子票券表）：13 字段，包含游客信息、核销码（UUID）、核销状态、核销时间等
 
 #### 关键特性
 
 - **订单状态机**: PENDING_PAYMENT → PENDING_USE → COMPLETED / CANCELLED / REFUNDED
-- **库存防超卖**: 
+- **库存防超卖**:
   - 下单时扣减可用库存，增加锁定库存（乐观锁 @Version）
   - 支付时释放锁定库存
   - 取消时恢复可用库存
-- **核销码**: 
-  - UUID自动生成（@PrePersist）
+- **核销码**:
+  - UUID 自动生成（@PrePersist）
   - 唯一索引防重复
   - 支持单个核销和批量核销
 - **订单号生成**: 格式 `ORD + yyyyMMddHHmmss + 6位随机数`
@@ -78,9 +86,10 @@
 #### 单元测试
 
 新增测试类：
-- `OrderServiceTest`：6个测试用例（创建订单、支付、取消、查询等）
-- `VerificationServiceTest`：5个测试用例（核销信息查询、核销、批量核销等）
-- 测试覆盖率: 11个测试用例全部通过 ✅
+
+- `OrderServiceTest`：6 个测试用例（创建订单、支付、取消、查询等）
+- `VerificationServiceTest`：5 个测试用例（核销信息查询、核销、批量核销等）
+- 测试覆盖率: 11 个测试用例全部通过 ✅
 
 ---
 

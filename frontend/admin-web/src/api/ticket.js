@@ -1,7 +1,7 @@
-import request from "@/utils/request";
+import request from "./request";
 
 /**
- * 票种管理API
+ * 票种API
  */
 
 // 创建票种
