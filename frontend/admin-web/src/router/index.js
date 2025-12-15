@@ -84,6 +84,20 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/orders",
+    component: Layout,
+    redirect: "/orders/list",
+    meta: { title: "订单管理", icon: "Document" },
+    children: [
+      {
+        path: "list",
+        name: "OrderList",
+        component: () => import("@/views/orders/OrderList.vue"),
+        meta: { title: "订单列表" },
+      },
+    ],
+  },
 ];
 
 const router = createRouter({

@@ -29,16 +29,16 @@ import java.util.List;
 @RequestMapping("/api/tickets")
 @RequiredArgsConstructor
 public class TicketController {
-    
+
     private final TicketService ticketService;
-    
+
     @Operation(summary = "创建票种", description = "创建新的门票产品")
     @PostMapping
     public ResponseEntity<TicketResponse> createTicket(@Valid @RequestBody TicketRequest request) {
         TicketResponse response = ticketService.createTicket(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-    
+
     @Operation(summary = "更新票种", description = "更新指定ID的票种信息")
     @PutMapping("/{id}")
     public ResponseEntity<TicketResponse> updateTicket(
@@ -47,7 +47,7 @@ public class TicketController {
         TicketResponse response = ticketService.updateTicket(id, request);
         return ResponseEntity.ok(response);
     }
-    
+
     @Operation(summary = "删除票种", description = "删除指定ID的票种")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTicket(
@@ -55,7 +55,7 @@ public class TicketController {
         ticketService.deleteTicket(id);
         return ResponseEntity.noContent().build();
     }
-    
+
     @Operation(summary = "获取票种详情", description = "根据ID获取票种详细信息")
     @GetMapping("/{id}")
     public ResponseEntity<TicketResponse> getTicket(
@@ -63,16 +63,15 @@ public class TicketController {
         TicketResponse response = ticketService.getTicketById(id);
         return ResponseEntity.ok(response);
     }
-    
+
     @Operation(summary = "分页查询票种", description = "分页获取所有票种列表")
     @GetMapping
     public ResponseEntity<Page<TicketResponse>> getTickets(
-            @PageableDefault(size = 10, sort = "createTime", direction = Sort.Direction.DESC) 
-            Pageable pageable) {
+            @PageableDefault(size = 10, sort = "createTime", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<TicketResponse> page = ticketService.getTickets(pageable);
         return ResponseEntity.ok(page);
     }
-    
+
     @Operation(summary = "根据景区查询票种", description = "获取指定景区的所有票种")
     @GetMapping("/scenic-spot/{scenicSpotId}")
     public ResponseEntity<List<TicketResponse>> getTicketsByScenicSpot(
@@ -80,7 +79,7 @@ public class TicketController {
         List<TicketResponse> tickets = ticketService.getTicketsByScenicSpotId(scenicSpotId);
         return ResponseEntity.ok(tickets);
     }
-    
+
     @Operation(summary = "根据景区和状态查询票种", description = "获取指定景区指定状态的票种")
     @GetMapping("/scenic-spot/{scenicSpotId}/status/{status}")
     public ResponseEntity<List<TicketResponse>> getTicketsByScenicSpotAndStatus(
@@ -89,7 +88,7 @@ public class TicketController {
         List<TicketResponse> tickets = ticketService.getTicketsByScenicSpotIdAndStatus(scenicSpotId, status);
         return ResponseEntity.ok(tickets);
     }
-    
+
     @Operation(summary = "更新票种状态", description = "上架或下架票种")
     @PatchMapping("/{id}/status")
     public ResponseEntity<Void> updateTicketStatus(

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 @Data
 public class TicketResponse {
-    
+
     private Long id;
     private Long scenicSpotId;
     private String scenicSpotName;
@@ -38,7 +38,7 @@ public class TicketResponse {
     private String statusText;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
-    
+
     /**
      * 转换票种类型文本
      */
@@ -50,7 +50,7 @@ public class TicketResponse {
             default -> "未知";
         };
     }
-    
+
     /**
      * 转换有效期类型文本
      */
@@ -61,7 +61,7 @@ public class TicketResponse {
             default -> "未知";
         };
     }
-    
+
     /**
      * 转换核验方式文本
      */
@@ -73,7 +73,7 @@ public class TicketResponse {
             default -> "未知";
         };
     }
-    
+
     /**
      * 转换状态文本
      */

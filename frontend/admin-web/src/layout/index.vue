@@ -30,6 +30,24 @@
           </template>
           <el-menu-item index="/scenic/list">景区列表</el-menu-item>
         </el-sub-menu>
+        <el-sub-menu index="/tickets">
+          <template #title>
+            <el-icon>
+              <Ticket />
+            </el-icon>
+            <span>票务管理</span>
+          </template>
+          <el-menu-item index="/tickets/list">票种管理</el-menu-item>
+        </el-sub-menu>
+        <el-sub-menu index="/orders">
+          <template #title>
+            <el-icon>
+              <Document />
+            </el-icon>
+            <span>订单管理</span>
+          </template>
+          <el-menu-item index="/orders/list">订单列表</el-menu-item>
+        </el-sub-menu>
       </el-menu>
     </el-aside>
 

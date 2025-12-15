@@ -213,16 +213,16 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { ElMessage } from 'element-plus'
-import { ArrowLeft } from '@element-plus/icons-vue'
-import {
-  getTicket,
-  createTicket,
-  updateTicket
-} from '@/api/ticket'
 import { getScenicSpots } from '@/api/scenic'
+import {
+    createTicket,
+    getTicket,
+    updateTicket
+} from '@/api/ticket'
+import { ArrowLeft } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
+import { computed, onMounted, reactive, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const router = useRouter()
 const route = useRoute()

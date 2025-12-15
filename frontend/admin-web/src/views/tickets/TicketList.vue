@@ -130,23 +130,23 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import {
-  Search,
-  Refresh,
-  Plus,
-  Edit,
-  Delete,
-  Calendar
-} from '@element-plus/icons-vue'
-import {
-  getTickets,
-  deleteTicket,
-  updateTicketStatus
-} from '@/api/ticket'
 import { getScenicSpots } from '@/api/scenic'
+import {
+    deleteTicket,
+    getTickets,
+    updateTicketStatus
+} from '@/api/ticket'
+import {
+    Calendar,
+    Delete,
+    Edit,
+    Plus,
+    Refresh,
+    Search
+} from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { onMounted, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 

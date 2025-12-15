@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  */
 @Data
 public class TicketPriceResponse {
-    
+
     private Long id;
     private Long ticketId;
     private String ticketName;
@@ -30,7 +30,7 @@ public class TicketPriceResponse {
     private Boolean isActive;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
-    
+
     /**
      * 转换价格类型文本
      */
@@ -43,14 +43,14 @@ public class TicketPriceResponse {
             default -> "未知";
         };
     }
-    
+
     /**
      * 计算已售数量
      */
     public void setInventorySold() {
         this.inventorySold = this.inventoryTotal - this.inventoryAvailable - this.inventoryLocked;
     }
-    
+
     /**
      * 计算库存占用率（百分比）
      */
@@ -60,7 +60,7 @@ public class TicketPriceResponse {
         }
         return (double) (inventorySold + inventoryLocked) / inventoryTotal * 100;
     }
-    
+
     /**
      * 判断库存是否充足
      */

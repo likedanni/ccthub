@@ -147,16 +147,16 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import { ArrowLeft, Plus, Edit, Delete } from '@element-plus/icons-vue'
 import {
-  getTicket,
-  getTicketPricesByTicket,
-  batchSaveTicketPrices,
-  deleteTicketPrice
+    batchSaveTicketPrices,
+    deleteTicketPrice,
+    getTicket,
+    getTicketPricesByTicket
 } from '@/api/ticket'
+import { ArrowLeft, Delete, Edit, Plus } from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { onMounted, reactive, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const router = useRouter()
 const route = useRoute()
