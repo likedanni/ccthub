@@ -6,12 +6,15 @@ import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ccthub.userservice.dto.payment.PaymentRequest;
 import com.ccthub.userservice.dto.payment.PaymentResponse;
+import com.ccthub.userservice.entity.Order;
 import com.ccthub.userservice.entity.Payment;
+import com.ccthub.userservice.repository.OrderRepository;
 import com.ccthub.userservice.repository.PaymentRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -29,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
+    private final OrderRepository orderRepository;
 
     /**
      * 创建支付订单
@@ -59,7 +63,7 @@ public class PaymentService {
     }
 
     /**
-     * 更新支付状态
+     * 更新支付状态（支付回调处理）
      */
     @Transactional
     public void updatePaymentStatus(String paymentNo, Integer status, String thirdPartyNo) {
@@ -71,12 +75,45 @@ public class PaymentService {
 
         if (status.equals(Payment.STATUS_SUCCESS)) {
             payment.setPaymentTime(LocalDateTime.now());
+            // 支付成功，异步更新订单状态
+            updateOrderStatusAsync(payment.getOrderNo());
         }
 
         payment.setCallbackTime(LocalDateTime.now());
         paymentRepository.save(payment);
 
         log.info("支付状态更新成功，paymentNo={}, status={}", paymentNo, status);
+    }
+
+    /**
+     * 异步更新订单状态（支付成功后）
+     */
+    @Async
+    @Transactional
+    public void updateOrderStatusAsync(String orderNo) {
+        try {
+            log.info("开始更新订单状态，orderNo={}", orderNo);
+            
+            Order order = orderRepository.findByOrderNo(orderNo)
+                    .orElseThrow(() -> new IllegalArgumentException("订单不存在"));
+
+            // 只有待支付订单才能更新为已支付
+            if (!Order.OrderStatus.PENDING_PAYMENT.equals(order.getStatus())) {
+                log.warn("订单状态不是待支付，无法更新，orderNo={}, currentStatus={}", orderNo, order.getStatus());
+                return;
+            }
+
+            // 更新订单状态为已支付
+            order.setStatus(Order.OrderStatus.PAID);
+            order.setPayTime(LocalDateTime.now());
+            orderRepository.save(order);
+
+            log.info("订单状态更新成功，orderNo={}, status={}", orderNo, Order.OrderStatus.PAID);
+        } catch (Exception e) {
+            log.error("更新订单状态失败，orderNo={}, error={}", orderNo, e.getMessage(), e);
+            // 这里可以发送到消息队列重试
+            throw e;
+        }
     }
 
     /**
