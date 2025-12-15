@@ -1,11 +1,11 @@
-import request from './request'
+import request from "./request";
 
 /**
  * 创建退款申请
  */
 export function createRefund(data) {
   return request({
-    url: "/api/refunds",
+    url: "/refunds",
     method: "post",
     data,
   });
@@ -16,7 +16,7 @@ export function createRefund(data) {
  */
 export function auditRefund(data) {
   return request({
-    url: "/api/refunds/audit",
+    url: "/refunds/audit",
     method: "put",
     data,
   });
@@ -27,7 +27,7 @@ export function auditRefund(data) {
  */
 export function getRefund(refundNo) {
   return request({
-    url: `/api/refunds/${refundNo}`,
+    url: `/refunds/${refundNo}`,
     method: "get",
   });
 }
@@ -37,7 +37,7 @@ export function getRefund(refundNo) {
  */
 export function getRefunds(params) {
   return request({
-    url: "/api/refunds",
+    url: "/refunds",
     method: "get",
     params,
   });
@@ -48,7 +48,7 @@ export function getRefunds(params) {
  */
 export function getRefundStatistics() {
   return request({
-    url: "/api/refunds/statistics",
+    url: "/refunds/statistics",
     method: "get",
   });
 }

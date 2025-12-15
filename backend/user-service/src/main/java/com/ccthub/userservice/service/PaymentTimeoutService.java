@@ -74,11 +74,11 @@ public class PaymentTimeoutService {
                         releaseStock(order);
 
                         closedCount++;
-                        log.info("订单已超时取消，orderNo={}, paymentNo={}", 
+                        log.info("订单已超时取消，orderNo={}, paymentNo={}",
                                 order.getOrderNo(), payment.getPaymentNo());
                     }
                 } catch (Exception e) {
-                    log.error("处理超时订单失败，paymentNo={}, error={}", 
+                    log.error("处理超时订单失败，paymentNo={}, error={}",
                             payment.getPaymentNo(), e.getMessage(), e);
                     // 继续处理其他订单
                 }
@@ -95,7 +95,7 @@ public class PaymentTimeoutService {
      */
     private void releaseStock(Order order) {
         try {
-            log.info("释放订单库存，orderNo={}, ticketId={}, quantity={}", 
+            log.info("释放订单库存，orderNo={}, ticketId={}, quantity={}",
                     order.getOrderNo(), order.getTicketId(), order.getVisitorCount());
 
             // TODO: 调用TicketService释放库存

@@ -79,7 +79,7 @@ public class RefundService {
         refund.setStatus(OrderRefund.STATUS_PENDING_AUDIT);
 
         OrderRefund saved = refundRepository.save(refund);
-        log.info("退款申请创建成功，refundNo={}, refundAmount={}, refundFee={}, actualRefund={}", 
+        log.info("退款申请创建成功，refundNo={}, refundAmount={}, refundFee={}, actualRefund={}",
                 saved.getRefundNo(), saved.getRefundAmount(), saved.getRefundFee(), saved.getActualRefund());
 
         return convertToResponse(saved);

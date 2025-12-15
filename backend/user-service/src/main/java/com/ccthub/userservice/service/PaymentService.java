@@ -93,7 +93,7 @@ public class PaymentService {
     public void updateOrderStatusAsync(String orderNo) {
         try {
             log.info("开始更新订单状态，orderNo={}", orderNo);
-            
+
             Order order = orderRepository.findByOrderNo(orderNo)
                     .orElseThrow(() -> new IllegalArgumentException("订单不存在"));
 

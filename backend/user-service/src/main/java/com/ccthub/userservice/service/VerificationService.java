@@ -2,7 +2,6 @@ package com.ccthub.userservice.service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -64,7 +63,7 @@ public class VerificationService {
         String lockKey = VERIFICATION_LOCK_PREFIX + verificationCode;
         Boolean lockAcquired = redisTemplate.opsForValue().setIfAbsent(
                 lockKey, "1", LOCK_EXPIRE_SECONDS, TimeUnit.SECONDS);
-        
+
         if (Boolean.FALSE.equals(lockAcquired)) {
             log.warn("票券正在核销中，请勿重复操作，verificationCode={}", verificationCode);
             throw new RuntimeException("票券正在核销中，请勿重复操作");
@@ -110,7 +109,7 @@ public class VerificationService {
         String lockKey = VERIFICATION_LOCK_PREFIX + "order:" + orderId;
         Boolean lockAcquired = redisTemplate.opsForValue().setIfAbsent(
                 lockKey, "1", LOCK_EXPIRE_SECONDS, TimeUnit.SECONDS);
-        
+
         if (Boolean.FALSE.equals(lockAcquired)) {
             log.warn("订单正在批量核销中，请勿重复操作，orderId={}", orderId);
             throw new RuntimeException("订单正在批量核销中，请勿重复操作");

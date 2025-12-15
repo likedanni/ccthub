@@ -526,7 +526,6 @@ CREATE TABLE `order_changes` (
     CONSTRAINT `fk_order_changes_new_ticket` FOREIGN KEY (`new_ticket_id`) REFERENCES `tickets` (`id`) ON DELETE
   SET NULL ON UPDATE CASCADE
 ) COMMENT = "门票订单改签记录表。涉及库存释放和重新锁定。";
-
 -- 25. 订单核销记录表
 CREATE TABLE `order_verifications` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT COMMENT "核销ID，主键自增",
@@ -543,7 +542,6 @@ CREATE TABLE `order_verifications` (
   CONSTRAINT `fk_verifications_order` FOREIGN KEY (`order_no`) REFERENCES `orders` (`order_no`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `fk_verifications_merchant` FOREIGN KEY (`merchant_id`) REFERENCES `merchants` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) COMMENT = "订单核销记录表。记录每次核销操作，支持部分核销和批量核销。";
-
 -- 26. 用户反馈表
 CREATE TABLE `user_feedback` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT COMMENT "反馈ID，主键自增",

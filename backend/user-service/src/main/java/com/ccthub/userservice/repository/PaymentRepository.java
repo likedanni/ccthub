@@ -67,6 +67,6 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
      * 查询超时未支付订单
      */
     @Query("SELECT p FROM Payment p WHERE p.status = :status AND p.createTime < :timeoutTime")
-    List<Payment> findTimeoutPendingPayments(@Param("status") Integer status, 
-                                              @Param("timeoutTime") LocalDateTime timeoutTime);
+    List<Payment> findTimeoutPendingPayments(@Param("status") Integer status,
+            @Param("timeoutTime") LocalDateTime timeoutTime);
 }

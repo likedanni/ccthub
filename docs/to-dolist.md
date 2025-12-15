@@ -376,8 +376,8 @@
   - [x] 按退票规则计算退款金额（RefundPolicyService）
   - [x] 退款手续费计算（按天数梯度）
   - [x] 部分退款支持（calculatePartialRefund）
-  - [x] 退款预览API（GET /api/refunds/preview/{orderNo}）
-  - [x] 退款规则JSON配置（tickets.refund_policy字段）
+  - [x] 退款预览 API（GET /api/refunds/preview/{orderNo}）
+  - [x] 退款规则 JSON 配置（tickets.refund_policy 字段）
 
 **3.5 核销系统** ⏳ 已完成 50%
 
@@ -386,12 +386,12 @@
     - [x] 二维码扫描
     - [x] 核销码验证
     - [x] 核销状态更新
-  - [x] 防重复核销（Redis分布式锁，30秒过期）
-  - [x] 核销记录存储（OrderVerification实体）
+  - [x] 防重复核销（Redis 分布式锁，30 秒过期）
+  - [x] 核销记录存储（OrderVerification 实体）
   - [x] 批量核销（VerificationService.batchVerify）
   - [x] 核销统计（VerificationService.getStatistics）
 - [ ] 核销管理（商户端）待完善
-  - [ ] 核销记录列表（待开发Controller）
+  - [ ] 核销记录列表（待开发 Controller）
   - [ ] 按日期/状态筛选（待开发）
   - [ ] 核销统计页面（待开发前端）
   - [ ] 核销异常处理（待完善）
@@ -400,8 +400,8 @@
 
 - [x] 订单状态同步
   - [x] 支付成功 → 订单更新（PaymentService.updateOrderStatusAsync）
-  - [x] 支付超时 → 订单取消（PaymentTimeoutService定时任务）
-  - [x] 库存释放（TODO: 集成TicketService）
+  - [x] 支付超时 → 订单取消（PaymentTimeoutService 定时任务）
+  - [x] 库存释放（TODO: 集成 TicketService）
 - [ ] 异步通知处理 待完善
   - [ ] 消息队列（本地事务表，待开发）
   - [ ] 重试机制（待开发）
@@ -440,7 +440,7 @@
 - ✅ 支付基础功能完整（创建/查询/关闭/回调框架）
 - ⏳ 支付模拟环境测试通过（待微信支付集成）
 - ✅ 退款流程正常运作（申请/审核/处理/退款规则计算）
-- ✅ 核销功能正常，防重复核销有效（Redis分布式锁）
+- ✅ 核销功能正常，防重复核销有效（Redis 分布式锁）
 - ⏳ 商户端核销管理功能完整（待开发前端）
 - ⏳ 异常场景处理完善（待测试）
 - ✅ 后台管理页面完整（支付流水/退款管理）
@@ -470,7 +470,6 @@
 - ⏳ 核销管理前端（商户端核销记录列表/统计页面）
 - ⏳ 消息队列集成（本地事务表/重试机制）
 - ⏳ 单元测试和集成测试
-
 
 #### 参考资料
 
