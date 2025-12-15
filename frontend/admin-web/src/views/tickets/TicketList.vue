@@ -170,7 +170,7 @@ const pagination = reactive({
 const loadScenicSpots = async () => {
   try {
     const res = await getScenicSpots({ size: 1000 })
-    scenicSpots.value = res.data.content
+    scenicSpots.value = res.content || []
   } catch (error) {
     ElMessage.error('加载景区列表失败')
   }
@@ -186,8 +186,8 @@ const loadData = async () => {
       ...searchForm
     }
     const res = await getTickets(params)
-    tableData.value = res.data.content
-    pagination.total = res.data.totalElements
+    tableData.value = res.content || []
+    pagination.total = res.totalElements || 0
   } catch (error) {
     ElMessage.error('加载数据失败')
   } finally {
