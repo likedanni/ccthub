@@ -1,149 +1,118 @@
-# 🎉 系统已成功启动！
+# 快速启动与验证指南 🚀
 
-## ✅ 当前状态
-
-- **后端服务**: ✅ 运行中 (http://localhost:8080)
-- **PC 管理后台**: ✅ 运行中 (http://localhost:3000)
-- **数据库**: ✅ 本地 MySQL (localhost:3306/cct-hub)
-
-## 🔐 测试账号
-
-### 管理员账号
-
-- **手机号**: `13800138000`
-- **密码**: 任意（当前密码验证已禁用）
-- **用户 ID**: 10
-- **会员等级**: 钻石会员 (Level 4)
-- **钱包余额**: ¥1,888.88
-- **可用积分**: 3,000 分
-
-### 普通用户账号
-
-- **手机号**: `13900139000`
-- **密码**: 任意（当前密码验证已禁用）
-- **用户 ID**: 11
-- **会员等级**: 普通会员 (Level 1)
-- **钱包余额**: ¥99.99
-- **可用积分**: 150 分
-
-## 🚀 立即开始测试
-
-### 方式 1: 使用浏览器
-
-1. 打开浏览器访问: http://localhost:3000
-2. 输入手机号: `13800138000`
-3. 输入任意密码（比如 `123456`）
-4. 点击登录
-
-### 方式 2: 使用 API 测试
+## 一、环境检查
 
 ```bash
-curl -X POST http://localhost:8080/api/users/login \
-  -H "Content-Type: application/json" \
-  -d '{"phone":"13800138000","password":"test"}'
+# 1. MySQL服务
+mysql -uroot -p12345678 -e "SELECT VERSION();"
+
+# 2. 数据验证
+mysql -uroot -p12345678 cct-hub -e "
+  SELECT COUNT(*) as 票种 FROM tickets;
+  SELECT COUNT(*) as 订单 FROM orders;
+"
+# ✅ 应显示: 票种=4, 订单=5
 ```
 
-成功响应示例:
+## 二、启动服务
 
-```json
-{
-  "id": 10,
-  "phone": "13800138000",
-  "access_token": "eyJhbGciOiJIUzUxMiJ9...",
-  "refresh_token": "eyJhbGciOiJIUzUxMiJ9...",
-  "ai_default_model": "claude-haiku-4.5"
-}
-```
-
-## 📋 可用的 API 接口
-
-### 用户管理
-
-- `POST /api/users/login` - 用户登录
-- `POST /api/users/register` - 用户注册
-- `GET /api/users/{id}/profile` - 获取用户信息
-- `PUT /api/users/{id}/profile` - 更新用户信息
-- `POST /api/users/{id}/change-password` - 修改密码
-- `POST /api/users/{id}/payment-password` - 设置支付密码
-
-### 测试示例
-
+### 后端（端口8080）
 ```bash
-# 获取用户信息
-curl http://localhost:8080/api/users/10/profile
-
-# 更新用户昵称
-curl -X PUT http://localhost:8080/api/users/10/profile \
-  -H "Content-Type: application/json" \
-  -d '{"nickname":"新昵称","avatarUrl":"https://example.com/avatar.jpg"}'
-```
-
-## ⚠️ 重要说明
-
-### 当前配置
-
-1. **密码验证已禁用**: 为方便测试，当前任何密码都可以登录
-2. **Spring Security 已放开**: 所有 API endpoint 都可以直接访问
-3. **使用本地 MySQL**: 连接 localhost:3306，不是 Docker 容器
-4. **Flyway 已禁用**: JPA 使用 ddl-auto=update 自动更新表结构
-
-### 数据库连接信息
-
-```
-Host: localhost
-Port: 3306
-Database: cct-hub
-Username: root
-Password: 12345678
-```
-
-### 后续优化建议
-
-1. ✅ 恢复密码验证功能
-2. ✅ 配置正确的 BCrypt 密码哈希
-3. ✅ 恢复 Spring Security 的访问控制
-4. ✅ 启用 JWT token 验证
-5. ✅ 重新启用 Flyway 进行数据库版本管理
-
-## 🛠️ 故障排查
-
-### 如果登录失败
-
-1. 检查后端是否启动: `curl http://localhost:8080/api/users/10/profile`
-2. 查看后端日志: `tail -f /tmp/backend.log`
-3. 确认用户数据存在:
-   ```bash
-   mysql -uroot -p12345678 -e "SELECT id, phone, nickname FROM \`cct-hub\`.users;"
-   ```
-
-### 重启服务
-
-```bash
-# 停止后端
-lsof -ti:8080 | xargs kill -9
-
-# 重新启动
 cd /Users/like/CCTHub/backend/user-service
-mvn spring-boot:run > /tmp/backend.log 2>&1 &
+mvn spring-boot:run
+# 等待: Started UserServiceApplication
 ```
 
-## 📊 系统架构
-
-```
-┌─────────────────┐         ┌──────────────────┐         ┌─────────────┐
-│  PC管理后台      │  HTTP   │  Spring Boot     │  JDBC   │   MySQL     │
-│  localhost:3000 │────────▶│  localhost:8080  │────────▶│ localhost   │
-│  (Vue3)         │         │  (Java 17)       │         │  :3306      │
-└─────────────────┘         └──────────────────┘         └─────────────┘
+### 前端（端口自动分配）
+```bash
+cd /Users/like/CCTHub/frontend/admin-web
+npm run dev  
+# 查看输出中的端口号，通常是3000/3001/3002
 ```
 
-## 🎯 下一步
+## 三、验证功能
 
-Sprint 1 核心功能已完成：
+### 3.1 后端API测试
+```bash
+# 票种API（4个票种）
+curl "http://localhost:8080/api/tickets?page=0&size=10"
 
-- ✅ 用户注册登录
-- ✅ 用户信息管理
-- ✅ PC 管理后台界面
-- ✅ API 接口开发
+# 订单API（5个订单）
+curl "http://localhost:8080/api/orders"
+```
 
-**现在可以开始测试并继续开发其他功能！**
+### 3.2 前端页面测试
+
+**步骤1**: 打开浏览器 → 前端日志中显示的地址（如http://localhost:3002）
+
+**步骤2**: 登录
+- 手机号: `13800138000`
+- 密码: `password123`
+
+**步骤3**: 测试菜单
+- ✅ 点击「票种管理」→ 应显示4个票种
+- ✅ 点击「订单管理」→ 应显示5个订单
+
+## 四、问题排查
+
+### ❌ "票种管理"点击无反应
+
+**检查后端**:
+```bash
+curl http://localhost:8080/api/tickets
+# 应返回JSON数据，包含content字段
+```
+
+**解决**: 确保后端在8080端口运行
+
+### ❌ "订单管理"提示资源不存在
+
+**检查表结构**:
+```bash
+mysql -uroot -p12345678 -e "DESC cct-hub.orders;" | grep "^id"
+# 应该有: id bigint NO PRI NULL auto_increment
+```
+
+**已修复**: 
+1. orders表添加了自增主键id
+2. 前端数据访问路径已修复（commit: 97eb9f54）
+
+## 五、服务管理
+
+### 停止服务
+```bash
+pkill -f "spring-boot:run"  # 后端
+pkill -f "vite"              # 前端
+```
+
+### 查看日志
+```bash
+# 后端（如果后台启动）
+tail -f /tmp/backend.log
+
+# 前端（如果后台启动）
+tail -f /tmp/frontend.log
+```
+
+## 六、自动化测试
+
+```bash
+# 运行测试脚本
+./test-frontend-backend.sh
+
+# 包含:
+# - 后端API健康检查
+# - 票种/订单数据验证  
+# - 数据库统计信息
+```
+
+## 相关文档
+
+- **BUG_FIX_REPORT_20251215.md** - Bug修复详细报告
+- **COMPLETE_TEST_REPORT.md** - 完整测试报告
+- **test-frontend-backend.sh** - 自动化测试脚本
+
+---
+
+**最后更新**: 2025-12-15  
+**状态**: 所有后端功能已验证通过，前端需手动测试
