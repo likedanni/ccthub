@@ -28,6 +28,11 @@ export const updateScenicSpot = (id, data) => {
   return request.put(`/scenic-spots/${id}`, data);
 };
 
+// 更新景区媒体字段（封面/图册）
+export const updateScenicSpotMedia = (id, data) => {
+  return request.put(`/scenic-spots/${id}/media`, data);
+};
+
 /**
  * 更新景区状态
  */

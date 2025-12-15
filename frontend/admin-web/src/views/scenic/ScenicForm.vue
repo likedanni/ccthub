@@ -126,8 +126,14 @@
                 <el-image :src="form.coverImage" :preview-src-list="[form.coverImage]"
                     style="width: 200px; height: 150px" fit="cover" />
             </div>
-            <el-upload action="/api/files/upload" :show-file-list="false" :on-success="handleCoverSuccess"
-                :headers="{ Authorization: `Bearer ${getToken()}` }">
+            <el-upload
+                :action="uploadAction()"
+                :data="{ category: 'scenic' }"
+                :show-file-list="false"
+                :on-success="handleCoverSuccess"
+                :headers="uploadHeaders(getToken)"
+                accept="image/*"
+                :before-upload="beforeUpload">
                 <el-button size="small" type="primary">{{ form.coverImage ? '更换封面' : '上传封面' }}</el-button>
             </el-upload>
         </el-form-item>
@@ -143,8 +149,15 @@
                     </el-button>
                 </div>
             </div>
-            <el-upload action="/api/files/upload" :show-file-list="false" :on-success="handleImageSuccess"
-                :headers="{ Authorization: `Bearer ${getToken()}` }" style="margin-top: 10px">
+            <el-upload
+                :action="uploadAction()"
+                :data="{ category: 'scenic' }"
+                :show-file-list="false"
+                :on-success="handleImageSuccess"
+                :headers="uploadHeaders(getToken)"
+                accept="image/*"
+                :before-upload="beforeUpload"
+                style="margin-top: 10px">
                 <el-button size="small" type="primary">添加图片</el-button>
             </el-upload>
         </el-form-item>
@@ -167,9 +180,11 @@
 </template>
 
 <script setup>
+import { getCitiesByProvince, getDistrictsByCity, getProvinces } from "@/api/region";
 import { createScenicSpot, updateScenicSpot } from "@/api/scenic";
+import { parseUploadResponse, uploadAction, uploadHeaders, beforeUpload as utilBeforeUpload } from "@/utils/upload";
 import { ElMessage } from "element-plus";
-import { reactive, ref, watch } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 
 const props = defineProps({
     formData: Object,
@@ -227,6 +242,35 @@ const loadProvinces = async () => {
     }
 };
 
+// 回填省市区（在 formData 和 provinces 可用时调用）
+const backfillLocation = async (source) => {
+    // source 可以是 props.formData 或 form
+    const src = source || props.formData || form;
+    if (!src) return;
+
+    try {
+        if (src.province && provinces.value.length > 0) {
+            const province = provinces.value.find(p => p.name === src.province);
+            if (province) {
+                formProvinceCode.value = province.code;
+                const citiesData = await getCitiesByProvince(province.code);
+                cities.value = citiesData;
+
+                if (src.city) {
+                    const city = citiesData.find(c => c.name === src.city);
+                    if (city) {
+                        formCityCode.value = city.code;
+                        const districtsData = await getDistrictsByCity(city.code);
+                        districts.value = districtsData;
+                    }
+                }
+            }
+        }
+    } catch (err) {
+        console.error('回填省市区失败', err);
+    }
+};
+
 // 省份变化处理
 const handleProvinceChange = async (provinceCode) => {
     formCityCode.value = '';
@@ -270,37 +314,56 @@ const handleCityChange = async (cityCode) => {
     }
 };
 
+// 重置表单为初始空值（用于新增时清空旧数据）
+const resetForm = () => {
+    form.name = "";
+    form.level = "";
+    form.introduction = "";
+    form.province = "";
+    form.city = "";
+    form.district = "";
+    form.address = "";
+    form.longitude = null;
+    form.latitude = null;
+    form.openingHours = "";
+    form.contactPhone = "";
+    form.coverImage = "";
+    form.images = [];
+    form.tags = [];
+    form.facilities = [];
+    form.ticketInfo = "";
+    form.trafficInfo = "";
+    form.notice = "";
+    form.status = "ACTIVE";
+
+    formProvinceCode.value = '';
+    formCityCode.value = '';
+    cities.value = [];
+    districts.value = [];
+
+    if (formRef.value && formRef.value.clearValidate) {
+        formRef.value.clearValidate();
+    }
+};
+
 // 监听formData变化
 watch(
     () => props.formData,
     async (newVal) => {
-        if (newVal) {
-            Object.assign(form, {
-                ...newVal,
-                images: newVal.images || [],
-                tags: newVal.tags || [],
-                facilities: newVal.facilities || [],
-            });
-
-            // 如果有省份数据,尝试回填省市区选择器
-            if (newVal.province && provinces.value.length > 0) {
-                const province = provinces.value.find(p => p.name === newVal.province);
-                if (province) {
-                    formProvinceCode.value = province.code;
-                    const citiesData = await getCitiesByProvince(province.code);
-                    cities.value = citiesData;
-
-                    if (newVal.city) {
-                        const city = citiesData.find(c => c.name === newVal.city);
-                        if (city) {
-                            formCityCode.value = city.code;
-                            const districtsData = await getDistrictsByCity(city.code);
-                            districts.value = districtsData;
-                        }
-                    }
-                }
-            }
+        console.debug('ScenicForm watch triggered, formData id:', newVal && newVal.id, 'provinces loaded:', provinces.value && provinces.value.length);
+        if (!newVal) {
+            // 新增模式或清空时，重置表单，避免残留上一次编辑的数据
+            resetForm();
+            return;
         }
+
+        Object.assign(form, {
+            ...newVal,
+            images: newVal.images || [],
+            tags: newVal.tags || [],
+            facilities: newVal.facilities || [],
+        });
+        await backfillLocation(newVal);
     },
     { immediate: true }
 );
@@ -310,26 +373,41 @@ const getToken = () => {
     return localStorage.getItem("token") || "";
 };
 
+// 使用共享上传工具的校验与响应解析
+const beforeUpload = (file) => {
+    const ok = utilBeforeUpload(file);
+    if (!ok) {
+        ElMessage.error('请上传图片文件且大小不超过 5MB');
+    }
+    return ok;
+};
+
 // 封面上传成功
 const handleCoverSuccess = (response) => {
-    if (response.code === 200) {
-        form.coverImage = response.data.url;
-        ElMessage.success("上传成功");
+    console.debug('handleCoverSuccess response:', response);
+    const url = parseUploadResponse(response);
+    if (url) {
+        form.coverImage = url;
+        ElMessage.success('上传成功');
+        // 不在此处自动提交或关闭弹窗；只更新表单中的封面字段，用户需点击“提交”保存到后端
     } else {
-        ElMessage.error("上传失败");
+        console.warn('unexpected upload response', response);
+        ElMessage.error('上传失败');
     }
 };
 
 // 图片上传成功
 const handleImageSuccess = (response) => {
-    if (response.code === 200) {
-        if (!form.images) {
-            form.images = [];
-        }
-        form.images.push(response.data.url);
-        ElMessage.success("上传成功");
+    console.debug('handleImageSuccess response:', response);
+    const url = parseUploadResponse(response);
+    if (url) {
+        if (!form.images) form.images = [];
+        form.images.push(url);
+        ElMessage.success('上传成功');
+        // 仅更新表单内的 images 数组，用户点击“提交”时会一并保存
     } else {
-        ElMessage.error("上传失败");
+        console.warn('unexpected upload response', response);
+        ElMessage.error('上传失败');
     }
 };
 
@@ -345,11 +423,14 @@ const handleSubmit = async () => {
 
         submitting.value = true;
 
+        console.debug('Submitting scenic form, isEdit:', props.isEdit, 'payload:', JSON.parse(JSON.stringify(form)));
         if (props.isEdit) {
-            await updateScenicSpot(props.formData.id, form);
+            const resp = await updateScenicSpot(props.formData.id, form);
+            console.debug('updateScenicSpot response:', resp);
             ElMessage.success("更新成功");
         } else {
-            await createScenicSpot(form);
+            const resp = await createScenicSpot(form);
+            console.debug('createScenicSpot response:', resp);
             ElMessage.success("创建成功");
         }
 
@@ -366,6 +447,13 @@ const handleSubmit = async () => {
 // 组件挂载时加载省份列表
 onMounted(() => {
     loadProvinces();
+});
+
+// 当省份加载完成后，尝试回填（处理先打开表单后加载省份的情况）
+watch(provinces, async (val) => {
+    if (val && val.length > 0) {
+        await backfillLocation(props.formData || form);
+    }
 });
 </script>
 

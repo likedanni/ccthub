@@ -22,7 +22,7 @@ public class FileStorageService {
 
     private static final Logger logger = LoggerFactory.getLogger(FileStorageService.class);
 
-    @Value("${file.upload-dir:uploads/avatars}")
+    @Value("${file.upload-dir:uploads}")
     private String uploadDir;
 
     @Value("${file.base-url:http://localhost:8080}")
@@ -35,7 +35,18 @@ public class FileStorageService {
      * @return 文件访问URL
      */
     public String uploadAvatar(MultipartFile file) throws IOException {
-        logger.info("开始上传头像: filename={}, size={}, contentType={}",
+        return upload(file, "avatars");
+    }
+
+    /**
+     * 通用上传方法，按类别存储到子目录
+     * 
+     * @param file     上传的文件
+     * @param category 子目录，例如 avatars、scenic、activity、feedback
+     * @return 文件访问URL
+     */
+    public String upload(MultipartFile file, String category) throws IOException {
+        logger.info("开始上传文件: category={}, filename={}, size={}, contentType={}", category,
                 file.getOriginalFilename(), file.getSize(), file.getContentType());
 
         // 验证文件
@@ -46,8 +57,13 @@ public class FileStorageService {
             throw e;
         }
 
-        // 创建上传目录
-        Path uploadPath = Paths.get(uploadDir);
+        // 规范 category
+        String safeCategory = (category == null || category.trim().isEmpty()) ? "others" : category.trim();
+        // 允许的目录名简单过滤，移除可能的路径分隔符
+        safeCategory = safeCategory.replaceAll("[\\\\/]+", "");
+
+        // 创建上传目录 base/category
+        Path uploadPath = Paths.get(uploadDir, safeCategory);
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
@@ -61,9 +77,9 @@ public class FileStorageService {
         Path targetPath = uploadPath.resolve(newFilename);
         Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
 
-        // 返回文件URL
-        String fileUrl = baseUrl + "/api/files/avatars/" + newFilename;
-        logger.info("头像上传成功: {} -> {}", originalFilename, fileUrl);
+        // 返回文件URL，路径格式: /api/files/{category}/{filename}
+        String fileUrl = String.format("%s/api/files/%s/%s", baseUrl, safeCategory, newFilename);
+        logger.info("文件上传成功: {} -> {}", originalFilename, fileUrl);
         return fileUrl;
     }
 
@@ -75,8 +91,8 @@ public class FileStorageService {
             throw new IOException("上传文件不能为空");
         }
 
-        // 验证文件大小 (最大2MB)
-        long maxSize = 2 * 1024 * 1024; // 2MB
+        // 验证文件大小 (最大5MB)
+        long maxSize = 5 * 1024 * 1024; // 5MB
         if (file.getSize() > maxSize) {
             throw new IOException("文件大小不能超过2MB,当前文件: " + file.getSize() + " bytes");
         }

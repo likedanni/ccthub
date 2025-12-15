@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ccthub.userservice.dto.ApiResponse;
 import com.ccthub.userservice.dto.PageResponse;
+import com.ccthub.userservice.dto.ScenicMediaUpdateRequest;
 import com.ccthub.userservice.dto.ScenicSpotDetailResponse;
 import com.ccthub.userservice.dto.ScenicSpotRequest;
 import com.ccthub.userservice.dto.ScenicSpotResponse;
@@ -85,6 +86,20 @@ public class ScenicSpotController {
             @RequestBody ScenicSpotRequest request) {
         try {
             ScenicSpotDetailResponse result = scenicSpotService.updateScenicSpot(id, request);
+            return ApiResponse.success("更新成功", result);
+        } catch (Exception e) {
+            return ApiResponse.error(400, e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}/media")
+    @Operation(summary = "更新景区媒体字段", description = "仅更新封面与图册字段")
+    public ApiResponse<ScenicSpotDetailResponse> updateScenicMedia(
+            @PathVariable Long id,
+            @RequestBody ScenicMediaUpdateRequest request) {
+        try {
+            ScenicSpotDetailResponse result = scenicSpotService.updateScenicMedia(id, request.getCoverImage(),
+                    request.getImages());
             return ApiResponse.success("更新成功", result);
         } catch (Exception e) {
             return ApiResponse.error(400, e.getMessage());

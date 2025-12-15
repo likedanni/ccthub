@@ -1,11 +1,11 @@
-import request from "@/utils/request";
+import request from "./request";
 
 /**
  * 获取所有省份
  */
 export const getProvinces = () => {
   return request({
-    url: "/api/regions/provinces",
+    url: "/regions/provinces",
     method: "get",
   });
 };
@@ -15,7 +15,7 @@ export const getProvinces = () => {
  */
 export const getCitiesByProvince = (provinceCode) => {
   return request({
-    url: "/api/regions/cities",
+    url: "/regions/cities",
     method: "get",
     params: { provinceCode },
   });
@@ -26,7 +26,7 @@ export const getCitiesByProvince = (provinceCode) => {
  */
 export const getDistrictsByCity = (cityCode) => {
   return request({
-    url: "/api/regions/districts",
+    url: "/regions/districts",
     method: "get",
     params: { cityCode },
   });

@@ -102,6 +102,27 @@ public class ScenicSpotService {
     }
 
     /**
+     * 仅更新媒体字段（封面与图册），用于上传后即时保存
+     */
+    @Transactional
+    public ScenicSpotDetailResponse updateScenicMedia(Long id, String coverImage, List<String> images)
+            throws Exception {
+        ScenicSpot scenicSpot = scenicSpotRepository.findById(id)
+                .orElseThrow(() -> new Exception("景区不存在"));
+
+        if (coverImage != null) {
+            scenicSpot.setCoverImage(coverImage);
+        }
+        if (images != null) {
+            // 保存为 JSON 字符串
+            scenicSpot.setImages(objectMapper.writeValueAsString(images));
+        }
+
+        ScenicSpot updated = scenicSpotRepository.save(scenicSpot);
+        return convertToDetailResponse(updated);
+    }
+
+    /**
      * 更新景区状态
      */
     @Transactional

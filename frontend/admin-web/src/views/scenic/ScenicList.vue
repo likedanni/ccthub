@@ -13,14 +13,14 @@
                 <el-form-item label="景区名称">
                     <el-input v-model="searchForm.name" placeholder="请输入景区名称" clearable />
                 </el-form-item>
-                <el-form-item label="省份">
+                <el-form-item label="省份" style="width: 240px">
                     <el-select v-model="searchForm.provinceCode" placeholder="请选择省份" clearable
                         @change="handleProvinceChange" style="width: 100%">
                         <el-option v-for="province in provinces" :key="province.code" :label="province.name"
                             :value="province.code" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="城市">
+                <el-form-item label="城市" style="width: 220px">
                     <el-select v-model="searchForm.city" placeholder="请选择城市" clearable
                         :disabled="!searchForm.provinceCode" style="width: 100%">
                         <el-option v-for="city in cities" :key="city.code" :label="city.name" :value="city.name" />
@@ -122,6 +122,7 @@ import { getCitiesByProvince, getProvinces } from "@/api/region";
 import {
     deleteScenicSpot,
     getScenicSpotList,
+    getScenicSpotDetail,
     updateScenicSpotStatus,
 } from "@/api/scenic";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -229,13 +230,24 @@ const handleCreate = () => {
     dialogVisible.value = true;
 };
 
-// 编辑
-const handleEdit = (row) => {
+// 编辑 - 请求完整详情再打开编辑对话框
+const handleEdit = async (row) => {
     dialogTitle.value = "编辑景区";
     isEdit.value = true;
-    // 深拷贝避免引用问题
-    currentRow.value = JSON.parse(JSON.stringify(row));
-    dialogVisible.value = true;
+    console.debug('handleEdit invoked, row id:', row && row.id);
+    try {
+        loading.value = true;
+        const resp = await getScenicSpotDetail(row.id);
+        // 返回的数据结构：{ id, ... }
+        currentRow.value = JSON.parse(JSON.stringify(resp));
+        console.debug('currentRow loaded detail id:', currentRow.value && currentRow.value.id);
+        dialogVisible.value = true;
+    } catch (err) {
+        console.error('加载景区详情失败', err);
+        ElMessage.error('加载详情失败');
+    } finally {
+        loading.value = false;
+    }
 };
 
 // 查看

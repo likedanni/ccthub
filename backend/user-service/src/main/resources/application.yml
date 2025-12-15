@@ -4,8 +4,8 @@ spring:
   # 文件上传配置
   servlet:
     multipart:
-      max-file-size: 2MB # 单个文件最大2MB
-      max-request-size: 2MB # 整个请求最大2MB
+      max-file-size: 5MB # 单个文件最大5MB
+      max-request-size: 5MB # 整个请求最大5MB
   jpa:
     hibernate:
       ddl-auto: update
@@ -39,3 +39,7 @@ logging:
   level:
     root: INFO
     com.ccthub: DEBUG
+
+file:
+  upload-dir: uploads
+  base-url: ${FILE_BASE_URL:http://localhost:8080}
