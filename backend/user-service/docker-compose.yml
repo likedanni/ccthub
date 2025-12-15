@@ -17,6 +17,20 @@ services:
       timeout: 5s
       retries: 5
 
+  redis:
+    image: redis:7-alpine
+    container_name: redis-ccthub
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   user-service:
     build: .
     ports:
@@ -25,9 +39,16 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/cct-hub?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=12345678
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
       - JWT_SECRET=your-secret-key-change-in-production-12345
       - AI_DEFAULT_MODEL=claude-haiku-4.5
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     restart: unless-stopped
+
+volumes:
+  redis-data:
