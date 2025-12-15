@@ -4,23 +4,31 @@
       <div class="logo">
         <h2>长治文旅平台</h2>
       </div>
-      <el-menu
-        :default-active="activeMenu"
-        router
-        background-color="#304156"
-        text-color="#bfcbd9"
-        active-text-color="#409EFF"
-      >
+      <el-menu :default-active="activeMenu" router background-color="#304156" text-color="#bfcbd9"
+        active-text-color="#409EFF">
         <el-menu-item index="/dashboard">
-          <el-icon><DataLine /></el-icon>
+          <el-icon>
+            <DataLine />
+          </el-icon>
           <span>仪表盘</span>
         </el-menu-item>
         <el-sub-menu index="/users">
           <template #title>
-            <el-icon><User /></el-icon>
+            <el-icon>
+              <User />
+            </el-icon>
             <span>用户管理</span>
           </template>
           <el-menu-item index="/users/list">用户列表</el-menu-item>
+        </el-sub-menu>
+        <el-sub-menu index="/scenic">
+          <template #title>
+            <el-icon>
+              <Location />
+            </el-icon>
+            <span>景区管理</span>
+          </template>
+          <el-menu-item index="/scenic/list">景区列表</el-menu-item>
         </el-sub-menu>
       </el-menu>
     </el-aside>
@@ -32,9 +40,13 @@
           <div class="user-info">
             <el-dropdown @command="handleCommand">
               <span class="el-dropdown-link">
-                <el-icon><Avatar /></el-icon>
+                <el-icon>
+                  <Avatar />
+                </el-icon>
                 管理员
-                <el-icon class="el-icon--right"><ArrowDown /></el-icon>
+                <el-icon class="el-icon--right">
+                  <ArrowDown />
+                </el-icon>
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
@@ -54,9 +66,9 @@
 </template>
 
 <script setup>
+import { ElMessage } from 'element-plus'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ElMessage } from 'element-plus'
 
 const route = useRoute()
 const router = useRouter()

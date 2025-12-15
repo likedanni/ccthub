@@ -54,6 +54,7 @@ request.interceptors.response.use(
           localStorage.removeItem("token");
           router.push("/login");
         }
+        return Promise.reject(error);
       } else if (status === 403) {
         ElMessage.error("没有权限访问");
       } else if (status === 404) {

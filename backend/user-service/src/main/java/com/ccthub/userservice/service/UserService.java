@@ -88,6 +88,11 @@ public class UserService {
         User user = userRepository.findByPhone(request.getPhone())
                 .orElseThrow(() -> new Exception("User not found"));
 
+        // 检查用户状态
+        if ("INACTIVE".equals(user.getStatus())) {
+            throw new Exception("Account has been disabled");
+        }
+
         // 验证密码
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new Exception("Invalid password");
