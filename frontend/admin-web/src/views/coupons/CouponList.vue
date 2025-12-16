@@ -33,7 +33,7 @@
       </el-form>
 
       <!-- 数据表格 -->
-      <el-table :data="tableData" border style="width: 100%">
+      <el-table v-loading="loading" :data="tableData" border style="width: 100%">
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="name" label="优惠券名称" width="180" />
         <el-table-column prop="couponType" label="类型" width="100">
@@ -97,6 +97,9 @@
 <script setup>
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { onMounted, ref } from 'vue'
+import { getCoupons, updateCouponStatus } from '@/api/coupon'
+
+const loading = ref(false)
 
 const searchForm = ref({
   name: '',
@@ -140,11 +143,35 @@ const formatDiscount = (row) => {
   return '-'
 }
 
-const handleSearch = () => {
-  // TODO: 调用优惠券列表API
-  console.log('搜索条件:', searchForm.value)
-  tableData.value = []
-  pagination.value.total = 0
+const handleSearch = async () => {
+  loading.value = true
+  try {
+    const params = {
+      name: searchForm.value.name,
+      type: searchForm.value.couponType,
+      status: searchForm.value.status,
+      page: pagination.value.page - 1,
+      size: pagination.value.size
+    }
+    
+    const res = await getCoupons(params)
+    
+    if (res.success && res.data) {
+      tableData.value = res.data.content || []
+      pagination.value.total = res.data.totalElements || 0
+    } else {
+      tableData.value = []
+      pagination.value.total = 0
+      ElMessage.error(res.message || '获取数据失败')
+    }
+  } catch (error) {
+    console.error('查询优惠券列表失败:', error)
+    ElMessage.error('查询失败：' + (error.message || '未知错误'))
+    tableData.value = []
+    pagination.value.total = 0
+  } finally {
+    loading.value = false
+  }
 }
 
 const handleReset = () => {

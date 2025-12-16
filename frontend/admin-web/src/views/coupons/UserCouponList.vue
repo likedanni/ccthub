@@ -65,7 +65,7 @@
       </el-row>
 
       <!-- 数据表格 -->
-      <el-table :data="tableData" border style="width: 100%">
+      <el-table v-loading="loading" :data="tableData" border style="width: 100%">
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="userId" label="用户ID" width="100" />
         <el-table-column prop="phone" label="手机号" width="120" />
@@ -111,7 +111,11 @@
 </template>
 
 <script setup>
+import { ElMessage } from 'element-plus'
 import { onMounted, ref } from 'vue'
+import { getUserCoupons } from '@/api/coupon'
+
+const loading = ref(false)
 
 const searchForm = ref({
   userId: '',
@@ -179,16 +183,39 @@ const formatDiscount = (row) => {
   return '-'
 }
 
-const handleSearch = () => {
-  // TODO: 调用用户优惠券列表API
-  console.log('搜索条件:', searchForm.value)
-  tableData.value = []
-  pagination.value.total = 0
-  stats.value = {
-    unused: 0,
-    used: 0,
-    expired: 0,
-    total: 0
+const handleSearch = async () => {
+  loading.value = true
+  try {
+    const params = {
+      userId: searchForm.value.userId,
+      couponName: searchForm.value.couponName,
+      status: searchForm.value.useStatus,
+      page: pagination.value.page - 1,
+      size: pagination.value.size
+    }
+    
+    const res = await getUserCoupons(params)
+    
+    if (res.success && res.data) {
+      tableData.value = res.data.content || []
+      pagination.value.total = res.data.totalElements || 0
+      
+      // 更新统计数据
+      if (res.data.stats) {
+        stats.value = res.data.stats
+      }
+    } else {
+      tableData.value = []
+      pagination.value.total = 0
+      ElMessage.error(res.message || '获取数据失败')
+    }
+  } catch (error) {
+    console.error('查询用户优惠券列表失败:', error)
+    ElMessage.error('查询失败：' + (error.message || '未知错误'))
+    tableData.value = []
+    pagination.value.total = 0
+  } finally {
+    loading.value = false
   }
 }
 
