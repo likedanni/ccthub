@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @RestController
-@RequestMapping("/points")
+@RequestMapping("/api/points")
 @RequiredArgsConstructor
 @Tag(name = "积分管理", description = "用户积分相关接口")
 public class PointsController {
@@ -67,11 +67,11 @@ public class PointsController {
                     userId, source, startTime, endTime, page, size);
 
             Map<String, Object> result = new HashMap<>();
-            result.put("content", history.getContent());
-            result.put("totalElements", history.getTotalElements());
-            result.put("totalPages", history.getTotalPages());
-            result.put("currentPage", history.getNumber());
-            result.put("pageSize", history.getSize());
+            result.put("records", history.getContent());
+            result.put("total", history.getTotalElements());
+            result.put("size", history.getSize());
+            result.put("current", history.getNumber() + 1);
+            result.put("pages", history.getTotalPages());
 
             return ResponseEntity.ok(Map.of(
                     "success", true,
@@ -186,11 +186,11 @@ public class PointsController {
             Page<PointsInfoDTO> pointsList = pointsService.getUserPointsList(userId, phone, page, size);
 
             Map<String, Object> result = new HashMap<>();
-            result.put("content", pointsList.getContent());
-            result.put("totalElements", pointsList.getTotalElements());
-            result.put("totalPages", pointsList.getTotalPages());
-            result.put("currentPage", pointsList.getNumber());
-            result.put("pageSize", pointsList.getSize());
+            result.put("records", pointsList.getContent());
+            result.put("total", pointsList.getTotalElements());
+            result.put("size", pointsList.getSize());
+            result.put("current", pointsList.getNumber() + 1);
+            result.put("pages", pointsList.getTotalPages());
 
             return ResponseEntity.ok(Map.of(
                     "success", true,

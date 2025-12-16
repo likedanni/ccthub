@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @RestController
-@RequestMapping("/wallet")
+@RequestMapping("/api/wallet")
 @RequiredArgsConstructor
 @Tag(name = "钱包管理", description = "用户钱包相关接口")
 public class WalletController {
@@ -91,11 +91,11 @@ public class WalletController {
                     userId, transactionType, startTime, endTime, page, size);
 
             Map<String, Object> result = new HashMap<>();
-            result.put("content", transactions.getContent());
-            result.put("totalElements", transactions.getTotalElements());
-            result.put("totalPages", transactions.getTotalPages());
-            result.put("currentPage", transactions.getNumber());
-            result.put("pageSize", transactions.getSize());
+            result.put("records", transactions.getContent());
+            result.put("total", transactions.getTotalElements());
+            result.put("size", transactions.getSize());
+            result.put("current", transactions.getNumber() + 1);
+            result.put("pages", transactions.getTotalPages());
 
             return ResponseEntity.ok(Map.of(
                     "success", true,
@@ -175,11 +175,11 @@ public class WalletController {
             Page<WalletDTO> wallets = walletService.getWalletList(userId, phone, status, page, size);
 
             Map<String, Object> result = new HashMap<>();
-            result.put("content", wallets.getContent());
-            result.put("totalElements", wallets.getTotalElements());
-            result.put("totalPages", wallets.getTotalPages());
-            result.put("currentPage", wallets.getNumber());
-            result.put("pageSize", wallets.getSize());
+            result.put("records", wallets.getContent());
+            result.put("total", wallets.getTotalElements());
+            result.put("size", wallets.getSize());
+            result.put("current", wallets.getNumber() + 1);
+            result.put("pages", wallets.getTotalPages());
 
             return ResponseEntity.ok(Map.of(
                     "success", true,

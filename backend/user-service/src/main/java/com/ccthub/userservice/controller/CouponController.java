@@ -23,7 +23,7 @@ import com.ccthub.userservice.service.CouponService;
  * 优惠券Controller
  */
 @RestController
-@RequestMapping("/coupons")
+@RequestMapping("/api/coupons")
 public class CouponController {
 
     @Autowired
@@ -48,11 +48,11 @@ public class CouponController {
 
         Map<String, Object> response = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
-        data.put("content", couponPage.getContent());
-        data.put("totalElements", couponPage.getTotalElements());
-        data.put("totalPages", couponPage.getTotalPages());
-        data.put("currentPage", couponPage.getNumber());
-        data.put("pageSize", couponPage.getSize());
+        data.put("records", couponPage.getContent());
+        data.put("total", couponPage.getTotalElements());
+        data.put("size", couponPage.getSize());
+        data.put("current", couponPage.getNumber() + 1);
+        data.put("pages", couponPage.getTotalPages());
 
         response.put("success", true);
         response.put("data", data);
@@ -170,11 +170,11 @@ public class CouponController {
 
         Map<String, Object> response = new HashMap<>();
         Map<String, Object> data = new HashMap<>();
-        data.put("content", userCouponPage.getContent());
-        data.put("totalElements", userCouponPage.getTotalElements());
-        data.put("totalPages", userCouponPage.getTotalPages());
-        data.put("currentPage", userCouponPage.getNumber());
-        data.put("pageSize", userCouponPage.getSize());
+        data.put("records", userCouponPage.getContent());
+        data.put("total", userCouponPage.getTotalElements());
+        data.put("size", userCouponPage.getSize());
+        data.put("current", userCouponPage.getNumber() + 1);
+        data.put("pages", userCouponPage.getTotalPages());
 
         response.put("success", true);
         response.put("data", data);
