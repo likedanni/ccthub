@@ -22,12 +22,14 @@ public class TicketOrderResponse {
     private Long scenicSpotId;
     private Long merchantId;
     private LocalDate visitDate;
+    private Integer visitorCount;
     private String contactName;
     private String contactPhone;
 
     private BigDecimal totalAmount;
     private BigDecimal discountAmount;
     private BigDecimal payAmount;
+    private BigDecimal actualAmount;
     private BigDecimal pointAmount;
     private Integer pointEarned;
 
@@ -36,6 +38,7 @@ public class TicketOrderResponse {
     private String paymentStatusText;
     private Integer orderStatus;
     private String orderStatusText;
+    private String status;
 
     private String remark;
     private LocalDateTime createTime;

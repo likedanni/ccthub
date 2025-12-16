@@ -10,7 +10,7 @@
           <el-input v-model="searchForm.userId" placeholder="请输入用户ID" clearable />
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable>
+          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 150px">
             <el-option label="待审核" :value="0" />
             <el-option label="审核通过" :value="1" />
             <el-option label="审核拒绝" :value="2" />
@@ -257,8 +257,13 @@ const loadData = async () => {
     }
 
     const res = await getRefunds(params)
-    tableData.value = res.content
-    pagination.total = res.totalElements
+    if (res.success && res.data) {
+      tableData.value = res.data.records || []
+      pagination.total = res.data.total || 0
+    } else {
+      tableData.value = []
+      pagination.total = 0
+    }
   } catch (error) {
     ElMessage.error('加载数据失败：' + error.message)
   } finally {

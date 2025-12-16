@@ -100,7 +100,7 @@ public class UnifiedOrderController {
     public ResponseEntity<Map<String, Object>> getOrderByOrderNo(@PathVariable String orderNoOrId) {
         try {
             Object order = null;
-            
+
             // 尝试判断是ID还是订单号
             if (orderNoOrId.matches("\\d+")) {
                 // 纯数字，当作ID处理

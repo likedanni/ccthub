@@ -7,14 +7,14 @@
           <el-input v-model="searchForm.orderNo" placeholder="请输入订单号" clearable />
         </el-form-item>
         <el-form-item label="支付类型">
-          <el-select v-model="searchForm.paymentType" placeholder="请选择支付类型" clearable>
+          <el-select v-model="searchForm.paymentType" placeholder="请选择支付类型" clearable style="width: 150px">
             <el-option label="微信支付" value="wechat" />
             <el-option label="支付宝" value="alipay" />
             <el-option label="余额支付" value="balance" />
           </el-select>
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable>
+          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 150px">
             <el-option label="待支付" :value="0" />
             <el-option label="支付成功" :value="1" />
             <el-option label="支付失败" :value="2" />
@@ -191,8 +191,13 @@ const loadData = async () => {
     }
 
     const res = await getPayments(params)
-    tableData.value = res.content
-    pagination.total = res.totalElements
+    if (res.success && res.data) {
+      tableData.value = res.data.records || []
+      pagination.total = res.data.total || 0
+    } else {
+      tableData.value = []
+      pagination.total = 0
+    }
   } catch (error) {
     ElMessage.error('加载数据失败：' + error.message)
   } finally {

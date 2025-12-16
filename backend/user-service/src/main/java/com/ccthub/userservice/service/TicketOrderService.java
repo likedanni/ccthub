@@ -170,9 +170,11 @@ public class TicketOrderService {
         // 从Order实体读取基本信息
         response.setScenicSpotId(order.getScenicSpotId());
         response.setVisitDate(order.getVisitDate());
+        response.setVisitorCount(order.getVisitorCount());
         response.setContactName(order.getContactName());
         response.setContactPhone(order.getContactPhone());
         response.setRemark(order.getRemark());
+        response.setStatus(order.getStatus());
 
         // 如果有request参数，覆盖上述字段（用于创建订单时）
         if (request != null) {
@@ -196,6 +198,7 @@ public class TicketOrderService {
         response.setTotalAmount(order.getTotalAmount());
         response.setDiscountAmount(order.getDiscountAmount());
         response.setPayAmount(order.getPayAmount());
+        response.setActualAmount(order.getActualAmount());
         response.setPointAmount(order.getPointAmount());
         response.setPointEarned(order.getPointEarned());
 
