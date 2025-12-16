@@ -92,6 +92,107 @@
       />
     </el-card>
 
+    <!-- 创建对话框 -->
+    <el-dialog v-model="createDialog.visible" title="创建优惠券" width="700px">
+      <el-form :model="createDialog.form" label-width="120px">
+        <el-form-item label="优惠券名称" required>
+          <el-input v-model="createDialog.form.name" placeholder="请输入优惠券名称" />
+        </el-form-item>
+        
+        <el-form-item label="优惠券类型" required>
+          <el-select v-model="createDialog.form.type" placeholder="请选择类型">
+            <el-option label="满减券" :value="1" />
+            <el-option label="折扣券" :value="2" />
+            <el-option label="代金券" :value="3" />
+          </el-select>
+        </el-form-item>
+        
+        <el-form-item label="优惠值" required>
+          <el-input-number 
+            v-model="createDialog.form.value" 
+            :min="0" 
+            :precision="2"
+            :placeholder="createDialog.form.type === 2 ? '折扣率(如8.5表示8.5折)' : '优惠金额'"
+          />
+          <span style="margin-left: 10px; color: #909399; font-size: 12px;">
+            {{ createDialog.form.type === 1 ? '满减金额' : createDialog.form.type === 2 ? '折扣率(如8.5)' : '代金券金额' }}
+          </span>
+        </el-form-item>
+        
+        <el-form-item label="最低消费金额">
+          <el-input-number v-model="createDialog.form.minSpend" :min="0" :precision="2" />
+          <span style="margin-left: 10px; color: #909399; font-size: 12px;">0表示无门槛</span>
+        </el-form-item>
+        
+        <el-form-item label="适用范围">
+          <el-select v-model="createDialog.form.applicableType" placeholder="请选择适用范围">
+            <el-option label="全平台" :value="1" />
+            <el-option label="指定商户" :value="2" />
+            <el-option label="指定商品" :value="3" />
+          </el-select>
+        </el-form-item>
+        
+        <el-form-item label="适用ID" v-if="createDialog.form.applicableType !== 1">
+          <el-input 
+            v-model="createDialog.form.applicableIds" 
+            type="textarea"
+            :rows="2"
+            placeholder="多个ID用逗号分隔，如: 1,2,3"
+          />
+        </el-form-item>
+        
+        <el-form-item label="有效期类型" required>
+          <el-radio-group v-model="createDialog.form.validityType">
+            <el-radio :label="1">固定时段</el-radio>
+            <el-radio :label="2">领取后生效</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        
+        <el-form-item label="有效期开始" v-if="createDialog.form.validityType === 1" required>
+          <el-date-picker
+            v-model="createDialog.form.startsAt"
+            type="datetime"
+            placeholder="选择开始时间"
+            style="width: 100%;"
+          />
+        </el-form-item>
+        
+        <el-form-item label="有效期结束" v-if="createDialog.form.validityType === 1" required>
+          <el-date-picker
+            v-model="createDialog.form.expiresAt"
+            type="datetime"
+            placeholder="选择结束时间"
+            style="width: 100%;"
+          />
+        </el-form-item>
+        
+        <el-form-item label="有效天数" v-if="createDialog.form.validityType === 2" required>
+          <el-input-number v-model="createDialog.form.validDays" :min="1" />
+          <span style="margin-left: 10px; color: #909399; font-size: 12px;">领取后N天内有效</span>
+        </el-form-item>
+        
+        <el-form-item label="发放总量" required>
+          <el-input-number v-model="createDialog.form.totalQuantity" :min="1" />
+        </el-form-item>
+        
+        <el-form-item label="每人限领" required>
+          <el-input-number v-model="createDialog.form.limitPerUser" :min="1" />
+        </el-form-item>
+        
+        <el-form-item label="状态">
+          <el-radio-group v-model="createDialog.form.status">
+            <el-radio :label="0">未开始</el-radio>
+            <el-radio :label="1">发放中</el-radio>
+            <el-radio :label="3">停用</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="createDialog.visible = false">取消</el-button>
+        <el-button type="primary" @click="handleSaveCreate">确定创建</el-button>
+      </template>
+    </el-dialog>
+
     <!-- 编辑对话框 -->
     <el-dialog v-model="editDialog.visible" title="编辑优惠券" width="600px">
       <el-form :model="editDialog.form" label-width="120px">
@@ -164,7 +265,7 @@
 </template>
 
 <script setup>
-import { getCoupons, updateCouponStatus } from '@/api/coupon'
+import { getCoupons, createCoupon, updateCoupon, updateCouponStatus, grantCoupon } from '@/api/coupon'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { onMounted, ref } from 'vue'
 
@@ -182,6 +283,26 @@ const pagination = ref({
   page: 1,
   size: 10,
   total: 0
+})
+
+// 创建对话框
+const createDialog = ref({
+  visible: false,
+  form: {
+    name: '',
+    type: 1,
+    value: 0,
+    minSpend: 0,
+    applicableType: 1,
+    applicableIds: '',
+    validityType: 1,
+    validDays: 7,
+    startsAt: null,
+    expiresAt: null,
+    totalQuantity: 100,
+    limitPerUser: 1,
+    status: 1
+  }
 })
 
 // 编辑对话框
@@ -270,8 +391,23 @@ const handleReset = () => {
 }
 
 const handleCreate = () => {
-  ElMessage.info('创建优惠券功能待开发')
-  // TODO: 跳转到创建页面或打开对话框
+  // 重置表单
+  createDialog.value.form = {
+    name: '',
+    type: 1,
+    value: 0,
+    minSpend: 0,
+    applicableType: 1,
+    applicableIds: '',
+    validityType: 1,
+    validDays: 7,
+    startsAt: null,
+    expiresAt: null,
+    totalQuantity: 100,
+    limitPerUser: 1,
+    status: 1
+  }
+  createDialog.value.visible = true
 }
 
 const handleEdit = (row) => {
@@ -308,6 +444,55 @@ const handleToggleStatus = async (row) => {
     if (error !== 'cancel') {
       ElMessage.error(`${action}失败：` + (error.message || '未知错误'))
     }
+  }
+}
+
+// 保存创建
+const handleSaveCreate = async () => {
+  try {
+    const form = createDialog.value.form
+    
+    // 验证必填项
+    if (!form.name) {
+      ElMessage.warning('请输入优惠券名称')
+      return
+    }
+    if (form.value <= 0) {
+      ElMessage.warning('请输入有效的优惠值')
+      return
+    }
+    if (form.totalQuantity <= 0) {
+      ElMessage.warning('请输入有效的发放总量')
+      return
+    }
+    if (form.limitPerUser <= 0) {
+      ElMessage.warning('请输入有效的限领数量')
+      return
+    }
+    
+    // 有效期验证
+    if (form.validityType === 1) {
+      if (!form.startsAt || !form.expiresAt) {
+        ElMessage.warning('请选择有效期时间')
+        return
+      }
+      if (new Date(form.startsAt) >= new Date(form.expiresAt)) {
+        ElMessage.warning('有效期结束时间必须大于开始时间')
+        return
+      }
+    } else {
+      if (form.validDays <= 0) {
+        ElMessage.warning('请输入有效天数')
+        return
+      }
+    }
+    
+    await createCoupon(form)
+    ElMessage.success('创建成功')
+    createDialog.value.visible = false
+    handleSearch()
+  } catch (error) {
+    ElMessage.error('创建失败：' + (error.message || '未知错误'))
   }
 }
 
