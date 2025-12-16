@@ -182,28 +182,53 @@ const verifyForm = ref({
 const loadOrders = async () => {
   try {
     const response = await getAllOrders()
-    // 后端返回{success: true, data: [...]}
+    // 后端返回{success: true, data: [...]} 或 {success: true, data: {records: [...], total: 10}}
     if (response.success) {
-      let list = response.data || []
+      let list = []
+      
+      // 处理不同的返回格式
+      if (Array.isArray(response.data)) {
+        // 直接返回数组
+        list = response.data
+      } else if (response.data && Array.isArray(response.data.records)) {
+        // 分页格式 {records: [...], total: 10}
+        list = response.data.records
+        total.value = response.data.total || 0
+      } else if (response.data && response.data.data && Array.isArray(response.data.data)) {
+        // 嵌套格式 {data: [...]}
+        list = response.data.data
+      } else {
+        console.warn('Unexpected response format:', response.data)
+        list = []
+      }
       
       // 前端过滤
       if (searchForm.value.orderNo) {
-        list = list.filter(item => item.orderNo.includes(searchForm.value.orderNo))
+        list = list.filter(item => item.orderNo && item.orderNo.includes(searchForm.value.orderNo))
       }
       if (searchForm.value.status) {
         list = list.filter(item => item.status === searchForm.value.status)
       }
       
-      total.value = list.length
+      // 如果没有从后端获取总数，使用过滤后的列表长度
+      if (!response.data.total) {
+        total.value = list.length
+      }
       
       // 前端分页
       const start = (currentPage.value - 1) * pageSize.value
       const end = start + pageSize.value
       orderList.value = list.slice(start, end)
+    } else {
+      console.error('Response not successful:', response)
+      orderList.value = []
+      total.value = 0
     }
   } catch (error) {
     console.error('OrderList loadOrders error:', error)
-    ElMessage.error('加载订单列表失败')
+    ElMessage.error('加载订单列表失败: ' + (error.message || '未知错误'))
+    orderList.value = []
+    total.value = 0
   }
 }
 
