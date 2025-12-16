@@ -16,6 +16,7 @@ import lombok.Data;
 @Data
 public class TicketOrderResponse {
 
+    private Long id;
     private String orderNo;
     private Long userId;
     private Long scenicSpotId;

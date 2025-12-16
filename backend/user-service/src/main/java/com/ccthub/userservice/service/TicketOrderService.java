@@ -93,6 +93,17 @@ public class TicketOrderService {
     }
 
     /**
+     * 根据订单ID查询订单详情
+     */
+    public TicketOrderResponse getOrderById(Long id) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("订单不存在"));
+
+        List<OrderItem> items = orderItemRepository.findByOrderNo(order.getOrderNo());
+        return convertToResponse(order, items, null);
+    }
+
+    /**
      * 查询用户门票订单列表
      */
     public List<TicketOrderResponse> getUserTicketOrders(Long userId) {
@@ -151,18 +162,35 @@ public class TicketOrderService {
     private TicketOrderResponse convertToResponse(Order order, List<OrderItem> items,
             TicketOrderCreateRequest request) {
         TicketOrderResponse response = new TicketOrderResponse();
+        response.setId(order.getId());
         response.setOrderNo(order.getOrderNo());
         response.setUserId(order.getUserId());
         response.setMerchantId(order.getMerchantId());
 
+        // 从Order实体读取基本信息
+        response.setScenicSpotId(order.getScenicSpotId());
+        response.setVisitDate(order.getVisitDate());
+        response.setContactName(order.getContactName());
+        response.setContactPhone(order.getContactPhone());
+        response.setRemark(order.getRemark());
+
+        // 如果有request参数，覆盖上述字段（用于创建订单时）
         if (request != null) {
-            response.setScenicSpotId(request.getScenicSpotId());
-            response.setVisitDate(request.getVisitDate());
-            response.setContactName(request.getContactName());
-            response.setContactPhone(request.getContactPhone());
-            response.setRemark(request.getRemark());
-        } else if (!items.isEmpty()) {
-            response.setVisitDate(items.get(0).getTicketDate());
+            if (request.getScenicSpotId() != null) {
+                response.setScenicSpotId(request.getScenicSpotId());
+            }
+            if (request.getVisitDate() != null) {
+                response.setVisitDate(request.getVisitDate());
+            }
+            if (request.getContactName() != null) {
+                response.setContactName(request.getContactName());
+            }
+            if (request.getContactPhone() != null) {
+                response.setContactPhone(request.getContactPhone());
+            }
+            if (request.getRemark() != null) {
+                response.setRemark(request.getRemark());
+            }
         }
 
         response.setTotalAmount(order.getTotalAmount());

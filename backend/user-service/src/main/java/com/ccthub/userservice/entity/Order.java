@@ -1,6 +1,7 @@
 package com.ccthub.userservice.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,6 +9,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
@@ -25,7 +28,11 @@ import lombok.Data;
 public class Order {
 
     @Id
-    @Column(name = "order_no", length = 32)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "order_no", length = 32, unique = true, nullable = false)
     private String orderNo;
 
     @Column(name = "user_id", nullable = false)
@@ -37,6 +44,32 @@ public class Order {
     @Column(name = "order_type", nullable = false)
     private Integer orderType;
 
+    // 门票订单专用字段
+    @Column(name = "scenic_spot_id")
+    private Long scenicSpotId;
+
+    @Column(name = "ticket_id")
+    private Long ticketId;
+
+    @Column(name = "visit_date")
+    private LocalDate visitDate;
+
+    @Column(name = "visitor_count")
+    private Integer visitorCount;
+
+    @Column(name = "contact_name", length = 50)
+    private String contactName;
+
+    @Column(name = "contact_phone", length = 20)
+    private String contactPhone;
+
+    @Column(name = "status", length = 20)
+    private String status;
+
+    @Column(name = "remark", length = 500)
+    private String remark;
+
+    // 金额字段
     @Column(name = "total_amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalAmount;
 
@@ -69,6 +102,18 @@ public class Order {
 
     @Column(name = "outer_order_no", length = 64)
     private String outerOrderNo;
+
+    @Column(name = "actual_amount", nullable = false, precision = 10, scale = 2)
+    private BigDecimal actualAmount;
+
+    @Column(name = "pay_time")
+    private LocalDateTime payTime;
+
+    @Column(name = "cancel_time")
+    private LocalDateTime cancelTime;
+
+    @Column(name = "refund_time")
+    private LocalDateTime refundTime;
 
     @CreationTimestamp
     @Column(name = "create_time", updatable = false)

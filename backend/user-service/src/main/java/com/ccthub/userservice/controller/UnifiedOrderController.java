@@ -91,27 +91,37 @@ public class UnifiedOrderController {
     }
 
     /**
-     * 根据订单号查询订单详情（自动识别订单类型）
+     * 根据订单ID或订单号查询订单详情（自动识别订单类型）
      * 
-     * @param orderNo 订单号
+     * @param orderNoOrId 订单号或订单ID
      * @return 订单详情
      */
-    @GetMapping("/{orderNo}")
-    public ResponseEntity<Map<String, Object>> getOrderByOrderNo(@PathVariable String orderNo) {
+    @GetMapping("/{orderNoOrId}")
+    public ResponseEntity<Map<String, Object>> getOrderByOrderNo(@PathVariable String orderNoOrId) {
         try {
-            // 通过订单号前缀或数据库查询识别订单类型
-            // T=门票, P=商品, A=活动
-            Object order;
-            if (orderNo.startsWith("T")) {
-                order = ticketOrderService.getOrderByOrderNo(orderNo);
-            } else if (orderNo.startsWith("P")) {
-                // TODO: order = productOrderService.getOrderByOrderNo(orderNo);
+            Object order = null;
+            
+            // 尝试判断是ID还是订单号
+            if (orderNoOrId.matches("\\d+")) {
+                // 纯数字，当作ID处理
+                Long id = Long.parseLong(orderNoOrId);
+                // 目前只支持门票订单
+                order = ticketOrderService.getOrderById(id);
+            } else if (orderNoOrId.startsWith("T") || orderNoOrId.startsWith("ORD")) {
+                // 订单号格式
+                order = ticketOrderService.getOrderByOrderNo(orderNoOrId);
+            } else if (orderNoOrId.startsWith("P")) {
+                // TODO: order = productOrderService.getOrderByOrderNo(orderNoOrId);
                 return ResponseEntity.badRequest().body(error("商品订单查询功能即将上线"));
-            } else if (orderNo.startsWith("A")) {
-                // TODO: order = activityOrderService.getOrderByOrderNo(orderNo);
+            } else if (orderNoOrId.startsWith("A")) {
+                // TODO: order = activityOrderService.getOrderByOrderNo(orderNoOrId);
                 return ResponseEntity.badRequest().body(error("活动订单查询功能即将上线"));
             } else {
-                return ResponseEntity.badRequest().body(error("无效的订单号格式"));
+                return ResponseEntity.badRequest().body(error("无效的订单号或ID格式"));
+            }
+
+            if (order == null) {
+                return ResponseEntity.badRequest().body(error("订单不存在"));
             }
 
             return ResponseEntity.ok(success("查询成功", order));

@@ -15,7 +15,7 @@ import com.ccthub.userservice.entity.Order;
  * @date 2025-12-16
  */
 @Repository
-public interface OrderRepository extends JpaRepository<Order, String> {
+public interface OrderRepository extends JpaRepository<Order, Long> {
 
     /**
      * 根据订单号查询订单
