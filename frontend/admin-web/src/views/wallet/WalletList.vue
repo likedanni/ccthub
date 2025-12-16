@@ -9,14 +9,14 @@
 
       <!-- 搜索区域 -->
       <el-form :inline="true" :model="searchForm" class="search-form">
-        <el-form-item label="用户ID">
-          <el-input v-model="searchForm.userId" placeholder="请输入用户名或ID" clearable />
+        <el-form-item label="用户名">
+          <el-input v-model="searchForm.userId" placeholder="请输入用户名" clearable />
         </el-form-item>
         <el-form-item label="手机号">
           <el-input v-model="searchForm.phone" placeholder="请输入手机号" clearable />
         </el-form-item>
         <el-form-item label="钱包状态">
-          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable>
+          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 150px">
             <el-option label="正常" :value="1" />
             <el-option label="冻结" :value="0" />
           </el-select>

@@ -14,14 +14,14 @@
           <el-input v-model="searchForm.name" placeholder="请输入优惠券名称" clearable />
         </el-form-item>
         <el-form-item label="优惠券类型">
-          <el-select v-model="searchForm.couponType" placeholder="请选择类型" clearable>
+          <el-select v-model="searchForm.couponType" placeholder="请选择类型" clearable style="width: 150px">
             <el-option label="满减券" :value="1" />
             <el-option label="折扣券" :value="2" />
             <el-option label="代金券" :value="3" />
           </el-select>
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable>
+          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 150px">
             <el-option label="发放中" :value="1" />
             <el-option label="停用" :value="3" />
           </el-select>
@@ -265,7 +265,7 @@
 </template>
 
 <script setup>
-import { getCoupons, createCoupon, updateCoupon, updateCouponStatus, grantCoupon } from '@/api/coupon'
+import { createCoupon, getCoupons, grantCoupon, updateCoupon, updateCouponStatus } from '@/api/coupon'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { onMounted, ref } from 'vue'
 
@@ -487,7 +487,13 @@ const handleSaveCreate = async () => {
       }
     }
     
-    await createCoupon(form)
+    // 设置剩余数量等于总数量
+    const createData = {
+      ...form,
+      remainingQuantity: form.totalQuantity
+    }
+    
+    await createCoupon(createData)
     ElMessage.success('创建成功')
     createDialog.value.visible = false
     handleSearch()

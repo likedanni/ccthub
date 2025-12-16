@@ -9,8 +9,8 @@
 
       <!-- 搜索区域 -->
       <el-form :inline="true" :model="searchForm" class="search-form">
-        <el-form-item label="用户ID">
-          <el-input v-model="searchForm.userId" placeholder="请输入用户ID" clearable />
+        <el-form-item label="用户名">
+          <el-input v-model="searchForm.userId" placeholder="请输入用户名" clearable />
         </el-form-item>
         <el-form-item label="交易类型">
           <el-select v-model="searchForm.transactionType" placeholder="请选择类型" clearable>
@@ -44,7 +44,7 @@
       <!-- 数据表格 -->
       <el-table v-loading="loading" :data="tableData" border style="width: 100%">
         <el-table-column prop="transactionNo" label="流水号" width="180" />
-        <el-table-column prop="userId" label="用户ID" width="100" />
+        <el-table-column prop="userId" label="用户名" width="100" />
         <el-table-column prop="transactionType" label="交易类型" width="100">
           <template #default="scope">
             <el-tag :type="getTypeTagType(scope.row.transactionType)">
@@ -143,7 +143,7 @@ const formatAmount = (amount, type) => {
 
 const handleSearch = async () => {
   if (!searchForm.value.userId) {
-    ElMessage.warning('请输入用户ID')
+    ElMessage.warning('请输入用户名')
     return
   }
 

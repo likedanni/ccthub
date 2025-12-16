@@ -9,8 +9,8 @@
 
       <!-- 搜索区域 -->
       <el-form :inline="true" :model="searchForm" class="search-form">
-        <el-form-item label="用户ID">
-          <el-input v-model="searchForm.userId" placeholder="请输入用户ID" clearable />
+        <el-form-item label="用户名">
+          <el-input v-model="searchForm.userId" placeholder="请输入用户名" clearable />
         </el-form-item>
         <el-form-item label="积分来源">
           <el-select v-model="searchForm.source" placeholder="请选择来源" clearable>
@@ -47,7 +47,7 @@
       <!-- 数据表格 -->
       <el-table v-loading="loading" :data="tableData" border style="width: 100%">
         <el-table-column prop="id" label="ID" width="80" />
-        <el-table-column prop="userId" label="用户ID" width="100" />
+        <el-table-column prop="userId" label="用户名" width="100" />
         <el-table-column prop="changeType" label="变动类型" width="100">
           <template #default="scope">
             <el-tag :type="scope.row.changeType === 1 ? 'success' : 'warning'">
@@ -138,7 +138,7 @@ const formatPoints = (points, changeType) => {
 
 const handleSearch = async () => {
   if (!searchForm.value.userId) {
-    ElMessage.warning('请输入用户ID')
+    ElMessage.warning('请输入用户名')
     return
   }
 

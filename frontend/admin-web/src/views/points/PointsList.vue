@@ -9,8 +9,8 @@
 
       <!-- 搜索区域 -->
       <el-form :inline="true" :model="searchForm" class="search-form">
-        <el-form-item label="用户ID">
-          <el-input v-model="searchForm.userId" placeholder="请输入用户名、手机号或ID" clearable />
+        <el-form-item label="用户名">
+          <el-input v-model="searchForm.userId" placeholder="请输入用户名" clearable />
         </el-form-item>
         <el-form-item label="手机号">
           <el-input v-model="searchForm.phone" placeholder="请输入手机号" clearable />
@@ -97,7 +97,7 @@
     <!-- 调整积分对话框 -->
     <el-dialog v-model="adjustDialog.visible" title="调整积分" width="500px">
       <el-form :model="adjustDialog.form" label-width="100px">
-        <el-form-item label="用户ID">
+        <el-form-item label="用户名">
           <el-input v-model="adjustDialog.form.userId" disabled />
         </el-form-item>
         <el-form-item label="当前积分">

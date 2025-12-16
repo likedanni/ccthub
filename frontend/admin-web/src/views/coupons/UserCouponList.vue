@@ -9,8 +9,8 @@
 
       <!-- 搜索区域 -->
       <el-form :inline="true" :model="searchForm" class="search-form">
-        <el-form-item label="用户ID">
-          <el-input v-model="searchForm.userId" placeholder="请输入手机号或用户ID" clearable />
+        <el-form-item label="用户名">
+          <el-input v-model="searchForm.userId" placeholder="请输入用户名或手机号" clearable />
         </el-form-item>
         <el-form-item label="优惠券名称">
           <el-input v-model="searchForm.couponName" placeholder="请输入优惠券名称" clearable />
