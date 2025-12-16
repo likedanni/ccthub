@@ -80,7 +80,11 @@
       <el-table :data="tableData" border stripe v-loading="loading">
         <el-table-column prop="paymentNo" label="支付单号" width="200" />
         <el-table-column prop="orderNo" label="订单号" width="200" />
-        <el-table-column prop="paymentTypeText" label="支付类型" width="120" />
+        <el-table-column prop="paymentType" label="支付类型" width="120">
+          <template #default="{ row }">
+            {{ getPaymentTypeText(row.paymentType) }}
+          </template>
+        </el-table-column>
         <el-table-column prop="paymentChannelText" label="支付渠道" width="100" />
         <el-table-column prop="paymentAmount" label="支付金额" width="120">
           <template #default="{ row }">
@@ -130,8 +134,8 @@
       <el-descriptions :column="2" border v-if="currentRow">
         <el-descriptions-item label="支付单号">{{ currentRow.paymentNo }}</el-descriptions-item>
         <el-descriptions-item label="订单号">{{ currentRow.orderNo }}</el-descriptions-item>
-        <el-descriptions-item label="支付类型">{{ currentRow.paymentTypeText }}</el-descriptions-item>
-        <el-descriptions-item label="支付渠道">{{ currentRow.paymentChannelText }}</el-descriptions-item>
+        <el-descriptions-item label="支付类型">{{ getPaymentTypeText(currentRow.paymentType) }}</el-descriptions-item>
+        <el-descriptions-item label="支付渠道">{{ getPaymentChannelText(currentRow.paymentType) }}</el-descriptions-item>
         <el-descriptions-item label="支付金额">¥{{ currentRow.paymentAmount }}</el-descriptions-item>
         <el-descriptions-item label="状态">
           <el-tag :type="getStatusType(currentRow.status)">{{ currentRow.statusText }}</el-tag>
@@ -266,6 +270,36 @@ const getStatusType = (status) => {
     4: 'primary'
   }
   return types[status] || ''
+}
+
+// 获取支付类型文本
+const getPaymentTypeText = (type) => {
+  const types = {
+    'WECHAT': '微信支付',
+    'ALIPAY': '支付宝',
+    'POINTS': '积分支付',
+    'MIXED': '混合支付',
+    'wechat': '微信支付',
+    'alipay': '支付宝',
+    'points': '积分支付',
+    'mixed': '混合支付'
+  }
+  return types[type] || type
+}
+
+// 获取支付渠道文本
+const getPaymentChannelText = (type) => {
+  const channels = {
+    'WECHAT': '微信',
+    'ALIPAY': '支付宝',
+    'POINTS': '系统',
+    'MIXED': '多渠道',
+    'wechat': '微信',
+    'alipay': '支付宝',
+    'points': '系统',
+    'mixed': '多渠道'
+  }
+  return channels[type] || type
 }
 
 onMounted(() => {

@@ -330,13 +330,13 @@ const submitAudit = async () => {
 const getStatusType = (status) => {
   const types = {
     0: 'warning',
-    1: '',
+    1: 'success',
     2: 'danger',
     3: 'info',
     4: 'success',
     5: 'danger'
   }
-  return types[status] || ''
+  return types[status] || 'info'
 }
 
 onMounted(() => {

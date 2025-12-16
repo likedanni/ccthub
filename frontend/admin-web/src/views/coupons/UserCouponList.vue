@@ -197,8 +197,8 @@ const handleSearch = async () => {
     const res = await getUserCoupons(params)
     
     if (res.success && res.data) {
-      tableData.value = res.data.content || []
-      pagination.value.total = res.data.totalElements || 0
+      tableData.value = res.data.records || []
+      pagination.value.total = res.data.total || 0
       
       // 更新统计数据
       if (res.data.stats) {

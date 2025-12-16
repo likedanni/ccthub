@@ -54,12 +54,10 @@ public class RefundController {
     /**
      * 审核退款申请
      */
-    @PutMapping("/{refundNo}/audit")
+    @PutMapping("/audit")
     public ResponseEntity<Map<String, Object>> auditRefund(
-            @PathVariable String refundNo,
             @Valid @RequestBody RefundAuditRequest request) {
         try {
-            request.setRefundNo(refundNo);
             RefundResponse response = refundService.auditRefund(request);
             return ResponseEntity.ok(success("退款审核成功", response));
         } catch (Exception e) {
@@ -101,8 +99,8 @@ public class RefundController {
             @RequestParam(required = false) String orderNo,
             @RequestParam(required = false) Long userId,
             @RequestParam(required = false) Integer status,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startTime,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endTime,
             Pageable pageable) {
         try {
             Page<RefundResponse> page = refundService.getRefunds(orderNo, userId, status, startTime, endTime, pageable);

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -94,7 +95,7 @@ public class PaymentController {
     /**
      * 关闭支付订单
      */
-    @PostMapping("/{paymentNo}/close")
+    @PutMapping("/{paymentNo}/close")
     public ResponseEntity<Map<String, Object>> closePayment(@PathVariable String paymentNo) {
         try {
             paymentService.closePayment(paymentNo);
@@ -112,8 +113,8 @@ public class PaymentController {
             @RequestParam(required = false) String orderNo,
             @RequestParam(required = false) String paymentType,
             @RequestParam(required = false) Integer status,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime startTime,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime endTime,
             Pageable pageable) {
         try {
             Page<PaymentResponse> page = paymentService.getPayments(orderNo, paymentType, status, startTime, endTime,
