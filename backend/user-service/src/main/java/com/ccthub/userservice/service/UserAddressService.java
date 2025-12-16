@@ -1,13 +1,15 @@
 package com.ccthub.userservice.service;
 
-import com.ccthub.userservice.entity.UserAddress;
-import com.ccthub.userservice.repository.UserAddressRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.ccthub.userservice.entity.UserAddress;
+import com.ccthub.userservice.repository.UserAddressRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 用户地址服务
@@ -71,7 +73,8 @@ public class UserAddressService {
         // 如果删除的是默认地址,需要将第一个地址设为默认
         if (Boolean.TRUE.equals(address.getIsDefault())) {
             userAddressRepository.delete(address);
-            List<UserAddress> addresses = userAddressRepository.findByUserIdOrderByIsDefaultDescCreateTimeDesc(address.getUserId());
+            List<UserAddress> addresses = userAddressRepository
+                    .findByUserIdOrderByIsDefaultDescCreateTimeDesc(address.getUserId());
             if (!addresses.isEmpty()) {
                 UserAddress first = addresses.get(0);
                 first.setIsDefault(true);

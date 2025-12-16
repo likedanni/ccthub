@@ -314,6 +314,53 @@
 
 ### Sprint 3: 支付与核销系统（2 周）⏳ 进行中（基础功能已完成 85%）
 
+#### 重要更新（2025-12-16）
+
+**✅ 订单模块重构完成** - 已重构为通用订单系统
+
+- ✅ 核心实体重构
+  - ✅ Order.java 重构为通用订单（支持门票/商品/活动三种类型）
+    - order_no 作为主键（varchar 32）
+    - orderType 字段（1-门票, 2-商品, 3-活动）
+    - 支持多状态管理（支付状态/订单状态/退款状态）
+  - ✅ OrderItem.java 重构为通用订单明细
+    - 关联 order_no 外键
+    - 支持商品/SKU/核销码/票务日期等通用字段
+  - ✅ Repository 更新（主键类型改为 String）
+    - OrderRepository.findByOrderNo()
+    - OrderItemRepository.findByOrderNo()
+  
+- ✅ 门票订单专用服务
+  - ✅ TicketOrderService.java（230 行）
+    - 创建门票订单
+    - 支付/取消门票订单
+    - 查询门票订单列表
+  - ✅ TicketOrderController.java（110 行）
+    - POST /api/ticket-orders（创建）
+    - GET /api/ticket-orders/{orderNo}（查询详情）
+    - GET /api/ticket-orders/user/{userId}（查询列表）
+    - POST /api/ticket-orders/{orderNo}/pay（支付）
+    - POST /api/ticket-orders/{orderNo}/cancel（取消）
+  - ✅ DTO 层（门票订单专用）
+    - TicketOrderCreateRequest.java
+    - TicketOrderResponse.java
+
+- 📝 旧代码备份（.bak 文件）
+  - OrderService.java.bak（门票订单旧实现）
+  - OrderController.java.bak
+  - PaymentService.java.bak
+  - PaymentController.java.bak
+  - RefundService.java.bak
+  - RefundController.java.bak
+  - VerificationService.java.bak
+  - VerificationController.java.bak
+  - 说明：这些旧代码使用 id 主键和 String 状态，待后续迁移
+
+- ✅ 编译测试通过
+  - BUILD SUCCESS（2025-12-16 10:43）
+  - 新门票订单系统可独立运行
+  - API 文档已更新
+
 #### 目标
 
 集成支付功能，实现核销系统

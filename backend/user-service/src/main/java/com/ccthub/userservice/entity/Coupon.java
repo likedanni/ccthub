@@ -1,11 +1,17 @@
 package com.ccthub.userservice.entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
 
 /**
  * 优惠券模板实体
@@ -118,24 +124,24 @@ public class Coupon {
      */
     public static class CouponType {
         public static final int FULL_DISCOUNT = 1; // 满减券
-        public static final int PERCENT_OFF = 2;   // 折扣券
-        public static final int CASH_VOUCHER = 3;  // 代金券
+        public static final int PERCENT_OFF = 2; // 折扣券
+        public static final int CASH_VOUCHER = 3; // 代金券
     }
 
     /**
      * 适用范围常量
      */
     public static class ApplicableType {
-        public static final int ALL_PLATFORM = 1;     // 全平台
+        public static final int ALL_PLATFORM = 1; // 全平台
         public static final int SPECIFIC_MERCHANT = 2; // 指定商户
-        public static final int SPECIFIC_PRODUCT = 3;  // 指定商品
+        public static final int SPECIFIC_PRODUCT = 3; // 指定商品
     }
 
     /**
      * 有效期类型常量
      */
     public static class ValidityType {
-        public static final int FIXED_PERIOD = 1;  // 固定时段
+        public static final int FIXED_PERIOD = 1; // 固定时段
         public static final int AFTER_RECEIVE = 2; // 领取后生效
     }
 
@@ -143,9 +149,9 @@ public class Coupon {
      * 优惠券状态常量
      */
     public static class Status {
-        public static final int NOT_STARTED = 0;  // 未开始
-        public static final int IN_PROGRESS = 1;  // 发放中
-        public static final int ENDED = 2;        // 已结束
-        public static final int DISABLED = 3;     // 停用
+        public static final int NOT_STARTED = 0; // 未开始
+        public static final int IN_PROGRESS = 1; // 发放中
+        public static final int ENDED = 2; // 已结束
+        public static final int DISABLED = 3; // 停用
     }
 }

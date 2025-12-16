@@ -656,6 +656,209 @@ GET /api/addresses/{id}
 
 ---
 
+## 6️⃣ 门票订单管理（通用订单系统）
+
+### 创建门票订单
+
+```http
+POST /api/ticket-orders
+Content-Type: application/json
+```
+
+**请求体:**
+
+```json
+{
+  "userId": 1,
+  "scenicSpotId": 1,
+  "merchantId": 1,
+  "visitDate": "2025-12-25",
+  "contactName": "张三",
+  "contactPhone": "13800138000",
+  "tickets": [
+    {
+      "ticketPriceId": 1,
+      "visitorName": "张三",
+      "visitorIdCard": "140000199001011234",
+      "visitorPhone": "13800138000",
+      "price": 80.00,
+      "productName": "长治太行山大峡谷成人票"
+    },
+    {
+      "ticketPriceId": 2,
+      "visitorName": "李四",
+      "price": 40.00,
+      "productName": "长治太行山大峡谷儿童票"
+    }
+  ],
+  "remark": "请提前准备好身份证"
+}
+```
+
+**响应:**
+
+```json
+{
+  "success": true,
+  "message": "订单创建成功",
+  "data": {
+    "orderNo": "ORDER1734323456001234",
+    "userId": 1,
+    "scenicSpotId": 1,
+    "merchantId": 1,
+    "visitDate": "2025-12-25",
+    "contactName": "张三",
+    "contactPhone": "13800138000",
+    "totalAmount": 120.00,
+    "discountAmount": 0.00,
+    "payAmount": 120.00,
+    "pointAmount": 0.00,
+    "pointEarned": 0,
+    "paymentMethod": null,
+    "paymentStatus": 0,
+    "paymentStatusText": "待支付",
+    "orderStatus": 0,
+    "orderStatusText": "待付款",
+    "remark": "请提前准备好身份证",
+    "createTime": "2025-12-16T10:45:00",
+    "updateTime": "2025-12-16T10:45:00",
+    "tickets": [
+      {
+        "id": 1,
+        "productName": "长治太行山大峡谷成人票",
+        "unitPrice": 80.00,
+        "visitorName": "张三",
+        "visitorIdCard": null,
+        "visitorPhone": null,
+        "verificationCode": "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6",
+        "verificationStatus": 0,
+        "verificationStatusText": "未核销",
+        "ticketDate": "2025-12-25"
+      },
+      {
+        "id": 2,
+        "productName": "长治太行山大峡谷儿童票",
+        "unitPrice": 40.00,
+        "visitorName": "李四",
+        "verificationCode": "p6o5n4m3l2k1j0i9h8g7f6e5d4c3b2a1",
+        "verificationStatus": 0,
+        "verificationStatusText": "未核销",
+        "ticketDate": "2025-12-25"
+      }
+    ]
+  }
+}
+```
+
+### 查询门票订单详情
+
+```http
+GET /api/ticket-orders/{orderNo}
+```
+
+**响应:**
+
+```json
+{
+  "success": true,
+  "message": "查询成功",
+  "data": {
+    "orderNo": "ORDER1734323456001234",
+    "userId": 1,
+    "merchantId": 1,
+    "visitDate": "2025-12-25",
+    "totalAmount": 120.00,
+    "payAmount": 120.00,
+    "paymentStatus": 0,
+    "paymentStatusText": "待支付",
+    "orderStatus": 0,
+    "orderStatusText": "待付款",
+    "tickets": [...]
+  }
+}
+```
+
+### 查询用户门票订单列表
+
+```http
+GET /api/ticket-orders/user/{userId}
+```
+
+**响应:**
+
+```json
+{
+  "success": true,
+  "message": "查询成功",
+  "data": [
+    {
+      "orderNo": "ORDER1734323456001234",
+      "visitDate": "2025-12-25",
+      "totalAmount": 120.00,
+      "orderStatus": 0,
+      "orderStatusText": "待付款",
+      "tickets": [...]
+    },
+    {
+      "orderNo": "ORDER1734323456001235",
+      "visitDate": "2025-12-20",
+      "totalAmount": 80.00,
+      "orderStatus": 1,
+      "orderStatusText": "待使用",
+      "tickets": [...]
+    }
+  ]
+}
+```
+
+### 支付门票订单
+
+```http
+POST /api/ticket-orders/{orderNo}/pay?paymentMethod=wechat
+```
+
+**响应:**
+
+```json
+{
+  "success": true,
+  "message": "支付成功",
+  "data": {
+    "orderNo": "ORDER1734323456001234",
+    "paymentMethod": "wechat",
+    "paymentStatus": 1,
+    "paymentStatusText": "支付成功",
+    "orderStatus": 1,
+    "orderStatusText": "待使用"
+  }
+}
+```
+
+### 取消门票订单
+
+```http
+POST /api/ticket-orders/{orderNo}/cancel
+```
+
+**响应:**
+
+```json
+{
+  "success": true,
+  "message": "订单已取消",
+  "data": null
+}
+```
+
+**说明:** 
+
+- 订单状态(orderStatus): 0-待付款, 1-待使用, 2-已完成, 3-已取消, 4-退款中
+- 支付状态(paymentStatus): 0-待支付, 1-支付成功, 2-支付失败, 3-已退款, 4-处理中
+- 核销状态(verificationStatus): 0-未核销, 1-已核销, 2-已过期
+- 订单号(orderNo): 自动生成，格式为 ORDER+时间戳+随机数
+
+---
+
 ## 📝 数据库字段说明
 
 **users 表字段:**

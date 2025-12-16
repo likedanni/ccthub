@@ -1,10 +1,16 @@
 package com.ccthub.userservice.entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
+import java.time.LocalDateTime;
+
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
 
 /**
  * 用户优惠券实体
@@ -74,8 +80,8 @@ public class UserCoupon {
      * 用户优惠券状态常量
      */
     public static class Status {
-        public static final int UNUSED = 0;  // 未使用
-        public static final int USED = 1;    // 已使用
+        public static final int UNUSED = 0; // 未使用
+        public static final int USED = 1; // 已使用
         public static final int EXPIRED = 2; // 已过期
     }
 }

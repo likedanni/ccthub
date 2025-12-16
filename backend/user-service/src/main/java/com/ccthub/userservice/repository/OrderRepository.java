@@ -1,6 +1,5 @@
 package com.ccthub.userservice.repository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,13 +9,13 @@ import org.springframework.stereotype.Repository;
 import com.ccthub.userservice.entity.Order;
 
 /**
- * 订单Repository
+ * 订单Repository（通用订单）
  * 
  * @author CCTHub
- * @date 2025-12-15
+ * @date 2025-12-16
  */
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface OrderRepository extends JpaRepository<Order, String> {
 
     /**
      * 根据订单号查询订单
@@ -24,27 +23,32 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByOrderNo(String orderNo);
 
     /**
-     * 根据用户ID查询订单列表
+     * 根据用户ID查询订单列表（按创建时间倒序）
      */
     List<Order> findByUserIdOrderByCreateTimeDesc(Long userId);
 
     /**
-     * 根据景区ID查询订单列表
+     * 根据用户ID和订单状态查询
      */
-    List<Order> findByScenicSpotIdOrderByCreateTimeDesc(Long scenicSpotId);
+    List<Order> findByUserIdAndOrderStatusOrderByCreateTimeDesc(Long userId, Integer orderStatus);
 
     /**
-     * 根据状态查询订单列表
+     * 根据用户ID和订单类型查询
      */
-    List<Order> findByStatusOrderByCreateTimeDesc(String status);
+    List<Order> findByUserIdAndOrderTypeOrderByCreateTimeDesc(Long userId, Integer orderType);
 
     /**
-     * 根据游玩日期查询订单列表
+     * 根据商户ID查询订单列表（按创建时间倒序）
      */
-    List<Order> findByVisitDateOrderByCreateTimeDesc(LocalDate visitDate);
+    List<Order> findByMerchantIdOrderByCreateTimeDesc(Long merchantId);
 
     /**
-     * 根据用户ID和状态查询订单列表
+     * 根据订单状态查询订单列表
      */
-    List<Order> findByUserIdAndStatusOrderByCreateTimeDesc(Long userId, String status);
+    List<Order> findByOrderStatusOrderByCreateTimeDesc(Integer orderStatus);
+
+    /**
+     * 根据支付状态查询订单列表
+     */
+    List<Order> findByPaymentStatusOrderByCreateTimeDesc(Integer paymentStatus);
 }

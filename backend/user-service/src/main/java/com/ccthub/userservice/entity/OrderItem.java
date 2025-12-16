@@ -2,17 +2,16 @@ package com.ccthub.userservice.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 /**
- * 订单项实体（电子票券）
+ * 订单明细实体（通用订单明细）
  * 
  * @author CCTHub
- * @date 2025-12-15
+ * @date 2025-12-16
  */
 @Data
 @Entity
@@ -23,42 +22,44 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "order_id", nullable = false)
-    private Long orderId;
+    @Column(name = "order_no", nullable = false, length = 32)
+    private String orderNo;
 
-    @Column(name = "ticket_price_id", nullable = false)
-    private Long ticketPriceId;
+    @Column(name = "product_id")
+    private Long productId;
 
-    @Column(name = "visitor_name", nullable = false, length = 50)
-    private String visitorName;
+    @Column(name = "product_name", nullable = false, length = 200)
+    private String productName;
 
-    @Column(name = "visitor_id_card", length = 18)
-    private String visitorIdCard;
+    @Column(name = "sku_id")
+    private Long skuId;
 
-    @Column(name = "visitor_phone", length = 20)
-    private String visitorPhone;
+    @Column(name = "sku_specs", length = 500)
+    private String skuSpecs;
+
+    @Column(name = "unit_price", nullable = false, precision = 10, scale = 2)
+    private BigDecimal unitPrice;
+
+    @Column(nullable = false)
+    private Integer quantity;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal price;
+    private BigDecimal subtotal;
 
-    @Column(name = "verification_code", unique = true, nullable = false, length = 64)
+    @Column(name = "verification_code", unique = true, length = 50)
     private String verificationCode;
 
-    @Column(name = "qr_code_url", length = 500)
-    private String qrCodeUrl;
+    @Column(name = "verification_status")
+    private Integer verificationStatus = VerificationStatus.NOT_VERIFIED;
 
-    @Column(name = "is_verified", nullable = false)
-    private Boolean isVerified = false;
+    @Column(name = "ticket_date")
+    private LocalDate ticketDate;
 
-    @Column(name = "verify_time")
-    private LocalDateTime verifyTime;
+    @Column(name = "visitor_name", length = 50)
+    private String visitorName;
 
-    @Column(name = "verify_staff_id")
-    private Long verifyStaffId;
-
-    @CreationTimestamp
-    @Column(name = "create_time", updatable = false)
-    private LocalDateTime createTime;
+    @Column(name = "visitor_name_encrypted", length = 128)
+    private String visitorNameEncrypted;
 
     /**
      * 生成核销码（UUID）
@@ -68,5 +69,14 @@ public class OrderItem {
         if (this.verificationCode == null || this.verificationCode.isEmpty()) {
             this.verificationCode = UUID.randomUUID().toString().replace("-", "");
         }
+    }
+
+    /**
+     * 核销状态常量
+     */
+    public static class VerificationStatus {
+        public static final Integer NOT_VERIFIED = 0;  // 未核销
+        public static final Integer VERIFIED = 1;      // 已核销
+        public static final Integer EXPIRED = 2;       // 已过期
     }
 }
