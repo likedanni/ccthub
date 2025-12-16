@@ -274,37 +274,37 @@ public class TicketOrderService {
             java.time.LocalDate startDate,
             java.time.LocalDate endDate,
             org.springframework.data.domain.Pageable pageable) {
-        
+
         // 简化实现：先查询所有用户订单，后续可优化为Repository层筛选
         List<Order> orders = orderRepository.findByUserIdAndOrderType(userId, Order.OrderType.TICKET);
-        
+
         // 按条件过滤
         if (orderStatus != null) {
             orders = orders.stream()
-                .filter(o -> o.getOrderStatus().equals(orderStatus))
-                .collect(Collectors.toList());
+                    .filter(o -> o.getOrderStatus().equals(orderStatus))
+                    .collect(Collectors.toList());
         }
         if (paymentStatus != null) {
             orders = orders.stream()
-                .filter(o -> o.getPaymentStatus().equals(paymentStatus))
-                .collect(Collectors.toList());
+                    .filter(o -> o.getPaymentStatus().equals(paymentStatus))
+                    .collect(Collectors.toList());
         }
-        
+
         // 转换为Response（需要查询每个订单的OrderItem）
         List<TicketOrderResponse> responses = orders.stream()
-            .map(order -> {
-                List<OrderItem> items = orderItemRepository.findByOrderNo(order.getOrderNo());
-                return convertToResponse(order, items, null);
-            })
-            .collect(Collectors.toList());
-        
+                .map(order -> {
+                    List<OrderItem> items = orderItemRepository.findByOrderNo(order.getOrderNo());
+                    return convertToResponse(order, items, null);
+                })
+                .collect(Collectors.toList());
+
         // 分页处理
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), responses.size());
         List<TicketOrderResponse> pageContent = responses.subList(start, end);
-        
+
         return new org.springframework.data.domain.PageImpl<>(
-            pageContent, pageable, responses.size());
+                pageContent, pageable, responses.size());
     }
 
     /**
@@ -326,9 +326,9 @@ public class TicketOrderService {
      */
     public long countByUserIdAndStatus(Long userId, Integer orderStatus) {
         return orderRepository.findByUserIdAndOrderType(userId, Order.OrderType.TICKET)
-            .stream()
-            .filter(o -> o.getOrderStatus().equals(orderStatus))
-            .count();
+                .stream()
+                .filter(o -> o.getOrderStatus().equals(orderStatus))
+                .count();
     }
 
     /**
@@ -336,12 +336,12 @@ public class TicketOrderService {
      */
     public void cancelOrder(String orderNo, String reason) {
         Order order = orderRepository.findByOrderNo(orderNo)
-            .orElseThrow(() -> new IllegalArgumentException("订单不存在"));
-        
+                .orElseThrow(() -> new IllegalArgumentException("订单不存在"));
+
         if (order.getOrderStatus() != Order.OrderStatus.PENDING_PAYMENT) {
             throw new IllegalStateException("只能取消待付款订单");
         }
-        
+
         order.setOrderStatus(Order.OrderStatus.CANCELLED);
         // TODO: 保存取消原因（需要在Order实体中添加cancelReason字段）
         orderRepository.save(order);
@@ -354,4 +354,3 @@ public class TicketOrderService {
         return createTicketOrder(request);
     }
 }
-

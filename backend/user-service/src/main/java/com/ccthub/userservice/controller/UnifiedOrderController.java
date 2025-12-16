@@ -1,17 +1,24 @@
 package com.ccthub.userservice.controller;
 
-import com.ccthub.userservice.entity.Order;
-import com.ccthub.userservice.service.TicketOrderService;
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import com.ccthub.userservice.entity.Order;
+import com.ccthub.userservice.service.TicketOrderService;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * 统一订单查询Controller
@@ -31,13 +38,13 @@ public class UnifiedOrderController {
     /**
      * 统一订单查询（支持所有订单类型）
      * 
-     * @param userId 用户ID
-     * @param orderType 订单类型（1-门票，2-商品，3-活动）
-     * @param orderStatus 订单状态
+     * @param userId        用户ID
+     * @param orderType     订单类型（1-门票，2-商品，3-活动）
+     * @param orderStatus   订单状态
      * @param paymentStatus 支付状态
-     * @param startDate 开始日期
-     * @param endDate 结束日期
-     * @param pageable 分页参数
+     * @param startDate     开始日期
+     * @param endDate       结束日期
+     * @param pageable      分页参数
      * @return 订单列表
      */
     @GetMapping
@@ -109,7 +116,7 @@ public class UnifiedOrderController {
      * 取消订单（支持所有订单类型）
      * 
      * @param orderNo 订单号
-     * @param reason 取消原因
+     * @param reason  取消原因
      * @return 取消结果
      */
     @PostMapping("/{orderNo}/cancel")

@@ -58,25 +58,26 @@ class TicketOrderE2ETest {
         TicketOrderCreateRequest createRequest = new TicketOrderCreateRequest();
         createRequest.setUserId(1L);
         createRequest.setScenicSpotId(1L);
-        createRequest.setTicketDate(LocalDate.now().plusDays(1));
+        createRequest.setMerchantId(1L);
+        createRequest.setVisitDate(LocalDate.now().plusDays(1));
         createRequest.setContactName("张三");
         createRequest.setContactPhone("13800138000");
 
-        TicketOrderCreateRequest.VisitorInfo visitor1 = new TicketOrderCreateRequest.VisitorInfo();
-        visitor1.setProductId(1L);
-        visitor1.setProductName("成人票");
-        visitor1.setUnitPrice(new BigDecimal("98.00"));
-        visitor1.setVisitorName("李四");
-        visitor1.setVisitorIdCard("110101199001011234");
+        TicketOrderCreateRequest.TicketItem ticket1 = new TicketOrderCreateRequest.TicketItem();
+        ticket1.setTicketPriceId(1L);
+        ticket1.setProductName("成人票");
+        ticket1.setPrice(new BigDecimal("98.00"));
+        ticket1.setVisitorName("李四");
+        ticket1.setVisitorIdCard("110101199001011234");
 
-        TicketOrderCreateRequest.VisitorInfo visitor2 = new TicketOrderCreateRequest.VisitorInfo();
-        visitor2.setProductId(1L);
-        visitor2.setProductName("成人票");
-        visitor2.setUnitPrice(new BigDecimal("98.00"));
-        visitor2.setVisitorName("王五");
-        visitor2.setVisitorIdCard("110101199002021234");
+        TicketOrderCreateRequest.TicketItem ticket2 = new TicketOrderCreateRequest.TicketItem();
+        ticket2.setTicketPriceId(1L);
+        ticket2.setProductName("成人票");
+        ticket2.setPrice(new BigDecimal("98.00"));
+        ticket2.setVisitorName("王五");
+        ticket2.setVisitorIdCard("110101199002021234");
 
-        createRequest.setVisitors(Arrays.asList(visitor1, visitor2));
+        createRequest.setTickets(Arrays.asList(ticket1, ticket2));
 
         TicketOrderResponse orderResponse = ticketOrderService.createOrder(createRequest);
 
@@ -85,7 +86,7 @@ class TicketOrderE2ETest {
         assertEquals(Order.OrderStatus.PENDING_PAYMENT, orderResponse.getOrderStatus());
         assertEquals(Order.PaymentStatus.PENDING, orderResponse.getPaymentStatus());
         assertEquals(new BigDecimal("196.00"), orderResponse.getTotalAmount());
-        assertEquals(2, orderResponse.getItems().size());
+        assertEquals(2, orderResponse.getTickets().size());
 
         String orderNo = orderResponse.getOrderNo();
 
@@ -145,19 +146,22 @@ class TicketOrderE2ETest {
         TicketOrderCreateRequest createRequest = new TicketOrderCreateRequest();
         createRequest.setUserId(1L);
         createRequest.setScenicSpotId(1L);
-        createRequest.setTicketDate(LocalDate.now().plusDays(1));
+        createRequest.setMerchantId(1L);
+        createRequest.setVisitDate(LocalDate.now().plusDays(1));
         createRequest.setContactName("张三");
         createRequest.setContactPhone("13800138000");
 
+        java.util.List<TicketOrderCreateRequest.TicketItem> tickets = new java.util.ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            TicketOrderCreateRequest.VisitorInfo visitor = new TicketOrderCreateRequest.VisitorInfo();
-            visitor.setProductId(1L);
-            visitor.setProductName("成人票");
-            visitor.setUnitPrice(new BigDecimal("98.00"));
-            visitor.setVisitorName("游客" + (i + 1));
-            visitor.setVisitorIdCard("11010119900101" + String.format("%04d", i + 1234));
-            createRequest.getVisitors().add(visitor);
+            TicketOrderCreateRequest.TicketItem ticket = new TicketOrderCreateRequest.TicketItem();
+            ticket.setTicketPriceId(1L);
+            ticket.setProductName("成人票");
+            ticket.setPrice(new BigDecimal("98.00"));
+            ticket.setVisitorName("游客" + (i + 1));
+            ticket.setVisitorIdCard("11010119900101" + String.format("%04d", i + 1234));
+            tickets.add(ticket);
         }
+        createRequest.setTickets(tickets);
 
         TicketOrderResponse orderResponse = ticketOrderService.createOrder(createRequest);
         String orderNo = orderResponse.getOrderNo();
@@ -196,17 +200,18 @@ class TicketOrderE2ETest {
         TicketOrderCreateRequest createRequest = new TicketOrderCreateRequest();
         createRequest.setUserId(1L);
         createRequest.setScenicSpotId(1L);
-        createRequest.setTicketDate(LocalDate.now().plusDays(1));
+        createRequest.setMerchantId(1L);
+        createRequest.setVisitDate(LocalDate.now().plusDays(1));
         createRequest.setContactName("张三");
         createRequest.setContactPhone("13800138000");
 
-        TicketOrderCreateRequest.VisitorInfo visitor = new TicketOrderCreateRequest.VisitorInfo();
-        visitor.setProductId(1L);
-        visitor.setProductName("成人票");
-        visitor.setUnitPrice(new BigDecimal("98.00"));
-        visitor.setVisitorName("李四");
-        visitor.setVisitorIdCard("110101199001011234");
-        createRequest.setVisitors(Arrays.asList(visitor));
+        TicketOrderCreateRequest.TicketItem ticket = new TicketOrderCreateRequest.TicketItem();
+        ticket.setTicketPriceId(1L);
+        ticket.setProductName("成人票");
+        ticket.setPrice(new BigDecimal("98.00"));
+        ticket.setVisitorName("李四");
+        ticket.setVisitorIdCard("110101199001011234");
+        createRequest.setTickets(Arrays.asList(ticket));
 
         TicketOrderResponse orderResponse = ticketOrderService.createOrder(createRequest);
         String orderNo = orderResponse.getOrderNo();
@@ -232,17 +237,18 @@ class TicketOrderE2ETest {
         TicketOrderCreateRequest createRequest = new TicketOrderCreateRequest();
         createRequest.setUserId(1L);
         createRequest.setScenicSpotId(1L);
-        createRequest.setTicketDate(LocalDate.now().plusDays(1));
+        createRequest.setMerchantId(1L);
+        createRequest.setVisitDate(LocalDate.now().plusDays(1));
         createRequest.setContactName("张三");
         createRequest.setContactPhone("13800138000");
 
-        TicketOrderCreateRequest.VisitorInfo visitor = new TicketOrderCreateRequest.VisitorInfo();
-        visitor.setProductId(1L);
-        visitor.setProductName("成人票");
-        visitor.setUnitPrice(new BigDecimal("98.00"));
-        visitor.setVisitorName("李四");
-        visitor.setVisitorIdCard("110101199001011234");
-        createRequest.setVisitors(Arrays.asList(visitor));
+        TicketOrderCreateRequest.TicketItem ticket = new TicketOrderCreateRequest.TicketItem();
+        ticket.setTicketPriceId(1L);
+        ticket.setProductName("成人票");
+        ticket.setPrice(new BigDecimal("98.00"));
+        ticket.setVisitorName("李四");
+        ticket.setVisitorIdCard("110101199001011234");
+        createRequest.setTickets(Arrays.asList(ticket));
 
         TicketOrderResponse orderResponse = ticketOrderService.createOrder(createRequest);
         String orderNo = orderResponse.getOrderNo();

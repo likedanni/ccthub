@@ -201,17 +201,18 @@ class OrderStatusFlowTest {
         TicketOrderCreateRequest request = new TicketOrderCreateRequest();
         request.setUserId(1L);
         request.setScenicSpotId(1L);
-        request.setTicketDate(LocalDate.now().plusDays(7)); // 7天后，满足退款规则
+        request.setMerchantId(1L);
+        request.setVisitDate(LocalDate.now().plusDays(7)); // 7天后，满足退款规则
         request.setContactName("张三");
         request.setContactPhone("13800138000");
 
-        TicketOrderCreateRequest.VisitorInfo visitor = new TicketOrderCreateRequest.VisitorInfo();
-        visitor.setProductId(1L);
-        visitor.setProductName("成人票");
-        visitor.setUnitPrice(new BigDecimal("98.00"));
-        visitor.setVisitorName("李四");
-        visitor.setVisitorIdCard("110101199001011234");
-        request.setVisitors(Arrays.asList(visitor));
+        TicketOrderCreateRequest.TicketItem ticket = new TicketOrderCreateRequest.TicketItem();
+        ticket.setTicketPriceId(1L);
+        ticket.setProductName("成人票");
+        ticket.setPrice(new BigDecimal("98.00"));
+        ticket.setVisitorName("李四");
+        ticket.setVisitorIdCard("110101199001011234");
+        request.setTickets(Arrays.asList(ticket));
 
         return request;
     }
