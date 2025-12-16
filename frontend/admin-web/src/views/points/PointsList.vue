@@ -126,10 +126,10 @@
 </template>
 
 <script setup>
+import { getUserPoints } from '@/api/points'
 import { ElMessage } from 'element-plus'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { getUserPoints } from '@/api/points'
 
 const router = useRouter()
 const loading = ref(false)

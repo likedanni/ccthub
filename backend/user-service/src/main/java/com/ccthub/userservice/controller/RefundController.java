@@ -106,7 +106,16 @@ public class RefundController {
             Pageable pageable) {
         try {
             Page<RefundResponse> page = refundService.getRefunds(orderNo, userId, status, startTime, endTime, pageable);
-            return ResponseEntity.ok(success("查询成功", page));
+
+            // 转换为统一的分页格式
+            Map<String, Object> data = new HashMap<>();
+            data.put("records", page.getContent());
+            data.put("total", page.getTotalElements());
+            data.put("size", page.getSize());
+            data.put("current", page.getNumber() + 1);
+            data.put("pages", page.getTotalPages());
+
+            return ResponseEntity.ok(success("查询成功", data));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(error(e.getMessage()));
         }

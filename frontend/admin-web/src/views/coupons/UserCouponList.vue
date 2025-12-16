@@ -111,9 +111,9 @@
 </template>
 
 <script setup>
+import { getUserCoupons } from '@/api/coupon'
 import { ElMessage } from 'element-plus'
 import { onMounted, ref } from 'vue'
-import { getUserCoupons } from '@/api/coupon'
 
 const loading = ref(false)
 

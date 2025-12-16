@@ -92,10 +92,10 @@
 </template>
 
 <script setup>
+import { getWallets } from '@/api/wallet'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { getWallets, updateWalletStatus } from '@/api/wallet'
 
 const router = useRouter()
 const loading = ref(false)

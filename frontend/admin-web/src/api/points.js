@@ -1,4 +1,4 @@
-import request from "@/utils/request";
+import request from "./request";
 
 /**
  * 获取用户积分列表

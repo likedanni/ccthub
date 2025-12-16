@@ -97,10 +97,10 @@
 </template>
 
 <script setup>
+import { getPointsHistory } from '@/api/points'
 import { ElMessage } from 'element-plus'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { getPointsHistory } from '@/api/points'
 
 const route = useRoute()
 
