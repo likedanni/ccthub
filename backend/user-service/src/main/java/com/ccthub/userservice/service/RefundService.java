@@ -58,7 +58,8 @@ public class RefundService {
         }
 
         // 检查是否已有未完成的退款申请
-        long pendingCount = refundRepository.countByOrderNoAndStatus(request.getOrderNo(), OrderRefund.STATUS_PENDING_AUDIT);
+        long pendingCount = refundRepository.countByOrderNoAndStatus(request.getOrderNo(),
+                OrderRefund.STATUS_PENDING_AUDIT);
         if (pendingCount > 0) {
             throw new IllegalStateException("已存在待审核的退款申请");
         }
@@ -168,7 +169,7 @@ public class RefundService {
 
         if (status.equals(OrderRefund.STATUS_SUCCESS)) {
             refund.setPaymentRefundAt(LocalDateTime.now());
-            
+
             // 更新订单状态为已完成
             Order order = orderRepository.findByOrderNo(refund.getOrderNo())
                     .orElseThrow(() -> new IllegalArgumentException("订单不存在"));

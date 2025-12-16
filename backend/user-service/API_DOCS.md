@@ -681,13 +681,13 @@ Content-Type: application/json
       "visitorName": "张三",
       "visitorIdCard": "140000199001011234",
       "visitorPhone": "13800138000",
-      "price": 80.00,
+      "price": 80.0,
       "productName": "长治太行山大峡谷成人票"
     },
     {
       "ticketPriceId": 2,
       "visitorName": "李四",
-      "price": 40.00,
+      "price": 40.0,
       "productName": "长治太行山大峡谷儿童票"
     }
   ],
@@ -709,10 +709,10 @@ Content-Type: application/json
     "visitDate": "2025-12-25",
     "contactName": "张三",
     "contactPhone": "13800138000",
-    "totalAmount": 120.00,
-    "discountAmount": 0.00,
-    "payAmount": 120.00,
-    "pointAmount": 0.00,
+    "totalAmount": 120.0,
+    "discountAmount": 0.0,
+    "payAmount": 120.0,
+    "pointAmount": 0.0,
     "pointEarned": 0,
     "paymentMethod": null,
     "paymentStatus": 0,
@@ -726,7 +726,7 @@ Content-Type: application/json
       {
         "id": 1,
         "productName": "长治太行山大峡谷成人票",
-        "unitPrice": 80.00,
+        "unitPrice": 80.0,
         "visitorName": "张三",
         "visitorIdCard": null,
         "visitorPhone": null,
@@ -738,7 +738,7 @@ Content-Type: application/json
       {
         "id": 2,
         "productName": "长治太行山大峡谷儿童票",
-        "unitPrice": 40.00,
+        "unitPrice": 40.0,
         "visitorName": "李四",
         "verificationCode": "p6o5n4m3l2k1j0i9h8g7f6e5d4c3b2a1",
         "verificationStatus": 0,
@@ -850,7 +850,7 @@ POST /api/ticket-orders/{orderNo}/cancel
 }
 ```
 
-**说明:** 
+**说明:**
 
 - 订单状态(orderStatus): 0-待付款, 1-待使用, 2-已完成, 3-已取消, 4-退款中
 - 支付状态(paymentStatus): 0-待支付, 1-支付成功, 2-支付失败, 3-已退款, 4-处理中

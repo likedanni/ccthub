@@ -1,11 +1,11 @@
 package com.ccthub.userservice.dto.ticket;
 
-import lombok.Data;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import lombok.Data;
 
 /**
  * 门票订单响应DTO
@@ -23,25 +23,25 @@ public class TicketOrderResponse {
     private LocalDate visitDate;
     private String contactName;
     private String contactPhone;
-    
+
     private BigDecimal totalAmount;
     private BigDecimal discountAmount;
     private BigDecimal payAmount;
     private BigDecimal pointAmount;
     private Integer pointEarned;
-    
+
     private String paymentMethod;
     private Integer paymentStatus;
     private String paymentStatusText;
     private Integer orderStatus;
     private String orderStatusText;
-    
+
     private String remark;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
-    
+
     private List<TicketItemResponse> tickets;
-    
+
     @Data
     public static class TicketItemResponse {
         private Long id;

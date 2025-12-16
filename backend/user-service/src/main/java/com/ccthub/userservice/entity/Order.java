@@ -92,40 +92,40 @@ public class Order {
      * 订单类型常量
      */
     public static class OrderType {
-        public static final Integer TICKET = 1;        // 门票
-        public static final Integer PRODUCT = 2;       // 实物商品
-        public static final Integer ACTIVITY = 3;      // 活动
+        public static final Integer TICKET = 1; // 门票
+        public static final Integer PRODUCT = 2; // 实物商品
+        public static final Integer ACTIVITY = 3; // 活动
     }
 
     /**
      * 支付状态常量
      */
     public static class PaymentStatus {
-        public static final Integer PENDING = 0;       // 待支付
-        public static final Integer SUCCESS = 1;       // 支付成功
-        public static final Integer FAILED = 2;        // 支付失败
-        public static final Integer REFUNDED = 3;      // 已退款
-        public static final Integer PROCESSING = 4;    // 处理中
+        public static final Integer PENDING = 0; // 待支付
+        public static final Integer SUCCESS = 1; // 支付成功
+        public static final Integer FAILED = 2; // 支付失败
+        public static final Integer REFUNDED = 3; // 已退款
+        public static final Integer PROCESSING = 4; // 处理中
     }
 
     /**
      * 订单状态常量
      */
     public static class OrderStatus {
-        public static final Integer PENDING_PAYMENT = 0;  // 待付款
-        public static final Integer PENDING_USE = 1;      // 待使用
-        public static final Integer COMPLETED = 2;        // 已完成
-        public static final Integer CANCELLED = 3;        // 已取消
-        public static final Integer REFUNDING = 4;        // 退款中
+        public static final Integer PENDING_PAYMENT = 0; // 待付款
+        public static final Integer PENDING_USE = 1; // 待使用
+        public static final Integer COMPLETED = 2; // 已完成
+        public static final Integer CANCELLED = 3; // 已取消
+        public static final Integer REFUNDING = 4; // 退款中
     }
 
     /**
      * 退款状态常量
      */
     public static class RefundStatus {
-        public static final Integer NO_REFUND = 0;     // 无退款
-        public static final Integer REFUNDING = 1;     // 退款中
-        public static final Integer SUCCESS = 2;       // 退款成功
-        public static final Integer FAILED = 3;        // 退款失败
+        public static final Integer NO_REFUND = 0; // 无退款
+        public static final Integer REFUNDING = 1; // 退款中
+        public static final Integer SUCCESS = 2; // 退款成功
+        public static final Integer FAILED = 3; // 退款失败
     }
 }

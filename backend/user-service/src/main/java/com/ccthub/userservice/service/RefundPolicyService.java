@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import com.ccthub.userservice.entity.Order;
 import com.ccthub.userservice.entity.OrderItem;
 import com.ccthub.userservice.entity.Ticket;
-import com.ccthub.userservice.repository.OrderRepository;
 import com.ccthub.userservice.repository.OrderItemRepository;
+import com.ccthub.userservice.repository.OrderRepository;
 import com.ccthub.userservice.repository.TicketRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -304,12 +304,12 @@ public class RefundPolicyService {
     private int calculateRefundRate(JsonNode refundPolicy, long daysBeforeUse) {
         // 示例退款规则格式：
         // {
-        //   "rules": [
-        //     {"days": 7, "rate": 100},   // 7天前退款，全额退款
-        //     {"days": 3, "rate": 50},    // 3-7天退款，退50%
-        //     {"days": 1, "rate": 30},    // 1-3天退款，退30%
-        //     {"days": 0, "rate": 0}      // 1天内不可退款
-        //   ]
+        // "rules": [
+        // {"days": 7, "rate": 100}, // 7天前退款，全额退款
+        // {"days": 3, "rate": 50}, // 3-7天退款，退50%
+        // {"days": 1, "rate": 30}, // 1-3天退款，退30%
+        // {"days": 0, "rate": 0} // 1天内不可退款
+        // ]
         // }
 
         if (refundPolicy == null || !refundPolicy.has("rules")) {
@@ -339,11 +339,11 @@ public class RefundPolicyService {
     private BigDecimal calculateRefundFee(JsonNode refundPolicy, BigDecimal refundAmount, long daysBeforeUse) {
         // 示例手续费规则格式：
         // {
-        //   "feeRules": [
-        //     {"days": 7, "feeRate": 0},      // 7天前退款，免手续费
-        //     {"days": 3, "feeRate": 0.05},   // 3-7天退款，5%手续费
-        //     {"days": 1, "feeRate": 0.10}    // 1-3天退款，10%手续费
-        //   ]
+        // "feeRules": [
+        // {"days": 7, "feeRate": 0}, // 7天前退款，免手续费
+        // {"days": 3, "feeRate": 0.05}, // 3-7天退款，5%手续费
+        // {"days": 1, "feeRate": 0.10} // 1-3天退款，10%手续费
+        // ]
         // }
 
         if (refundPolicy == null || !refundPolicy.has("feeRules")) {

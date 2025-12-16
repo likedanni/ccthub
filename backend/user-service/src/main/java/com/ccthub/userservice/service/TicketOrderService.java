@@ -1,19 +1,21 @@
 package com.ccthub.userservice.service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.ccthub.userservice.dto.ticket.TicketOrderCreateRequest;
 import com.ccthub.userservice.dto.ticket.TicketOrderResponse;
 import com.ccthub.userservice.entity.Order;
 import com.ccthub.userservice.entity.OrderItem;
 import com.ccthub.userservice.repository.OrderItemRepository;
 import com.ccthub.userservice.repository.OrderRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 门票订单服务
@@ -43,7 +45,7 @@ public class TicketOrderService {
         BigDecimal totalAmount = request.getTickets().stream()
                 .map(TicketOrderCreateRequest.TicketItem::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        
+
         order.setTotalAmount(totalAmount);
         order.setDiscountAmount(BigDecimal.ZERO);
         order.setPayAmount(totalAmount);
@@ -81,7 +83,7 @@ public class TicketOrderService {
     public TicketOrderResponse getTicketOrderByOrderNo(String orderNo) {
         Order order = orderRepository.findByOrderNo(orderNo)
                 .orElseThrow(() -> new RuntimeException("订单不存在"));
-        
+
         if (!Order.OrderType.TICKET.equals(order.getOrderType())) {
             throw new RuntimeException("订单类型错误，不是门票订单");
         }
@@ -96,7 +98,7 @@ public class TicketOrderService {
     public List<TicketOrderResponse> getUserTicketOrders(Long userId) {
         List<Order> orders = orderRepository.findByUserIdAndOrderTypeOrderByCreateTimeDesc(
                 userId, Order.OrderType.TICKET);
-        
+
         return orders.stream()
                 .map(order -> {
                     List<OrderItem> items = orderItemRepository.findByOrderNo(order.getOrderNo());
@@ -146,13 +148,13 @@ public class TicketOrderService {
     /**
      * 转换为门票订单响应对象
      */
-    private TicketOrderResponse convertToResponse(Order order, List<OrderItem> items, 
-                                                   TicketOrderCreateRequest request) {
+    private TicketOrderResponse convertToResponse(Order order, List<OrderItem> items,
+            TicketOrderCreateRequest request) {
         TicketOrderResponse response = new TicketOrderResponse();
         response.setOrderNo(order.getOrderNo());
         response.setUserId(order.getUserId());
         response.setMerchantId(order.getMerchantId());
-        
+
         if (request != null) {
             response.setScenicSpotId(request.getScenicSpotId());
             response.setVisitDate(request.getVisitDate());
@@ -162,19 +164,19 @@ public class TicketOrderService {
         } else if (!items.isEmpty()) {
             response.setVisitDate(items.get(0).getTicketDate());
         }
-        
+
         response.setTotalAmount(order.getTotalAmount());
         response.setDiscountAmount(order.getDiscountAmount());
         response.setPayAmount(order.getPayAmount());
         response.setPointAmount(order.getPointAmount());
         response.setPointEarned(order.getPointEarned());
-        
+
         response.setPaymentMethod(order.getPaymentMethod());
         response.setPaymentStatus(order.getPaymentStatus());
         response.setPaymentStatusText(getPaymentStatusText(order.getPaymentStatus()));
         response.setOrderStatus(order.getOrderStatus());
         response.setOrderStatusText(getOrderStatusText(order.getOrderStatus()));
-        
+
         response.setCreateTime(order.getCreateTime());
         response.setUpdateTime(order.getUpdateTime());
 
@@ -202,14 +204,21 @@ public class TicketOrderService {
      * 获取支付状态文本
      */
     private String getPaymentStatusText(Integer status) {
-        if (status == null) return "未知";
+        if (status == null)
+            return "未知";
         switch (status) {
-            case 0: return "待支付";
-            case 1: return "支付成功";
-            case 2: return "支付失败";
-            case 3: return "已退款";
-            case 4: return "处理中";
-            default: return "未知";
+            case 0:
+                return "待支付";
+            case 1:
+                return "支付成功";
+            case 2:
+                return "支付失败";
+            case 3:
+                return "已退款";
+            case 4:
+                return "处理中";
+            default:
+                return "未知";
         }
     }
 
@@ -217,14 +226,21 @@ public class TicketOrderService {
      * 获取订单状态文本
      */
     private String getOrderStatusText(Integer status) {
-        if (status == null) return "未知";
+        if (status == null)
+            return "未知";
         switch (status) {
-            case 0: return "待付款";
-            case 1: return "待使用";
-            case 2: return "已完成";
-            case 3: return "已取消";
-            case 4: return "退款中";
-            default: return "未知";
+            case 0:
+                return "待付款";
+            case 1:
+                return "待使用";
+            case 2:
+                return "已完成";
+            case 3:
+                return "已取消";
+            case 4:
+                return "退款中";
+            default:
+                return "未知";
         }
     }
 
@@ -232,12 +248,110 @@ public class TicketOrderService {
      * 获取核销状态文本
      */
     private String getVerificationStatusText(Integer status) {
-        if (status == null) return "未知";
+        if (status == null)
+            return "未知";
         switch (status) {
-            case 0: return "未核销";
-            case 1: return "已核销";
-            case 2: return "已过期";
-            default: return "未知";
+            case 0:
+                return "未核销";
+            case 1:
+                return "已核销";
+            case 2:
+                return "已过期";
+            default:
+                return "未知";
         }
     }
+
+    // ===== 统一订单查询API支持方法 =====
+
+    /**
+     * 分页查询订单（支持多条件筛选）
+     */
+    public org.springframework.data.domain.Page<TicketOrderResponse> queryOrders(
+            Long userId,
+            Integer orderStatus,
+            Integer paymentStatus,
+            java.time.LocalDate startDate,
+            java.time.LocalDate endDate,
+            org.springframework.data.domain.Pageable pageable) {
+        
+        // 简化实现：先查询所有用户订单，后续可优化为Repository层筛选
+        List<Order> orders = orderRepository.findByUserIdAndOrderType(userId, Order.OrderType.TICKET);
+        
+        // 按条件过滤
+        if (orderStatus != null) {
+            orders = orders.stream()
+                .filter(o -> o.getOrderStatus().equals(orderStatus))
+                .collect(Collectors.toList());
+        }
+        if (paymentStatus != null) {
+            orders = orders.stream()
+                .filter(o -> o.getPaymentStatus().equals(paymentStatus))
+                .collect(Collectors.toList());
+        }
+        
+        // 转换为Response（需要查询每个订单的OrderItem）
+        List<TicketOrderResponse> responses = orders.stream()
+            .map(order -> {
+                List<OrderItem> items = orderItemRepository.findByOrderNo(order.getOrderNo());
+                return convertToResponse(order, items, null);
+            })
+            .collect(Collectors.toList());
+        
+        // 分页处理
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), responses.size());
+        List<TicketOrderResponse> pageContent = responses.subList(start, end);
+        
+        return new org.springframework.data.domain.PageImpl<>(
+            pageContent, pageable, responses.size());
+    }
+
+    /**
+     * 根据订单号获取订单（别名方法，供UnifiedOrderController使用）
+     */
+    public TicketOrderResponse getOrderByOrderNo(String orderNo) {
+        return getTicketOrderByOrderNo(orderNo);
+    }
+
+    /**
+     * 统计用户订单总数
+     */
+    public long countByUserId(Long userId) {
+        return orderRepository.countByUserIdAndOrderType(userId, Order.OrderType.TICKET);
+    }
+
+    /**
+     * 统计用户指定状态的订单数
+     */
+    public long countByUserIdAndStatus(Long userId, Integer orderStatus) {
+        return orderRepository.findByUserIdAndOrderType(userId, Order.OrderType.TICKET)
+            .stream()
+            .filter(o -> o.getOrderStatus().equals(orderStatus))
+            .count();
+    }
+
+    /**
+     * 取消订单（带原因）
+     */
+    public void cancelOrder(String orderNo, String reason) {
+        Order order = orderRepository.findByOrderNo(orderNo)
+            .orElseThrow(() -> new IllegalArgumentException("订单不存在"));
+        
+        if (order.getOrderStatus() != Order.OrderStatus.PENDING_PAYMENT) {
+            throw new IllegalStateException("只能取消待付款订单");
+        }
+        
+        order.setOrderStatus(Order.OrderStatus.CANCELLED);
+        // TODO: 保存取消原因（需要在Order实体中添加cancelReason字段）
+        orderRepository.save(order);
+    }
+
+    /**
+     * 创建订单（别名方法，供UnifiedOrderController使用）
+     */
+    public TicketOrderResponse createOrder(TicketOrderCreateRequest request) {
+        return createTicketOrder(request);
+    }
 }
+

@@ -1,11 +1,17 @@
 package com.ccthub.userservice.entity;
 
-import jakarta.persistence.*;
-import lombok.Data;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
+import lombok.Data;
 
 /**
  * 订单明细实体（通用订单明细）
@@ -75,8 +81,8 @@ public class OrderItem {
      * 核销状态常量
      */
     public static class VerificationStatus {
-        public static final Integer NOT_VERIFIED = 0;  // 未核销
-        public static final Integer VERIFIED = 1;      // 已核销
-        public static final Integer EXPIRED = 2;       // 已过期
+        public static final Integer NOT_VERIFIED = 0; // 未核销
+        public static final Integer VERIFIED = 1; // 已核销
+        public static final Integer EXPIRED = 2; // 已过期
     }
 }

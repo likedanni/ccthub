@@ -51,4 +51,14 @@ public interface OrderRepository extends JpaRepository<Order, String> {
      * 根据支付状态查询订单列表
      */
     List<Order> findByPaymentStatusOrderByCreateTimeDesc(Integer paymentStatus);
+
+    /**
+     * 根据用户ID和订单类型查询（不排序）
+     */
+    List<Order> findByUserIdAndOrderType(Long userId, Integer orderType);
+
+    /**
+     * 统计用户订单总数（按类型）
+     */
+    long countByUserIdAndOrderType(Long userId, Integer orderType);
 }

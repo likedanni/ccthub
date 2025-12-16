@@ -329,8 +329,8 @@
   - ✅ Repository 更新（主键类型改为 String）
     - OrderRepository.findByOrderNo()
     - OrderItemRepository.findByOrderNo()
-  
 - ✅ 门票订单专用服务
+
   - ✅ TicketOrderService.java（230 行）
     - 创建门票订单
     - 支付/取消门票订单
@@ -346,6 +346,7 @@
     - TicketOrderResponse.java
 
 - 📝 旧代码备份（.bak 文件）
+
   - OrderService.java.bak（门票订单旧实现）
   - OrderController.java.bak
   - PaymentService.java.bak
