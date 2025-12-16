@@ -64,6 +64,11 @@ public interface OrderRefundRepository extends JpaRepository<OrderRefund, Long> 
     long countByStatus(Integer status);
 
     /**
+     * 统计订单号和状态匹配的退款数量
+     */
+    long countByOrderNoAndStatus(String orderNo, Integer status);
+
+    /**
      * 统计待审核的退款数量
      */
     default long countPendingAudits() {
