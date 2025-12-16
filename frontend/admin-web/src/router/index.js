@@ -36,6 +36,20 @@ const routes = [
     ],
   },
   {
+    path: "/merchants",
+    component: Layout,
+    redirect: "/merchants/list",
+    meta: { title: "商户管理", icon: "Shop" },
+    children: [
+      {
+        path: "list",
+        name: "MerchantList",
+        component: () => import("@/views/merchants/MerchantManage.vue"),
+        meta: { title: "商户列表" },
+      },
+    ],
+  },
+  {
     path: "/scenic",
     component: Layout,
     redirect: "/scenic/list",
