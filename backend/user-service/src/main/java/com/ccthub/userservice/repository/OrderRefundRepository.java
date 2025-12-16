@@ -46,7 +46,7 @@ public interface OrderRefundRepository extends JpaRepository<OrderRefund, Long> 
      * 动态条件查询
      */
     @Query("SELECT r FROM OrderRefund r WHERE "
-            + "(:orderNo IS NULL OR r.orderNo = :orderNo) "
+            + "(:orderNo IS NULL OR r.orderNo LIKE CONCAT('%', :orderNo, '%')) "
             + "AND (:userId IS NULL OR r.userId = :userId) "
             + "AND (:status IS NULL OR r.status = :status) "
             + "AND (:startTime IS NULL OR r.createdAt >= :startTime) "
