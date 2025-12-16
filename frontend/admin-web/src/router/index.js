@@ -186,6 +186,34 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/activities",
+    component: Layout,
+    redirect: "/activities/list",
+    meta: { title: "活动管理", icon: "Medal" },
+    children: [
+      {
+        path: "list",
+        name: "ActivityList",
+        component: () => import("@/views/activity/ActivityManage.vue"),
+        meta: { title: "活动列表" },
+      },
+    ],
+  },
+  {
+    path: "/seckills",
+    component: Layout,
+    redirect: "/seckills/list",
+    meta: { title: "秒杀管理", icon: "Timer" },
+    children: [
+      {
+        path: "list",
+        name: "SeckillList",
+        component: () => import("@/views/seckill/SeckillManage.vue"),
+        meta: { title: "秒杀列表" },
+      },
+    ],
+  },
 ];
 
 const router = createRouter({
