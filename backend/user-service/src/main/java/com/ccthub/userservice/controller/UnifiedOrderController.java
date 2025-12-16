@@ -76,7 +76,15 @@ public class UnifiedOrderController {
                 return ResponseEntity.badRequest().body(error("无效的订单类型"));
             }
 
-            return ResponseEntity.ok(success("查询成功", orderPage));
+            // 转换为前端期望的分页格式
+            Map<String, Object> data = new HashMap<>();
+            data.put("records", orderPage.getContent());
+            data.put("total", orderPage.getTotalElements());
+            data.put("size", orderPage.getSize());
+            data.put("current", orderPage.getNumber() + 1);
+            data.put("pages", orderPage.getTotalPages());
+
+            return ResponseEntity.ok(success("查询成功", data));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(error(e.getMessage()));
         }
