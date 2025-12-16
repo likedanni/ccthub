@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import request from "@/utils/request";
 
 /**
  * 获取钱包列表
@@ -7,10 +7,10 @@ import request from '@/utils/request'
  */
 export function getWallets(params) {
   return request({
-    url: '/wallet/list',
-    method: 'get',
-    params
-  })
+    url: "/wallet/list",
+    method: "get",
+    params,
+  });
 }
 
 /**
@@ -20,10 +20,10 @@ export function getWallets(params) {
  */
 export function getWalletInfo(userId) {
   return request({
-    url: '/wallet/info',
-    method: 'get',
-    params: { userId }
-  })
+    url: "/wallet/info",
+    method: "get",
+    params: { userId },
+  });
 }
 
 /**
@@ -34,13 +34,13 @@ export function getWalletInfo(userId) {
  */
 export function getWalletTransactions(userId, params) {
   return request({
-    url: '/wallet/transactions',
-    method: 'get',
+    url: "/wallet/transactions",
+    method: "get",
     params: {
       userId,
-      ...params
-    }
-  })
+      ...params,
+    },
+  });
 }
 
 /**
@@ -51,11 +51,11 @@ export function getWalletTransactions(userId, params) {
  */
 export function rechargeWallet(userId, data) {
   return request({
-    url: '/wallet/recharge',
-    method: 'post',
+    url: "/wallet/recharge",
+    method: "post",
     params: { userId },
-    data
-  })
+    data,
+  });
 }
 
 /**
@@ -66,10 +66,10 @@ export function rechargeWallet(userId, data) {
  */
 export function updateWalletStatus(userId, status) {
   return request({
-    url: '/wallet/status',
-    method: 'put',
-    params: { userId, status }
-  })
+    url: "/wallet/status",
+    method: "put",
+    params: { userId, status },
+  });
 }
 
 /**
@@ -80,11 +80,11 @@ export function updateWalletStatus(userId, status) {
  */
 export function setPayPassword(userId, data) {
   return request({
-    url: '/wallet/pay-password/set',
-    method: 'post',
+    url: "/wallet/pay-password/set",
+    method: "post",
     params: { userId },
-    data
-  })
+    data,
+  });
 }
 
 /**
@@ -96,9 +96,9 @@ export function setPayPassword(userId, data) {
  */
 export function changePayPassword(userId, oldPassword, data) {
   return request({
-    url: '/wallet/pay-password/change',
-    method: 'post',
+    url: "/wallet/pay-password/change",
+    method: "post",
     params: { userId, oldPassword },
-    data
-  })
+    data,
+  });
 }

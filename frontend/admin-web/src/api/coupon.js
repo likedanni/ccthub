@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import request from "@/utils/request";
 
 /**
  * 获取优惠券列表
@@ -7,10 +7,10 @@ import request from '@/utils/request'
  */
 export function getCoupons(params) {
   return request({
-    url: '/coupons/list',
-    method: 'get',
-    params
-  })
+    url: "/coupons/list",
+    method: "get",
+    params,
+  });
 }
 
 /**
@@ -21,8 +21,8 @@ export function getCoupons(params) {
 export function getCouponDetail(id) {
   return request({
     url: `/coupons/${id}`,
-    method: 'get'
-  })
+    method: "get",
+  });
 }
 
 /**
@@ -32,10 +32,10 @@ export function getCouponDetail(id) {
  */
 export function createCoupon(data) {
   return request({
-    url: '/coupons',
-    method: 'post',
-    data
-  })
+    url: "/coupons",
+    method: "post",
+    data,
+  });
 }
 
 /**
@@ -47,9 +47,9 @@ export function createCoupon(data) {
 export function updateCoupon(id, data) {
   return request({
     url: `/coupons/${id}`,
-    method: 'put',
-    data
-  })
+    method: "put",
+    data,
+  });
 }
 
 /**
@@ -60,8 +60,8 @@ export function updateCoupon(id, data) {
 export function deleteCoupon(id) {
   return request({
     url: `/coupons/${id}`,
-    method: 'delete'
-  })
+    method: "delete",
+  });
 }
 
 /**
@@ -73,9 +73,9 @@ export function deleteCoupon(id) {
 export function updateCouponStatus(id, status) {
   return request({
     url: `/coupons/${id}/status`,
-    method: 'put',
-    params: { status }
-  })
+    method: "put",
+    params: { status },
+  });
 }
 
 /**
@@ -87,9 +87,9 @@ export function updateCouponStatus(id, status) {
 export function grantCoupon(couponId, data) {
   return request({
     url: `/coupons/${couponId}/grant`,
-    method: 'post',
-    data
-  })
+    method: "post",
+    data,
+  });
 }
 
 /**
@@ -99,10 +99,10 @@ export function grantCoupon(couponId, data) {
  */
 export function getUserCoupons(params) {
   return request({
-    url: '/coupons/user',
-    method: 'get',
-    params
-  })
+    url: "/coupons/user",
+    method: "get",
+    params,
+  });
 }
 
 /**
@@ -113,10 +113,10 @@ export function getUserCoupons(params) {
  */
 export function getAvailableCoupons(userId, amount) {
   return request({
-    url: '/coupons/available',
-    method: 'get',
-    params: { userId, amount }
-  })
+    url: "/coupons/available",
+    method: "get",
+    params: { userId, amount },
+  });
 }
 
 /**
@@ -128,9 +128,9 @@ export function getAvailableCoupons(userId, amount) {
 export function useCoupon(userCouponId, orderNo) {
   return request({
     url: `/coupons/user/${userCouponId}/use`,
-    method: 'post',
-    params: { orderNo }
-  })
+    method: "post",
+    params: { orderNo },
+  });
 }
 
 /**
@@ -140,8 +140,8 @@ export function useCoupon(userCouponId, orderNo) {
  */
 export function getUserCouponStats(userId) {
   return request({
-    url: '/coupons/user/stats',
-    method: 'get',
-    params: { userId }
-  })
+    url: "/coupons/user/stats",
+    method: "get",
+    params: { userId },
+  });
 }

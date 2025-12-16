@@ -275,8 +275,13 @@ public class TicketOrderService {
             java.time.LocalDate endDate,
             org.springframework.data.domain.Pageable pageable) {
 
-        // 简化实现：先查询所有用户订单，后续可优化为Repository层筛选
-        List<Order> orders = orderRepository.findByUserIdAndOrderType(userId, Order.OrderType.TICKET);
+        // 查询订单：如果userId为空，查询所有门票订单
+        List<Order> orders;
+        if (userId != null) {
+            orders = orderRepository.findByUserIdAndOrderType(userId, Order.OrderType.TICKET);
+        } else {
+            orders = orderRepository.findByOrderType(Order.OrderType.TICKET);
+        }
 
         // 按条件过滤
         if (orderStatus != null) {

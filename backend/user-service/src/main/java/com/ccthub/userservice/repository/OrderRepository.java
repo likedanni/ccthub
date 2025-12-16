@@ -58,6 +58,16 @@ public interface OrderRepository extends JpaRepository<Order, String> {
     List<Order> findByUserIdAndOrderType(Long userId, Integer orderType);
 
     /**
+     * 根据订单类型查询所有订单（按创建时间倒序）
+     */
+    List<Order> findByOrderTypeOrderByCreateTimeDesc(Integer orderType);
+
+    /**
+     * 根据订单类型查询所有订单（不排序）
+     */
+    List<Order> findByOrderType(Integer orderType);
+
+    /**
      * 统计用户订单总数（按类型）
      */
     long countByUserIdAndOrderType(Long userId, Integer orderType);

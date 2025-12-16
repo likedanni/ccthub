@@ -97,7 +97,7 @@
 <script setup>
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { onMounted, ref } from 'vue'
-import { getCoupons, updateCouponStatus } from '@/api/coupon'
+import { getCoupons } from '@/api/coupon'
 
 const loading = ref(false)
 

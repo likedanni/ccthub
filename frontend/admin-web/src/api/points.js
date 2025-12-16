@@ -1,4 +1,4 @@
-import request from '@/utils/request'
+import request from "@/utils/request";
 
 /**
  * 获取用户积分列表
@@ -7,10 +7,10 @@ import request from '@/utils/request'
  */
 export function getUserPoints(params) {
   return request({
-    url: '/points/list',
-    method: 'get',
-    params
-  })
+    url: "/points/list",
+    method: "get",
+    params,
+  });
 }
 
 /**
@@ -20,10 +20,10 @@ export function getUserPoints(params) {
  */
 export function getPointsInfo(userId) {
   return request({
-    url: '/points/info',
-    method: 'get',
-    params: { userId }
-  })
+    url: "/points/info",
+    method: "get",
+    params: { userId },
+  });
 }
 
 /**
@@ -34,13 +34,13 @@ export function getPointsInfo(userId) {
  */
 export function getPointsHistory(userId, params) {
   return request({
-    url: '/points/history',
-    method: 'get',
+    url: "/points/history",
+    method: "get",
     params: {
       userId,
-      ...params
-    }
-  })
+      ...params,
+    },
+  });
 }
 
 /**
@@ -51,11 +51,11 @@ export function getPointsHistory(userId, params) {
  */
 export function adjustPoints(userId, data) {
   return request({
-    url: '/points/adjust',
-    method: 'post',
+    url: "/points/adjust",
+    method: "post",
     params: { userId },
-    data
-  })
+    data,
+  });
 }
 
 /**
@@ -65,10 +65,10 @@ export function adjustPoints(userId, data) {
  */
 export function dailyCheckin(userId) {
   return request({
-    url: '/points/checkin',
-    method: 'post',
-    params: { userId }
-  })
+    url: "/points/checkin",
+    method: "post",
+    params: { userId },
+  });
 }
 
 /**
@@ -78,10 +78,10 @@ export function dailyCheckin(userId) {
  */
 export function earnFromShare(userId) {
   return request({
-    url: '/points/share',
-    method: 'post',
-    params: { userId }
-  })
+    url: "/points/share",
+    method: "post",
+    params: { userId },
+  });
 }
 
 /**
@@ -93,10 +93,10 @@ export function earnFromShare(userId) {
  */
 export function exchangePoints(userId, productId, points) {
   return request({
-    url: '/points/exchange',
-    method: 'post',
-    params: { userId, productId, points }
-  })
+    url: "/points/exchange",
+    method: "post",
+    params: { userId, productId, points },
+  });
 }
 
 /**
@@ -106,10 +106,10 @@ export function exchangePoints(userId, productId, points) {
  */
 export function calculateDeductAmount(points) {
   return request({
-    url: '/points/calculate-deduct',
-    method: 'get',
-    params: { points }
-  })
+    url: "/points/calculate-deduct",
+    method: "get",
+    params: { points },
+  });
 }
 
 /**
@@ -118,7 +118,7 @@ export function calculateDeductAmount(points) {
  */
 export function getPointsStatistics() {
   return request({
-    url: '/points/statistics',
-    method: 'get'
-  })
+    url: "/points/statistics",
+    method: "get",
+  });
 }

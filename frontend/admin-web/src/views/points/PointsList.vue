@@ -129,7 +129,7 @@
 import { ElMessage } from 'element-plus'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { getUserPoints, getPointsStatistics, adjustPoints } from '@/api/points'
+import { getUserPoints } from '@/api/points'
 
 const router = useRouter()
 const loading = ref(false)
