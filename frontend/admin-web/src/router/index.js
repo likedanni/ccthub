@@ -234,4 +234,9 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+// 添加全局错误处理，避免路由导航错误
+router.onError((error) => {
+  console.error('路由错误:', error);
+});
+
 export default router;

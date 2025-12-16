@@ -96,6 +96,24 @@
           <el-menu-item index="/coupons/list">优惠券列表</el-menu-item>
           <el-menu-item index="/coupons/user">用户优惠券</el-menu-item>
         </el-sub-menu>
+        <el-sub-menu index="/activities">
+          <template #title>
+            <el-icon>
+              <Medal />
+            </el-icon>
+            <span>活动管理</span>
+          </template>
+          <el-menu-item index="/activities/list">活动列表</el-menu-item>
+        </el-sub-menu>
+        <el-sub-menu index="/seckills">
+          <template #title>
+            <el-icon>
+              <Timer />
+            </el-icon>
+            <span>秒杀管理</span>
+          </template>
+          <el-menu-item index="/seckills/list">秒杀列表</el-menu-item>
+        </el-sub-menu>
       </el-menu>
     </el-aside>
 
@@ -140,9 +158,11 @@ import {
     Discount,
     Document,
     Location,
+    Medal,
     RefreshLeft,
     Star,
     Ticket,
+    Timer,
     User,
     Wallet
 } from '@element-plus/icons-vue'

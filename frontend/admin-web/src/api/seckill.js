@@ -1,14 +1,14 @@
-import request from './request'
+import request from "./request";
 
 /**
  * 获取秒杀列表
  */
 export function getSeckillList(params) {
   return request({
-    url: '/api/seckills',
-    method: 'get',
-    params
-  })
+    url: "/api/seckills",
+    method: "get",
+    params,
+  });
 }
 
 /**
@@ -17,8 +17,8 @@ export function getSeckillList(params) {
 export function getSeckillDetail(id) {
   return request({
     url: `/api/seckills/${id}`,
-    method: 'get'
-  })
+    method: "get",
+  });
 }
 
 /**
@@ -26,10 +26,10 @@ export function getSeckillDetail(id) {
  */
 export function createSeckill(data) {
   return request({
-    url: '/api/seckills',
-    method: 'post',
-    data
-  })
+    url: "/api/seckills",
+    method: "post",
+    data,
+  });
 }
 
 /**
@@ -38,9 +38,9 @@ export function createSeckill(data) {
 export function updateSeckill(id, data) {
   return request({
     url: `/api/seckills/${id}`,
-    method: 'put',
-    data
-  })
+    method: "put",
+    data,
+  });
 }
 
 /**
@@ -49,8 +49,8 @@ export function updateSeckill(id, data) {
 export function deleteSeckill(id) {
   return request({
     url: `/api/seckills/${id}`,
-    method: 'delete'
-  })
+    method: "delete",
+  });
 }
 
 /**
@@ -59,9 +59,9 @@ export function deleteSeckill(id) {
 export function toggleSeckillStatus(id, status) {
   return request({
     url: `/api/seckills/${id}/status`,
-    method: 'put',
-    params: { status }
-  })
+    method: "put",
+    params: { status },
+  });
 }
 
 /**
@@ -69,9 +69,9 @@ export function toggleSeckillStatus(id, status) {
  */
 export function getOngoingSeckills() {
   return request({
-    url: '/api/seckills/ongoing',
-    method: 'get'
-  })
+    url: "/api/seckills/ongoing",
+    method: "get",
+  });
 }
 
 /**
@@ -80,7 +80,7 @@ export function getOngoingSeckills() {
 export function processPurchase(id, userId, quantity = 1) {
   return request({
     url: `/api/seckills/${id}/purchase`,
-    method: 'post',
-    params: { userId, quantity }
-  })
+    method: "post",
+    params: { userId, quantity },
+  });
 }

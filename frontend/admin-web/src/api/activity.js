@@ -1,14 +1,14 @@
-import request from './request'
+import request from "./request";
 
 /**
  * 获取活动列表
  */
 export function getActivityList(params) {
   return request({
-    url: '/api/activities',
-    method: 'get',
-    params
-  })
+    url: "/api/activities",
+    method: "get",
+    params,
+  });
 }
 
 /**
@@ -17,8 +17,8 @@ export function getActivityList(params) {
 export function getActivityDetail(id) {
   return request({
     url: `/api/activities/${id}`,
-    method: 'get'
-  })
+    method: "get",
+  });
 }
 
 /**
@@ -26,10 +26,10 @@ export function getActivityDetail(id) {
  */
 export function createActivity(data) {
   return request({
-    url: '/api/activities',
-    method: 'post',
-    data
-  })
+    url: "/api/activities",
+    method: "post",
+    data,
+  });
 }
 
 /**
@@ -38,9 +38,9 @@ export function createActivity(data) {
 export function updateActivity(id, data) {
   return request({
     url: `/api/activities/${id}`,
-    method: 'put',
-    data
-  })
+    method: "put",
+    data,
+  });
 }
 
 /**
@@ -49,8 +49,8 @@ export function updateActivity(id, data) {
 export function deleteActivity(id) {
   return request({
     url: `/api/activities/${id}`,
-    method: 'delete'
-  })
+    method: "delete",
+  });
 }
 
 /**
@@ -59,9 +59,9 @@ export function deleteActivity(id) {
 export function auditActivity(id, auditStatus) {
   return request({
     url: `/api/activities/${id}/audit`,
-    method: 'put',
-    params: { auditStatus }
-  })
+    method: "put",
+    params: { auditStatus },
+  });
 }
 
 /**
@@ -70,9 +70,9 @@ export function auditActivity(id, auditStatus) {
 export function toggleActivityStatus(id, status) {
   return request({
     url: `/api/activities/${id}/status`,
-    method: 'put',
-    params: { status }
-  })
+    method: "put",
+    params: { status },
+  });
 }
 
 /**
@@ -80,9 +80,9 @@ export function toggleActivityStatus(id, status) {
  */
 export function getOngoingActivities() {
   return request({
-    url: '/api/activities/ongoing',
-    method: 'get'
-  })
+    url: "/api/activities/ongoing",
+    method: "get",
+  });
 }
 
 /**
@@ -90,8 +90,8 @@ export function getOngoingActivities() {
  */
 export function getHotActivities(limit = 10) {
   return request({
-    url: '/api/activities/hot',
-    method: 'get',
-    params: { limit }
-  })
+    url: "/api/activities/hot",
+    method: "get",
+    params: { limit },
+  });
 }
