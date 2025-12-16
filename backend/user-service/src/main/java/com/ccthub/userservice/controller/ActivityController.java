@@ -37,7 +37,8 @@ public class ActivityController {
             return ResponseEntity.ok(created);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body(Map.of("error", e.getMessage(), "cause", e.getCause() != null ? e.getCause().getMessage() : ""));
+            return ResponseEntity.status(500).body(
+                    Map.of("error", e.getMessage(), "cause", e.getCause() != null ? e.getCause().getMessage() : ""));
         }
     }
 

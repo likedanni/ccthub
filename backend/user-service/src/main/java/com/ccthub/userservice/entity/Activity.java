@@ -27,7 +27,7 @@ public class Activity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "merchant_id", nullable = false)
+    @Column(name = "merchant_id") // nullable=true,允许平台活动(merchantId为null)
     private Long merchantId;
 
     @Column(nullable = false, length = 100)

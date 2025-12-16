@@ -27,7 +27,7 @@ public class SeckillEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "product_id", nullable = false)
+    @Column(name = "product_id") // nullable=true,允许无关联商品的秒杀活动
     private Long productId;
 
     @Column(nullable = false, length = 100)
