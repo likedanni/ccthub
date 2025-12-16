@@ -1,11 +1,10 @@
 package com.ccthub.userservice.service;
 
-import com.ccthub.userservice.dto.PointsInfoDTO;
-import com.ccthub.userservice.dto.UserPointsDTO;
-import com.ccthub.userservice.entity.UserPoints;
-import com.ccthub.userservice.repository.UserPointsRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,10 +12,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalDateTime;
-import java.util.List;
+import com.ccthub.userservice.dto.PointsInfoDTO;
+import com.ccthub.userservice.dto.UserPointsDTO;
+import com.ccthub.userservice.entity.UserPoints;
+import com.ccthub.userservice.repository.UserPointsRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 积分服务 - 积分规则引擎
@@ -31,22 +33,22 @@ public class PointsService {
     /**
      * 积分获取规则配置
      */
-    private static final BigDecimal POINTS_PER_YUAN = BigDecimal.ONE;  // 1元=1积分
-    private static final Integer POINTS_DEDUCT_RATIO = 100;           // 100积分=1元
-    private static final Integer DAILY_CHECKIN_POINTS = 10;           // 每日签到积分
-    private static final Integer SHARE_POINTS = 5;                    // 分享获得积分
-    private static final Integer INVITE_POINTS = 50;                  // 邀请好友积分
-    private static final Integer POINTS_EXPIRE_DAYS = 365;            // 积分有效期（天）
+    private static final BigDecimal POINTS_PER_YUAN = BigDecimal.ONE; // 1元=1积分
+    private static final Integer POINTS_DEDUCT_RATIO = 100; // 100积分=1元
+    private static final Integer DAILY_CHECKIN_POINTS = 10; // 每日签到积分
+    private static final Integer SHARE_POINTS = 5; // 分享获得积分
+    private static final Integer INVITE_POINTS = 50; // 邀请好友积分
+    private static final Integer POINTS_EXPIRE_DAYS = 365; // 积分有效期（天）
 
     /**
      * 获取用户积分信息
      */
     public PointsInfoDTO getPointsInfo(Long userId) {
         LocalDateTime now = LocalDateTime.now();
-        
+
         // 查询当前可用积分
         Integer availablePoints = pointsRepository.getTotalValidPoints(userId, now);
-        
+
         // 查询即将过期积分（30天内）
         LocalDateTime expireTime = now.plusDays(30);
         List<UserPoints> expiringList = pointsRepository.findExpiringPoints(userId, now, expireTime);
@@ -56,7 +58,8 @@ public class PointsService {
                 .sum();
 
         // 查询累计获得和消耗
-        List<UserPoints> allPoints = pointsRepository.findByUserIdOrderByCreatedAtDesc(userId, Pageable.unpaged()).getContent();
+        List<UserPoints> allPoints = pointsRepository.findByUserIdOrderByCreatedAtDesc(userId, Pageable.unpaged())
+                .getContent();
         Integer totalEarned = allPoints.stream()
                 .filter(p -> p.getChangeType().equals(UserPoints.ChangeType.INCREASE))
                 .mapToInt(UserPoints::getPoints)
@@ -183,7 +186,7 @@ public class PointsService {
                 .build();
 
         pointsRepository.save(userPoints);
-        log.info("用户{}邀请用户{}获得积分: {}，当前余额: {}", 
+        log.info("用户{}邀请用户{}获得积分: {}，当前余额: {}",
                 userId, invitedUserId, INVITE_POINTS, currentBalance + INVITE_POINTS);
     }
 
@@ -253,9 +256,9 @@ public class PointsService {
     /**
      * 查询积分流水
      */
-    public Page<UserPointsDTO> getPointsHistory(Long userId, String source, 
-                                               LocalDateTime startTime, LocalDateTime endTime,
-                                               int page, int size) {
+    public Page<UserPointsDTO> getPointsHistory(Long userId, String source,
+            LocalDateTime startTime, LocalDateTime endTime,
+            int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<UserPoints> points;
 
@@ -359,7 +362,8 @@ public class PointsService {
      * 获取变动类型描述
      */
     private String getChangeTypeDesc(Integer changeType) {
-        if (changeType == null) return "未知";
+        if (changeType == null)
+            return "未知";
         return switch (changeType) {
             case 1 -> "增加";
             case 2 -> "减少";
@@ -371,7 +375,8 @@ public class PointsService {
      * 获取来源描述
      */
     private String getSourceDesc(String source) {
-        if (source == null) return "未知";
+        if (source == null)
+            return "未知";
         return switch (source) {
             case "order_pay" -> "订单消费";
             case "daily_checkin" -> "每日签到";
@@ -389,7 +394,8 @@ public class PointsService {
      * 获取状态描述
      */
     private String getStatusDesc(Integer status) {
-        if (status == null) return "未知";
+        if (status == null)
+            return "未知";
         return switch (status) {
             case 0 -> "无效";
             case 1 -> "有效";

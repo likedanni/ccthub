@@ -66,6 +66,36 @@
           </template>
           <el-menu-item index="/refunds/list">退款申请</el-menu-item>
         </el-sub-menu>
+        <el-sub-menu index="/wallet">
+          <template #title>
+            <el-icon>
+              <CreditCard />
+            </el-icon>
+            <span>钱包管理</span>
+          </template>
+          <el-menu-item index="/wallet/list">用户钱包</el-menu-item>
+          <el-menu-item index="/wallet/transactions">钱包流水</el-menu-item>
+        </el-sub-menu>
+        <el-sub-menu index="/points">
+          <template #title>
+            <el-icon>
+              <Star />
+            </el-icon>
+            <span>积分管理</span>
+          </template>
+          <el-menu-item index="/points/list">用户积分</el-menu-item>
+          <el-menu-item index="/points/transactions">积分流水</el-menu-item>
+        </el-sub-menu>
+        <el-sub-menu index="/coupons">
+          <template #title>
+            <el-icon>
+              <Discount />
+            </el-icon>
+            <span>优惠券管理</span>
+          </template>
+          <el-menu-item index="/coupons/list">优惠券列表</el-menu-item>
+          <el-menu-item index="/coupons/user">用户优惠券</el-menu-item>
+        </el-sub-menu>
       </el-menu>
     </el-aside>
 
@@ -105,6 +135,10 @@
 import { ElMessage } from 'element-plus'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { 
+  DataLine, User, Location, Ticket, Document, Wallet, 
+  RefreshLeft, CreditCard, Star, Discount, Avatar, ArrowDown 
+} from '@element-plus/icons-vue'
 
 const route = useRoute()
 const router = useRouter()

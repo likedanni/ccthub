@@ -1,12 +1,18 @@
 package com.ccthub.userservice.entity;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 /**
  * 用户积分流水实体
@@ -97,30 +103,30 @@ public class UserPoints {
      * 变动类型常量
      */
     public static class ChangeType {
-        public static final Integer INCREASE = 1;  // 增加
-        public static final Integer DECREASE = 2;  // 减少
+        public static final Integer INCREASE = 1; // 增加
+        public static final Integer DECREASE = 2; // 减少
     }
 
     /**
      * 积分来源常量
      */
     public static class Source {
-        public static final String ORDER_PAY = "order_pay";           // 订单消费
-        public static final String DAILY_CHECKIN = "daily_checkin";   // 每日签到
-        public static final String INVITE = "invite";                 // 邀请好友
-        public static final String EXCHANGE = "exchange";             // 积分兑换
-        public static final String ACTIVITY = "activity";             // 活动奖励
-        public static final String SHARE = "share";                   // 分享获得
-        public static final String DEDUCT = "deduct";                 // 积分抵扣
-        public static final String EXPIRE = "expire";                 // 积分过期
+        public static final String ORDER_PAY = "order_pay"; // 订单消费
+        public static final String DAILY_CHECKIN = "daily_checkin"; // 每日签到
+        public static final String INVITE = "invite"; // 邀请好友
+        public static final String EXCHANGE = "exchange"; // 积分兑换
+        public static final String ACTIVITY = "activity"; // 活动奖励
+        public static final String SHARE = "share"; // 分享获得
+        public static final String DEDUCT = "deduct"; // 积分抵扣
+        public static final String EXPIRE = "expire"; // 积分过期
     }
 
     /**
      * 状态常量
      */
     public static class Status {
-        public static final Integer INVALID = 0;  // 无效
-        public static final Integer VALID = 1;    // 有效
+        public static final Integer INVALID = 0; // 无效
+        public static final Integer VALID = 1; // 有效
     }
 
     @PrePersist
