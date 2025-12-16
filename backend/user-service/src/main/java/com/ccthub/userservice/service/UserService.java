@@ -39,6 +39,9 @@ public class UserService {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private WalletService walletService;
+
     @Value("${ai.default.model:claude-haiku-4.5}")
     private String aiDefaultModel;
 
@@ -68,6 +71,14 @@ public class UserService {
         user.setLastLoginTime(LocalDateTime.now());
 
         User savedUser = userRepository.save(user);
+
+        // 自动创建钱包
+        try {
+            walletService.createWallet(savedUser.getId());
+        } catch (Exception e) {
+            // 记录日志但不影响注册流程
+            System.err.println("创建钱包失败: " + e.getMessage());
+        }
 
         String accessToken = jwtTokenProvider.generateAccessToken(
                 savedUser.getId().toString(),
