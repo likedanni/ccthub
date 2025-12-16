@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * 钱包信息DTO
@@ -25,6 +26,11 @@ public class WalletDTO {
      * 用户ID
      */
     private Long userId;
+
+    /**
+     * 用户手机号
+     */
+    private String phone;
 
     /**
      * 可用余额
@@ -60,4 +66,14 @@ public class WalletDTO {
      * 状态: 1-正常, 0-冻结
      */
     private Integer status;
+
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createdAt;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updatedAt;
 }

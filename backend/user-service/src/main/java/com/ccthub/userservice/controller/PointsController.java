@@ -174,4 +174,32 @@ public class PointsController {
                     "message", e.getMessage()));
         }
     }
+
+    @GetMapping("/list")
+    @Operation(summary = "获取用户积分列表", description = "分页查询用户积分列表,支持筛选")
+    public ResponseEntity<Map<String, Object>> getUserPointsList(
+            @Parameter(description = "用户ID") @RequestParam(required = false) Long userId,
+            @Parameter(description = "手机号") @RequestParam(required = false) String phone,
+            @Parameter(description = "页码，从0开始") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "每页数量") @RequestParam(defaultValue = "10") int size) {
+        try {
+            Page<PointsInfoDTO> pointsList = pointsService.getUserPointsList(userId, phone, page, size);
+
+            Map<String, Object> result = new HashMap<>();
+            result.put("content", pointsList.getContent());
+            result.put("totalElements", pointsList.getTotalElements());
+            result.put("totalPages", pointsList.getTotalPages());
+            result.put("currentPage", pointsList.getNumber());
+            result.put("pageSize", pointsList.getSize());
+
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "data", result));
+        } catch (Exception e) {
+            log.error("查询用户积分列表失败", e);
+            return ResponseEntity.ok(Map.of(
+                    "success", false,
+                    "message", e.getMessage()));
+        }
+    }
 }

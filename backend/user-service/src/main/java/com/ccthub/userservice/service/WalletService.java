@@ -1,12 +1,11 @@
 package com.ccthub.userservice.service;
 
-import com.ccthub.userservice.dto.*;
-import com.ccthub.userservice.entity.UserWallet;
-import com.ccthub.userservice.entity.WalletTransaction;
-import com.ccthub.userservice.repository.UserWalletRepository;
-import com.ccthub.userservice.repository.WalletTransactionRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,12 +13,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
+import com.ccthub.userservice.dto.SetPayPasswordRequest;
+import com.ccthub.userservice.dto.WalletDTO;
+import com.ccthub.userservice.dto.WalletRechargeRequest;
+import com.ccthub.userservice.dto.WalletTransactionDTO;
+import com.ccthub.userservice.entity.UserWallet;
+import com.ccthub.userservice.entity.WalletTransaction;
+import com.ccthub.userservice.repository.UserWalletRepository;
+import com.ccthub.userservice.repository.WalletTransactionRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 钱包服务
@@ -37,12 +41,14 @@ public class WalletService {
      * 充值优惠配置
      * 满100送10
      */
-    private static final Map<BigDecimal, BigDecimal> RECHARGE_BONUS_CONFIG = new HashMap<>() {{
-        put(new BigDecimal("100"), new BigDecimal("10"));   // 充值100送10
-        put(new BigDecimal("200"), new BigDecimal("20"));   // 充值200送20
-        put(new BigDecimal("500"), new BigDecimal("50"));   // 充值500送50
-        put(new BigDecimal("1000"), new BigDecimal("100")); // 充值1000送100
-    }};
+    private static final Map<BigDecimal, BigDecimal> RECHARGE_BONUS_CONFIG = new HashMap<>() {
+        {
+            put(new BigDecimal("100"), new BigDecimal("10")); // 充值100送10
+            put(new BigDecimal("200"), new BigDecimal("20")); // 充值200送20
+            put(new BigDecimal("500"), new BigDecimal("50")); // 充值500送50
+            put(new BigDecimal("1000"), new BigDecimal("100")); // 充值1000送100
+        }
+    };
 
     /**
      * 创建用户钱包
@@ -112,13 +118,13 @@ public class WalletService {
                 .amount(totalAmount)
                 .balanceAfter(wallet.getBalance().add(totalAmount))
                 .status(WalletTransaction.Status.PROCESSING)
-                .remark(bonusAmount.compareTo(BigDecimal.ZERO) > 0 ? 
-                        String.format("充值%.2f元，赠送%.2f元", request.getAmount(), bonusAmount) : 
-                        String.format("充值%.2f元", request.getAmount()))
+                .remark(bonusAmount.compareTo(BigDecimal.ZERO) > 0
+                        ? String.format("充值%.2f元，赠送%.2f元", request.getAmount(), bonusAmount)
+                        : String.format("充值%.2f元", request.getAmount()))
                 .build();
 
         transactionRepository.save(transaction);
-        log.info("创建充值流水: {}, 用户: {}, 金额: {}, 赠送: {}", 
+        log.info("创建充值流水: {}, 用户: {}, 金额: {}, 赠送: {}",
                 transactionNo, userId, request.getAmount(), bonusAmount);
 
         // TODO: 调用支付服务创建支付订单
@@ -155,7 +161,7 @@ public class WalletService {
         transaction.setPaymentNo(paymentNo);
         transactionRepository.save(transaction);
 
-        log.info("完成充值: 流水号={}, 用户={}, 金额={}, 余额={}", 
+        log.info("完成充值: 流水号={}, 用户={}, 金额={}, 余额={}",
                 transactionNo, transaction.getUserId(), transaction.getAmount(), wallet.getBalance());
     }
 
@@ -201,7 +207,7 @@ public class WalletService {
                 .build();
 
         transactionRepository.save(transaction);
-        log.info("余额支付成功: 流水号={}, 用户={}, 订单={}, 金额={}, 余额={}", 
+        log.info("余额支付成功: 流水号={}, 用户={}, 订单={}, 金额={}, 余额={}",
                 transactionNo, userId, orderNo, amount, wallet.getBalance());
     }
 
@@ -233,16 +239,16 @@ public class WalletService {
                 .build();
 
         transactionRepository.save(transaction);
-        log.info("退款到钱包成功: 流水号={}, 用户={}, 订单={}, 退款号={}, 金额={}, 余额={}", 
+        log.info("退款到钱包成功: 流水号={}, 用户={}, 订单={}, 退款号={}, 金额={}, 余额={}",
                 transactionNo, userId, orderNo, refundNo, amount, wallet.getBalance());
     }
 
     /**
      * 查询钱包流水
      */
-    public Page<WalletTransactionDTO> getTransactions(Long userId, Integer transactionType, 
-                                                     LocalDateTime startTime, LocalDateTime endTime,
-                                                     int page, int size) {
+    public Page<WalletTransactionDTO> getTransactions(Long userId, Integer transactionType,
+            LocalDateTime startTime, LocalDateTime endTime,
+            int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<WalletTransaction> transactions;
 
@@ -395,7 +401,8 @@ public class WalletService {
      * 获取交易类型描述
      */
     private String getTransactionTypeDesc(Integer type) {
-        if (type == null) return "未知";
+        if (type == null)
+            return "未知";
         return switch (type) {
             case 1 -> "充值";
             case 2 -> "消费";
@@ -411,12 +418,52 @@ public class WalletService {
      * 获取状态描述
      */
     private String getStatusDesc(Integer status) {
-        if (status == null) return "未知";
+        if (status == null)
+            return "未知";
         return switch (status) {
             case 0 -> "失败";
             case 1 -> "成功";
             case 2 -> "处理中";
             default -> "未知";
         };
+    }
+
+    /**
+     * 获取钱包列表(管理后台使用)
+     */
+    public Page<WalletDTO> getWalletList(Long userId, String phone, Integer status, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<UserWallet> walletPage;
+
+        // 根据筛选条件查询
+        if (userId != null && status != null) {
+            walletPage = walletRepository.findByUserIdAndStatus(userId, status, pageable);
+        } else if (userId != null) {
+            UserWallet wallet = walletRepository.findByUserId(userId)
+                    .orElseThrow(() -> new RuntimeException("用户钱包不存在"));
+            walletPage = new org.springframework.data.domain.PageImpl<>(
+                    java.util.List.of(wallet), pageable, 1);
+        } else if (status != null) {
+            walletPage = walletRepository.findByStatus(status, pageable);
+        } else {
+            walletPage = walletRepository.findAll(pageable);
+        }
+
+        // 转换为DTO
+        return walletPage.map(wallet -> {
+            WalletDTO dto = new WalletDTO();
+            dto.setId(wallet.getId());
+            dto.setUserId(wallet.getUserId());
+            // TODO: 从User表查询phone,暂时设置为null
+            dto.setPhone(null);
+            dto.setBalance(wallet.getBalance());
+            dto.setFrozenBalance(wallet.getFrozenBalance());
+            dto.setTotalDeposit(wallet.getTotalDeposit());
+            dto.setTotalConsumption(wallet.getTotalConsumption());
+            dto.setStatus(wallet.getStatus());
+            dto.setCreatedAt(wallet.getCreatedAt());
+            dto.setUpdatedAt(wallet.getUpdatedAt());
+            return dto;
+        });
     }
 }

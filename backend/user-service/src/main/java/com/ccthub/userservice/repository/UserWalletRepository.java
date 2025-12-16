@@ -1,14 +1,16 @@
 package com.ccthub.userservice.repository;
 
-import com.ccthub.userservice.entity.UserWallet;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.ccthub.userservice.entity.UserWallet;
+
 import jakarta.persistence.LockModeType;
-import java.util.Optional;
 
 /**
  * 用户钱包Repository
@@ -38,4 +40,16 @@ public interface UserWalletRepository extends JpaRepository<UserWallet, Long> {
      * 根据用户ID和状态查询钱包
      */
     Optional<UserWallet> findByUserIdAndStatus(Long userId, Integer status);
+
+    /**
+     * 根据用户ID和状态分页查询钱包(管理后台使用)
+     */
+    org.springframework.data.domain.Page<UserWallet> findByUserIdAndStatus(Long userId, Integer status,
+            org.springframework.data.domain.Pageable pageable);
+
+    /**
+     * 根据状态分页查询钱包(管理后台使用)
+     */
+    org.springframework.data.domain.Page<UserWallet> findByStatus(Integer status,
+            org.springframework.data.domain.Pageable pageable);
 }

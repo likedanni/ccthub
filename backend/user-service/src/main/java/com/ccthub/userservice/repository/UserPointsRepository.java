@@ -71,4 +71,19 @@ public interface UserPointsRepository extends JpaRepository<UserPoints, Long> {
      * 根据订单号查询积分流水
      */
     List<UserPoints> findByOrderNo(String orderNo);
+
+    /**
+     * 分页查询用户积分流水（用于管理后台列表）
+     */
+    Page<UserPoints> findByUserId(Long userId, Pageable pageable);
+
+    /**
+     * 查询用户指定变动类型的积分流水
+     */
+    List<UserPoints> findByUserIdAndChangeType(Long userId, Integer changeType);
+
+    /**
+     * 查询用户指定变动类型的积分流水（按创建时间倒序）
+     */
+    List<UserPoints> findByUserIdAndChangeTypeOrderByCreatedAtDesc(Long userId, Integer changeType);
 }

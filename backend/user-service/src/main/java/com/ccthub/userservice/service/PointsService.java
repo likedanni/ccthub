@@ -402,4 +402,71 @@ public class PointsService {
             default -> "未知";
         };
     }
+
+    /**
+     * 获取用户积分列表(管理后台使用)
+     */
+    public org.springframework.data.domain.Page<PointsInfoDTO> getUserPointsList(Long userId, String phone, int page,
+            int size) {
+        org.springframework.data.domain.Pageable pageable = org.springframework.data.domain.PageRequest.of(page, size);
+
+        // TODO: 支持按phone筛选,需要join user表
+        // 暂时只支持按userId筛选或查询全部
+
+        // 查询所有用户的当前积分余额
+        // 需要group by userId并sum积分
+        // 简化实现:直接返回积分流水,前端聚合显示
+
+        org.springframework.data.domain.Page<UserPoints> pointsPage;
+        if (userId != null) {
+            pointsPage = pointsRepository.findByUserId(userId, pageable);
+        } else {
+            pointsPage = pointsRepository.findAll(pageable);
+        }
+
+        // 转换为DTO - 聚合每个用户的积分信息
+        return pointsPage.map(points -> {
+            PointsInfoDTO dto = new PointsInfoDTO();
+            dto.setUserId(points.getUserId());
+            // TODO: 从User表查询phone/nickname
+            dto.setPhone(null);
+            dto.setNickname(null);
+            dto.setCurrentBalance(points.getCurrentBalance());
+            dto.setTotalEarned(getTotalEarnedPoints(points.getUserId()));
+            dto.setTotalSpent(getTotalSpentPoints(points.getUserId()));
+            dto.setLastEarnTime(getLastEarnTime(points.getUserId()));
+            return dto;
+        });
+    }
+
+    /**
+     * 获取用户累计获得积分
+     */
+    private Integer getTotalEarnedPoints(Long userId) {
+        java.util.List<UserPoints> earnedPoints = pointsRepository
+                .findByUserIdAndChangeType(userId, UserPoints.ChangeType.INCREASE);
+        return earnedPoints.stream()
+                .mapToInt(UserPoints::getPoints)
+                .sum();
+    }
+
+    /**
+     * 获取用户累计消耗积分
+     */
+    private Integer getTotalSpentPoints(Long userId) {
+        java.util.List<UserPoints> spentPoints = pointsRepository
+                .findByUserIdAndChangeType(userId, UserPoints.ChangeType.DECREASE);
+        return spentPoints.stream()
+                .mapToInt(UserPoints::getPoints)
+                .sum();
+    }
+
+    /**
+     * 获取最近获得积分时间
+     */
+    private java.time.LocalDateTime getLastEarnTime(Long userId) {
+        java.util.List<UserPoints> earnedPoints = pointsRepository
+                .findByUserIdAndChangeTypeOrderByCreatedAtDesc(userId, UserPoints.ChangeType.INCREASE);
+        return earnedPoints.isEmpty() ? null : earnedPoints.get(0).getCreatedAt();
+    }
 }
