@@ -5,7 +5,7 @@ import request from "./request";
  */
 export function getSeckillList(params) {
   return request({
-    url: "/api/seckills",
+    url: "/seckills",
     method: "get",
     params,
   });
@@ -16,7 +16,7 @@ export function getSeckillList(params) {
  */
 export function getSeckillDetail(id) {
   return request({
-    url: `/api/seckills/${id}`,
+    url: `/seckills/${id}`,
     method: "get",
   });
 }
@@ -26,7 +26,7 @@ export function getSeckillDetail(id) {
  */
 export function createSeckill(data) {
   return request({
-    url: "/api/seckills",
+    url: "/seckills",
     method: "post",
     data,
   });
@@ -37,7 +37,7 @@ export function createSeckill(data) {
  */
 export function updateSeckill(id, data) {
   return request({
-    url: `/api/seckills/${id}`,
+    url: `/seckills/${id}`,
     method: "put",
     data,
   });
@@ -48,7 +48,7 @@ export function updateSeckill(id, data) {
  */
 export function deleteSeckill(id) {
   return request({
-    url: `/api/seckills/${id}`,
+    url: `/seckills/${id}`,
     method: "delete",
   });
 }
@@ -58,7 +58,7 @@ export function deleteSeckill(id) {
  */
 export function toggleSeckillStatus(id, status) {
   return request({
-    url: `/api/seckills/${id}/status`,
+    url: `/seckills/${id}/status`,
     method: "put",
     params: { status },
   });
@@ -69,7 +69,7 @@ export function toggleSeckillStatus(id, status) {
  */
 export function getOngoingSeckills() {
   return request({
-    url: "/api/seckills/ongoing",
+    url: "/seckills/ongoing",
     method: "get",
   });
 }
@@ -79,7 +79,7 @@ export function getOngoingSeckills() {
  */
 export function processPurchase(id, userId, quantity = 1) {
   return request({
-    url: `/api/seckills/${id}/purchase`,
+    url: `/seckills/${id}/purchase`,
     method: "post",
     params: { userId, quantity },
   });

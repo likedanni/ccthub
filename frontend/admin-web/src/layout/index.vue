@@ -151,20 +151,20 @@
 
 <script setup>
 import {
-    ArrowDown,
-    Avatar,
-    CreditCard,
-    DataLine,
-    Discount,
-    Document,
-    Location,
-    Medal,
-    RefreshLeft,
-    Star,
-    Ticket,
-    Timer,
-    User,
-    Wallet
+  ArrowDown,
+  Avatar,
+  CreditCard,
+  DataLine,
+  Discount,
+  Document,
+  Location,
+  Medal,
+  RefreshLeft,
+  Star,
+  Ticket,
+  Timer,
+  User,
+  Wallet
 } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { computed } from 'vue'
