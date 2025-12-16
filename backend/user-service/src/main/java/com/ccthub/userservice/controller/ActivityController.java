@@ -1,6 +1,7 @@
 package com.ccthub.userservice.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +31,14 @@ public class ActivityController {
      * 创建活动
      */
     @PostMapping
-    public ResponseEntity<Activity> createActivity(@RequestBody Activity activity) {
-        Activity created = activityService.createActivity(activity);
-        return ResponseEntity.ok(created);
+    public ResponseEntity<?> createActivity(@RequestBody Activity activity) {
+        try {
+            Activity created = activityService.createActivity(activity);
+            return ResponseEntity.ok(created);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(Map.of("error", e.getMessage(), "cause", e.getCause() != null ? e.getCause().getMessage() : ""));
+        }
     }
 
     /**

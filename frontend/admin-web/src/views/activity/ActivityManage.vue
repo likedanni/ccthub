@@ -166,7 +166,7 @@ const dialogTitle = ref('创建活动')
 const formRef = ref(null)
 const form = reactive({
     id: null,
-    merchantId: 1, // TODO: 从登录信息获取
+    merchantId: null, // null表示平台活动，后续从登录信息获取商户ID
     name: '',
     type: 1,
     coverImage: '',
@@ -226,7 +226,7 @@ const handleCreate = () => {
     dialogTitle.value = '创建活动'
     Object.assign(form, {
         id: null,
-        merchantId: 1,
+        merchantId: null,
         name: '',
         type: 1,
         coverImage: '',
