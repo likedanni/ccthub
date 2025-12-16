@@ -3,25 +3,73 @@
 -- 创建时间: 2025-12-16
 -- 表名修正: 使用order_refunds（与DDL.sql一致）
 -- ============================================================
-
 -- 先插入测试用户数据（确保外键约束满足）
 INSERT IGNORE INTO `users` (
-  `id`,
-  `phone`,
-  `password`,
-  `nickname`,
-  `avatar`,
-  `status`,
-  `register_source`,
-  `register_time`,
-  `last_login_time`
-) VALUES
-(1, '13800000001', '$2a$10$TestPassword1', '测试用户1', NULL, 1, 'miniapp', NOW(), NOW()),
-(2, '13800000002', '$2a$10$TestPassword2', '测试用户2', NULL, 1, 'miniapp', NOW(), NOW()),
-(3, '13800000003', '$2a$10$TestPassword3', '测试用户3', NULL, 1, 'miniapp', NOW(), NOW()),
-(4, '13800000004', '$2a$10$TestPassword4', '测试用户4', NULL, 1, 'miniapp', NOW(), NOW()),
-(5, '13800000005', '$2a$10$TestPassword5', '测试用户5', NULL, 1, 'miniapp', NOW(), NOW());
-
+        `id`,
+        `phone`,
+        `password`,
+        `nickname`,
+        `avatar`,
+        `status`,
+        `register_source`,
+        `register_time`,
+        `last_login_time`
+    )
+VALUES (
+        1,
+        '13800000001',
+        '$2a$10$TestPassword1',
+        '测试用户1',
+        NULL,
+        1,
+        'miniapp',
+        NOW(),
+        NOW()
+    ),
+    (
+        2,
+        '13800000002',
+        '$2a$10$TestPassword2',
+        '测试用户2',
+        NULL,
+        1,
+        'miniapp',
+        NOW(),
+        NOW()
+    ),
+    (
+        3,
+        '13800000003',
+        '$2a$10$TestPassword3',
+        '测试用户3',
+        NULL,
+        1,
+        'miniapp',
+        NOW(),
+        NOW()
+    ),
+    (
+        4,
+        '13800000004',
+        '$2a$10$TestPassword4',
+        '测试用户4',
+        NULL,
+        1,
+        'miniapp',
+        NOW(),
+        NOW()
+    ),
+    (
+        5,
+        '13800000005',
+        '$2a$10$TestPassword5',
+        '测试用户5',
+        NULL,
+        1,
+        'miniapp',
+        NOW(),
+        NOW()
+    );
 -- 插入支付流水测试数据
 INSERT INTO `payments` (
         `payment_no`,
