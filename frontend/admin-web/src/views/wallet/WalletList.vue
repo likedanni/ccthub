@@ -10,7 +10,7 @@
       <!-- 搜索区域 -->
       <el-form :inline="true" :model="searchForm" class="search-form">
         <el-form-item label="用户ID">
-          <el-input v-model="searchForm.userId" placeholder="请输入用户ID" clearable />
+          <el-input v-model="searchForm.userId" placeholder="请输入用户名或ID" clearable />
         </el-form-item>
         <el-form-item label="手机号">
           <el-input v-model="searchForm.phone" placeholder="请输入手机号" clearable />
@@ -30,7 +30,7 @@
       <!-- 数据表格 -->
       <el-table v-loading="loading" :data="tableData" border style="width: 100%">
         <el-table-column prop="id" label="钱包ID" width="80" />
-        <el-table-column prop="userId" label="用户ID" width="100" />
+        <el-table-column prop="userName" label="用户名" width="120" show-overflow-tooltip />
         <el-table-column prop="phone" label="手机号" width="120" />
         <el-table-column prop="balance" label="可用余额" width="120">
           <template #default="scope">

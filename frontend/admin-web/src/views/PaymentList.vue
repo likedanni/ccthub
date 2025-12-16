@@ -96,7 +96,7 @@
             <el-tag :type="getStatusType(row.status)">{{ row.statusText }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="payerId" label="支付方标识" width="150" show-overflow-tooltip />
+        <el-table-column prop="payerName" label="支付用户" width="150" show-overflow-tooltip />
         <el-table-column prop="thirdPartyNo" label="第三方流水号" width="200" show-overflow-tooltip />
         <el-table-column prop="paymentTime" label="支付时间" width="180" />
         <el-table-column prop="createTime" label="创建时间" width="180" />
@@ -140,7 +140,7 @@
         <el-descriptions-item label="状态">
           <el-tag :type="getStatusType(currentRow.status)">{{ currentRow.statusText }}</el-tag>
         </el-descriptions-item>
-        <el-descriptions-item label="支付方标识">{{ currentRow.payerId }}</el-descriptions-item>
+        <el-descriptions-item label="支付用户">{{ currentRow.payerName || currentRow.payerId || '-' }}</el-descriptions-item>
         <el-descriptions-item label="第三方流水号">{{ currentRow.thirdPartyNo || '-' }}</el-descriptions-item>
         <el-descriptions-item label="支付时间">{{ currentRow.paymentTime || '-' }}</el-descriptions-item>
         <el-descriptions-item label="回调时间">{{ currentRow.callbackTime || '-' }}</el-descriptions-item>

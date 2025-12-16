@@ -35,6 +35,11 @@ public class RefundResponse {
     private Long userId;
 
     /**
+     * 申请用户名
+     */
+    private String userName;
+
+    /**
      * 退款类型: 1-全额退款, 2-部分退款
      */
     private Integer refundType;

@@ -22,8 +22,8 @@
         </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="searchForm.status" placeholder="请选择状态" clearable>
-            <el-option label="生效中" :value="1" />
-            <el-option label="已失效" :value="0" />
+            <el-option label="发放中" :value="1" />
+            <el-option label="停用" :value="3" />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -91,11 +91,80 @@
         style="margin-top: 20px; justify-content: flex-end"
       />
     </el-card>
+
+    <!-- 编辑对话框 -->
+    <el-dialog v-model="editDialog.visible" title="编辑优惠券" width="600px">
+      <el-form :model="editDialog.form" label-width="120px">
+        <el-form-item label="优惠券名称">
+          <el-input v-model="editDialog.form.name" />
+        </el-form-item>
+        <el-form-item label="优惠券类型">
+          <el-select v-model="editDialog.form.couponType" disabled>
+            <el-option label="满减券" :value="1" />
+            <el-option label="折扣券" :value="2" />
+            <el-option label="代金券" :value="3" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="发放总量">
+          <el-input-number v-model="editDialog.form.totalCount" :min="0" />
+        </el-form-item>
+        <el-form-item label="最低消费金额">
+          <el-input-number v-model="editDialog.form.minAmount" :min="0" :precision="2" />
+        </el-form-item>
+        <el-form-item label="有效期开始">
+          <el-date-picker
+            v-model="editDialog.form.validFrom"
+            type="datetime"
+            placeholder="选择日期时间"
+          />
+        </el-form-item>
+        <el-form-item label="有效期结束">
+          <el-date-picker
+            v-model="editDialog.form.validTo"
+            type="datetime"
+            placeholder="选择日期时间"
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="editDialog.visible = false">取消</el-button>
+        <el-button type="primary" @click="handleSaveEdit">确定</el-button>
+      </template>
+    </el-dialog>
+
+    <!-- 发放对话框 -->
+    <el-dialog v-model="grantDialog.visible" title="发放优惠券" width="500px">
+      <el-alert
+        :title="`将发放优惠券: ${grantDialog.couponName}`"
+        type="info"
+        :closable="false"
+        style="margin-bottom: 20px"
+      />
+      <el-form :model="grantDialog.form" label-width="100px">
+        <el-form-item label="用户ID列表">
+          <el-input
+            v-model="grantDialog.userIdsInput"
+            type="textarea"
+            :rows="5"
+            placeholder="请输入用户ID，多个用户用逗号或换行分隔，例如：1,2,3 或每行一个ID"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-text type="info" size="small">
+            支持批量发放，将自动过滤无效的ID
+          </el-text>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="grantDialog.visible = false">取消</el-button>
+        <el-button type="primary" @click="handleSaveGrant">确定发放</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { getCoupons } from '@/api/coupon'
+import { getCoupons, updateCouponStatus } from '@/api/coupon'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { onMounted, ref } from 'vue'
 
@@ -113,6 +182,23 @@ const pagination = ref({
   page: 1,
   size: 10,
   total: 0
+})
+
+// 编辑对话框
+const editDialog = ref({
+  visible: false,
+  form: {}
+})
+
+// 发放对话框
+const grantDialog = ref({
+  visible: false,
+  couponId: null,
+  couponName: '',
+  form: {
+    userIds: []
+  },
+  userIdsInput: '' // 用于输入用户ID列表
 })
 
 const typeMap = {
@@ -189,17 +275,22 @@ const handleCreate = () => {
 }
 
 const handleEdit = (row) => {
-  ElMessage.info('编辑优惠券功能待开发')
-  // TODO: 跳转到编辑页面或打开对话框
+  editDialog.value.visible = true
+  editDialog.value.form = { ...row }
 }
 
 const handleGrant = (row) => {
-  ElMessage.info('发放优惠券功能待开发')
-  // TODO: 打开发放对话框
+  grantDialog.value.visible = true
+  grantDialog.value.couponId = row.id
+  grantDialog.value.couponName = row.name
+  grantDialog.value.form = {
+    userIds: []
+  }
 }
 
 const handleToggleStatus = async (row) => {
   const action = row.status === 1 ? '禁用' : '启用'
+  const newStatus = row.status === 1 ? 3 : 1
   try {
     await ElMessageBox.confirm(
       `确定要${action}该优惠券吗？`,
@@ -210,11 +301,80 @@ const handleToggleStatus = async (row) => {
         type: 'warning'
       }
     )
-    // TODO: 调用禁用/启用API
+    await updateCouponStatus(row.id, newStatus)
     ElMessage.success(`${action}成功`)
     handleSearch()
-  } catch {
-    // 用户取消
+  } catch (error) {
+    if (error !== 'cancel') {
+      ElMessage.error(`${action}失败：` + (error.message || '未知错误'))
+    }
+  }
+}
+
+// 保存编辑
+const handleSaveEdit = async () => {
+  try {
+    const data = {
+      name: editDialog.value.form.name,
+      totalCount: editDialog.value.form.totalCount,
+      minAmount: editDialog.value.form.minAmount,
+      validFrom: editDialog.value.form.validFrom,
+      validTo: editDialog.value.form.validTo
+    }
+    await updateCoupon(editDialog.value.form.id, data)
+    ElMessage.success('编辑成功')
+    editDialog.value.visible = false
+    handleSearch()
+  } catch (error) {
+    ElMessage.error('编辑失败：' + (error.message || '未知错误'))
+  }
+}
+
+// 保存发放
+const handleSaveGrant = async () => {
+  try {
+    // 解析用户ID列表
+    const input = grantDialog.value.userIdsInput.trim()
+    if (!input) {
+      ElMessage.warning('请输入用户ID')
+      return
+    }
+    
+    // 支持逗号和换行分隔
+    const userIds = input
+      .split(/[,\n\s]+/)
+      .map(id => id.trim())
+      .filter(id => id && /^\d+$/.test(id))
+      .map(id => parseInt(id))
+    
+    if (userIds.length === 0) {
+      ElMessage.warning('没有有效的用户ID')
+      return
+    }
+    
+    // 批量发放
+    let successCount = 0
+    let failCount = 0
+    
+    for (const userId of userIds) {
+      try {
+        await grantCoupon(grantDialog.value.couponId, { userId })
+        successCount++
+      } catch (error) {
+        failCount++
+        console.error(`发放给用户${userId}失败:`, error)
+      }
+    }
+    
+    if (successCount > 0) {
+      ElMessage.success(`成功发放${successCount}个用户${failCount > 0 ? `，失败${failCount}个` : ''}`)
+      grantDialog.value.visible = false
+      grantDialog.value.userIdsInput = ''
+    } else {
+      ElMessage.error('发放失败，请检查用户ID是否有效')
+    }
+  } catch (error) {
+    ElMessage.error('发放失败：' + (error.message || '未知错误'))
   }
 }
 

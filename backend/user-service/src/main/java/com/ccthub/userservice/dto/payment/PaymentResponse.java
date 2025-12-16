@@ -75,6 +75,11 @@ public class PaymentResponse {
     private String payerId;
 
     /**
+     * 支付方姓名
+     */
+    private String payerName;
+
+    /**
      * 支付时间
      */
     private LocalDateTime paymentTime;

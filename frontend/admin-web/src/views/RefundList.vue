@@ -7,7 +7,7 @@
           <el-input v-model="searchForm.orderNo" placeholder="请输入订单号" clearable />
         </el-form-item>
         <el-form-item label="用户ID">
-          <el-input v-model="searchForm.userId" placeholder="请输入用户ID" clearable />
+          <el-input v-model="searchForm.userId" placeholder="请输入用户名或ID" clearable />
         </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 150px">
@@ -93,7 +93,7 @@
       <el-table :data="tableData" border stripe v-loading="loading">
         <el-table-column prop="refundNo" label="退款单号" width="200" />
         <el-table-column prop="orderNo" label="订单号" width="200" />
-        <el-table-column prop="userId" label="用户ID" width="100" />
+        <el-table-column prop="userName" label="用户名" width="120" show-overflow-tooltip />
         <el-table-column prop="refundTypeText" label="退款类型" width="100" />
         <el-table-column prop="refundAmount" label="退款金额" width="120">
           <template #default="{ row }">
@@ -151,7 +151,7 @@
       <el-descriptions :column="2" border v-if="currentRow">
         <el-descriptions-item label="退款单号">{{ currentRow.refundNo }}</el-descriptions-item>
         <el-descriptions-item label="订单号">{{ currentRow.orderNo }}</el-descriptions-item>
-        <el-descriptions-item label="用户ID">{{ currentRow.userId }}</el-descriptions-item>
+        <el-descriptions-item label="用户名">{{ currentRow.userName || currentRow.userId || '-' }}</el-descriptions-item>
         <el-descriptions-item label="退款类型">{{ currentRow.refundTypeText }}</el-descriptions-item>
         <el-descriptions-item label="退款金额">¥{{ currentRow.refundAmount }}</el-descriptions-item>
         <el-descriptions-item label="状态">

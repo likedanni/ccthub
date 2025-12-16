@@ -33,6 +33,7 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final OrderRepository orderRepository;
+    private final com.ccthub.userservice.repository.UserRepository userRepository;
 
     /**
      * 创建支付订单
@@ -193,6 +194,8 @@ public class PaymentService {
         response.setStatusText(getStatusText(payment.getStatus()));
         response.setThirdPartyNo(payment.getThirdPartyNo());
         response.setPayerId(payment.getPayerId());
+        // 查询用户名
+        response.setPayerName(getUserName(payment.getPayerId()));
         response.setPaymentTime(payment.getPaymentTime());
         response.setCallbackTime(payment.getCallbackTime());
         response.setCreateTime(payment.getCreateTime());
@@ -227,5 +230,22 @@ public class PaymentService {
             case Payment.STATUS_PROCESSING -> "处理中";
             default -> "未知";
         };
+    }
+
+    /**
+     * 查询用户名
+     */
+    private String getUserName(String payerId) {
+        if (payerId == null || payerId.isEmpty()) {
+            return "未知用户";
+        }
+        try {
+            Long userId = Long.parseLong(payerId);
+            return userRepository.findById(userId)
+                    .map(user -> user.getNickname() != null ? user.getNickname() : user.getPhone())
+                    .orElse("未知用户");
+        } catch (NumberFormatException e) {
+            return payerId;
+        }
     }
 }

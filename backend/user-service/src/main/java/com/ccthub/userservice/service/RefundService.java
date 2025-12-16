@@ -36,6 +36,7 @@ public class RefundService {
     private final OrderRepository orderRepository;
     private final OrderRefundRepository refundRepository;
     private final RefundPolicyService refundPolicyService;
+    private final com.ccthub.userservice.repository.UserRepository userRepository;
 
     /**
      * 创建退款申请
@@ -229,6 +230,8 @@ public class RefundService {
         response.setRefundNo(refund.getRefundNo());
         response.setOrderNo(refund.getOrderNo());
         response.setUserId(refund.getUserId());
+        // 查询用户名
+        response.setUserName(getUserName(refund.getUserId()));
         response.setRefundType(refund.getRefundType());
         response.setRefundTypeText(getRefundTypeText(refund.getRefundType()));
         response.setRefundAmount(refund.getRefundAmount());
@@ -264,5 +267,17 @@ public class RefundService {
             case OrderRefund.STATUS_FAILED -> "退款失败";
             default -> "未知";
         };
+    }
+
+    /**
+     * 查询用户名
+     */
+    private String getUserName(Long userId) {
+        if (userId == null) {
+            return "未知用户";
+        }
+        return userRepository.findById(userId)
+                .map(user -> user.getNickname() != null ? user.getNickname() : user.getPhone())
+                .orElse("未知用户");
     }
 }
