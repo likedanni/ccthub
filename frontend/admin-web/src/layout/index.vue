@@ -132,13 +132,23 @@
 </template>
 
 <script setup>
+import {
+    ArrowDown,
+    Avatar,
+    CreditCard,
+    DataLine,
+    Discount,
+    Document,
+    Location,
+    RefreshLeft,
+    Star,
+    Ticket,
+    User,
+    Wallet
+} from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { 
-  DataLine, User, Location, Ticket, Document, Wallet, 
-  RefreshLeft, CreditCard, Star, Discount, Avatar, ArrowDown 
-} from '@element-plus/icons-vue'
 
 const route = useRoute()
 const router = useRouter()

@@ -126,6 +126,66 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/wallet",
+    component: Layout,
+    redirect: "/wallet/list",
+    meta: { title: "钱包管理", icon: "CreditCard" },
+    children: [
+      {
+        path: "list",
+        name: "WalletList",
+        component: () => import("@/views/wallet/WalletList.vue"),
+        meta: { title: "用户钱包" },
+      },
+      {
+        path: "transactions",
+        name: "WalletTransactions",
+        component: () => import("@/views/wallet/TransactionList.vue"),
+        meta: { title: "钱包流水" },
+      },
+    ],
+  },
+  {
+    path: "/points",
+    component: Layout,
+    redirect: "/points/list",
+    meta: { title: "积分管理", icon: "Star" },
+    children: [
+      {
+        path: "list",
+        name: "PointsList",
+        component: () => import("@/views/points/PointsList.vue"),
+        meta: { title: "用户积分" },
+      },
+      {
+        path: "transactions",
+        name: "PointsTransactions",
+        component: () => import("@/views/points/TransactionList.vue"),
+        meta: { title: "积分流水" },
+      },
+    ],
+  },
+  {
+    path: "/coupons",
+    component: Layout,
+    redirect: "/coupons/list",
+    meta: { title: "优惠券管理", icon: "Discount" },
+    children: [
+      {
+        path: "list",
+        name: "CouponList",
+        component: () => import("@/views/coupons/CouponList.vue"),
+        meta: { title: "优惠券列表" },
+      },
+      {
+        path: "user",
+        name: "UserCouponList",
+        component: () => import("@/views/coupons/UserCouponList.vue"),
+        meta: { title: "用户优惠券" },
+      },
+    ],
+  },
 ];
 
 const router = createRouter({

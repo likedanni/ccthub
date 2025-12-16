@@ -304,6 +304,7 @@ CREATE TABLE `tickets` (
   `verification_mode` tinyint DEFAULT 1 COMMENT "核验方式: 1-二维码, 2-人脸, 3-身份证",
   `status` tinyint DEFAULT 1 COMMENT "状态: 1-上架, 0-下架",
   `create_time` datetime DEFAULT (now()) COMMENT "创建时间",
+  `update_time` datetime DEFAULT (now()) COMMENT "更新时间",
   INDEX `idx_scenic_spot_id` (`scenic_spot_id`) COMMENT "景区ID索引",
   INDEX `idx_type` (`type`) COMMENT "票种类型索引",
   INDEX `idx_status` (`status`) COMMENT "状态索引",
@@ -319,7 +320,9 @@ CREATE TABLE `ticket_prices` (
   `sell_price` decimal(10, 2) NOT NULL COMMENT "销售价",
   `inventory_total` int NOT NULL COMMENT "总库存",
   `inventory_available` int NOT NULL COMMENT "可用库存",
+  `inventory_locked` int NOT NULL DEFAULT 0 COMMENT "锁定库存",
   `is_active` boolean DEFAULT true COMMENT "该日期价格是否生效",
+  `version` int DEFAULT 0 COMMENT "乐观锁版本号",
   `create_time` datetime DEFAULT (now()) COMMENT "创建时间",
   `update_time` datetime DEFAULT (now()) COMMENT "更新时间",
   INDEX `idx_ticket_id` (`ticket_id`) COMMENT "票种ID索引",
@@ -364,11 +367,11 @@ CREATE TABLE `user_wallet` (
   `status` tinyint DEFAULT 1 COMMENT "状态: 1-正常, 0-冻结",
   `created_at` datetime DEFAULT (now()) COMMENT "创建时间",
   `updated_at` datetime DEFAULT (now()) COMMENT "更新时间",
+  `version` int DEFAULT 0 COMMENT "乐观锁版本号",
   INDEX `idx_user_id` (`user_id`) COMMENT "用户ID索引",
   INDEX `idx_status` (`status`) COMMENT "状态索引",
   CONSTRAINT `fk_user_wallet_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) COMMENT = "用户钱包（余额）账户，独立于积分体系，用于储值消费。";
-
 -- 17A. 钱包流水表
 CREATE TABLE `wallet_transactions` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT COMMENT "流水ID，主键自增",
@@ -396,7 +399,6 @@ CREATE TABLE `wallet_transactions` (
   CONSTRAINT `fk_wallet_transactions_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_wallet_transactions_wallet` FOREIGN KEY (`wallet_id`) REFERENCES `user_wallet` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) COMMENT = "钱包流水表，记录所有钱包余额变动";
-
 -- 18. 用户持有优惠券表
 CREATE TABLE `user_coupons` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT COMMENT "记录ID，主键自增",
