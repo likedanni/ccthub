@@ -21,6 +21,15 @@
           </template>
           <el-menu-item index="/users/list">用户列表</el-menu-item>
         </el-sub-menu>
+        <el-sub-menu index="/merchants">
+          <template #title>
+            <el-icon>
+              <Shop />
+            </el-icon>
+            <span>商户管理</span>
+          </template>
+          <el-menu-item index="/merchants/list">商户列表</el-menu-item>
+        </el-sub-menu>
         <el-sub-menu index="/scenic">
           <template #title>
             <el-icon>
@@ -160,6 +169,7 @@ import {
   Location,
   Medal,
   RefreshLeft,
+  Shop,
   Star,
   Ticket,
   Timer,
