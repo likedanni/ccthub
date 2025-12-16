@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ccthub.userservice.entity.Order;
 import com.ccthub.userservice.service.TicketOrderService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -27,6 +30,7 @@ import lombok.RequiredArgsConstructor;
  * @author CCTHub
  * @date 2025-12-16
  */
+@Tag(name = "统一订单查询", description = "支持多种订单类型（门票/商品/活动）的统一查询接口")
 @RestController
 @RequestMapping("/api/orders")
 @RequiredArgsConstructor

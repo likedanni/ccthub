@@ -19,9 +19,14 @@ import com.ccthub.userservice.entity.Coupon;
 import com.ccthub.userservice.entity.UserCoupon;
 import com.ccthub.userservice.service.CouponService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 /**
  * 优惠券Controller
  */
+@Tag(name = "优惠券管理", description = "优惠券相关接口，包括优惠券列表、创建、发放、使用、查询和统计等功能")
 @RestController
 @RequestMapping("/api/coupons")
 public class CouponController {

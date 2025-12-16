@@ -22,6 +22,9 @@ import com.ccthub.userservice.dto.payment.RefundRequest;
 import com.ccthub.userservice.dto.payment.RefundResponse;
 import com.ccthub.userservice.service.RefundService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -31,6 +34,7 @@ import lombok.RequiredArgsConstructor;
  * @author CCTHub
  * @date 2025-12-16
  */
+@Tag(name = "退款管理", description = "退款相关接口，包括退款申请、退款审核、退款处理和退款查询等功能")
 @RestController
 @RequestMapping("/api/refunds")
 @RequiredArgsConstructor

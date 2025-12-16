@@ -18,8 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ccthub.userservice.entity.Activity;
 import com.ccthub.userservice.service.ActivityService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 活动管理控制器
+ * 提供活动的创建、查询、更新、审核、上下线等功能
+ */
+@Tag(name = "活动管理", description = "活动相关接口，包括活动列表、创建、审核、上下线、删除和统计等功能")
 @RestController
 @RequestMapping("/api/activities")
 @RequiredArgsConstructor

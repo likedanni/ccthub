@@ -17,6 +17,9 @@ import com.ccthub.userservice.dto.ticket.TicketOrderCreateRequest;
 import com.ccthub.userservice.dto.ticket.TicketOrderResponse;
 import com.ccthub.userservice.service.TicketOrderService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +29,7 @@ import lombok.RequiredArgsConstructor;
  * @author CCTHub
  * @date 2025-12-16
  */
+@Tag(name = "门票订单管理", description = "门票订单相关接口，包括订单创建、查询、支付和取消等功能")
 @RestController
 @RequestMapping("/api/ticket-orders")
 @RequiredArgsConstructor

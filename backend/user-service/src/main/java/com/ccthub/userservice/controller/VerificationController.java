@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ccthub.userservice.service.VerificationService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -23,6 +26,7 @@ import lombok.RequiredArgsConstructor;
  * @author CCTHub
  * @date 2025-12-16
  */
+@Tag(name = "核销管理", description = "电子票券核销相关接口，包括核销码查询、单个核销、批量核销和核销记录查询等功能")
 @RestController
 @RequestMapping("/api/verification")
 @RequiredArgsConstructor

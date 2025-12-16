@@ -15,8 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ccthub.userservice.entity.ActivityParticipation;
 import com.ccthub.userservice.service.ParticipationService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 活动参与管理控制器
+ * 提供用户参与活动、打卡、完成、放弃和奖励发放等功能
+ */
+@Tag(name = "活动参与管理", description = "用户参与活动相关接口，包括参与活动、更新进度、完成活动、放弃活动和奖励发放等功能")
 @RestController
 @RequestMapping("/api/participations")
 @RequiredArgsConstructor

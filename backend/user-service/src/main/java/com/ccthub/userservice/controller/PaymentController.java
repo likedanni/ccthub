@@ -21,6 +21,9 @@ import com.ccthub.userservice.dto.payment.PaymentRequest;
 import com.ccthub.userservice.dto.payment.PaymentResponse;
 import com.ccthub.userservice.service.PaymentService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +33,7 @@ import lombok.RequiredArgsConstructor;
  * @author CCTHub
  * @date 2025-12-16
  */
+@Tag(name = "支付管理", description = "支付相关接口，包括创建支付订单、支付回调处理、支付查询和支付统计等功能")
 @RestController
 @RequestMapping("/api/payments")
 @RequiredArgsConstructor
