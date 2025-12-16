@@ -44,7 +44,7 @@
       <!-- 数据表格 -->
       <el-table v-loading="loading" :data="tableData" border style="width: 100%">
         <el-table-column prop="transactionNo" label="流水号" width="180" />
-        <el-table-column prop="userId" label="用户名" width="100" />
+        <el-table-column prop="username" label="用户名" width="120" />
         <el-table-column prop="transactionType" label="交易类型" width="100">
           <template #default="scope">
             <el-tag :type="getTypeTagType(scope.row.transactionType)">

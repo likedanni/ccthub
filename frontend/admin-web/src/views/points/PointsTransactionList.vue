@@ -13,13 +13,25 @@
           <el-input v-model="searchForm.userId" placeholder="请输入用户名" clearable />
         </el-form-item>
         <el-form-item label="积分来源">
-          <el-select v-model="searchForm.source" placeholder="请选择来源" clearable>
+          <el-select v-model="searchForm.source" placeholder="请选择来源" clearable style="width: 150px">
             <el-option label="注册赠送" value="register" />
             <el-option label="签到" value="sign_in" />
             <el-option label="订单消费" value="order" />
             <el-option label="分享" value="share" />
             <el-option label="活动奖励" value="activity" />
             <el-option label="积分兑换" value="exchange" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="变动类型">
+          <el-select v-model="searchForm.changeType" placeholder="请选择类型" clearable style="width: 150px">
+            <el-option label="增加" :value="1" />
+            <el-option label="减少" :value="2" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-select v-model="searchForm.status" placeholder="请选择状态" clearable style="width: 150px">
+            <el-option label="有效" :value="1" />
+            <el-option label="已过期" :value="0" />
           </el-select>
         </el-form-item>
         <el-form-item label="开始时间">
@@ -47,7 +59,7 @@
       <!-- 数据表格 -->
       <el-table v-loading="loading" :data="tableData" border style="width: 100%">
         <el-table-column prop="id" label="ID" width="80" />
-        <el-table-column prop="userId" label="用户名" width="100" />
+        <el-table-column prop="username" label="用户名" width="120" />
         <el-table-column prop="changeType" label="变动类型" width="100">
           <template #default="scope">
             <el-tag :type="scope.row.changeType === 1 ? 'success' : 'warning'">
@@ -107,6 +119,8 @@ const route = useRoute()
 const searchForm = ref({
   userId: route.query.userId || '',
   source: '',
+  changeType: null,
+  status: null,
   startTime: '',
   endTime: ''
 })
@@ -146,6 +160,8 @@ const handleSearch = async () => {
   try {
     const params = {
       source: searchForm.value.source,
+      changeType: searchForm.value.changeType,
+      status: searchForm.value.status,
       startTime: searchForm.value.startTime,
       endTime: searchForm.value.endTime,
       page: pagination.value.page - 1,
@@ -176,6 +192,8 @@ const handleReset = () => {
   searchForm.value = {
     userId: route.query.userId || '',
     source: '',
+    changeType: null,
+    status: null,
     startTime: '',
     endTime: ''
   }

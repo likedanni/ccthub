@@ -16,7 +16,7 @@
           <el-input v-model="searchForm.couponName" placeholder="请输入优惠券名称" clearable />
         </el-form-item>
         <el-form-item label="使用状态">
-          <el-select v-model="searchForm.useStatus" placeholder="请选择状态" clearable>
+          <el-select v-model="searchForm.useStatus" placeholder="请选择状态" clearable style="width: 150px">
             <el-option label="未使用" :value="0" />
             <el-option label="已使用" :value="1" />
             <el-option label="已过期" :value="2" />

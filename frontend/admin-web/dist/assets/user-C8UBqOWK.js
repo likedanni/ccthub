@@ -1,0 +1,1 @@
+import{r as t}from"./request-CPaEfZlY.js";const a=()=>t.get("/users/dashboard/stats"),u=s=>t.get("/users/list",{params:s}),o=s=>t.get(`/users/${s}/profile`),n=(s,r)=>t.put(`/users/${s}/status`,{status:r});export{u as a,o as b,a as g,n as u};
