@@ -429,6 +429,233 @@ wx.request({
 
 ---
 
+## 5️⃣ 用户地址管理
+
+### 创建地址
+
+```http
+POST /api/addresses
+Content-Type: application/json
+```
+
+**请求体:**
+
+```json
+{
+  "userId": 1,
+  "recipientName": "张三",
+  "recipientPhone": "13800138000",
+  "province": "山西省",
+  "city": "长治市",
+  "district": "潞州区",
+  "detailAddress": "某某街道某某小区1号楼101室",
+  "isDefault": true
+}
+```
+
+**响应:**
+
+```json
+{
+  "success": true,
+  "message": "地址创建成功",
+  "data": {
+    "id": 1,
+    "userId": 1,
+    "recipientName": "张三",
+    "recipientPhone": "13800138000",
+    "province": "山西省",
+    "city": "长治市",
+    "district": "潞州区",
+    "detailAddress": "某某街道某某小区1号楼101室",
+    "isDefault": true,
+    "createTime": "2025-12-16T10:30:00",
+    "updateTime": "2025-12-16T10:30:00"
+  }
+}
+```
+
+### 更新地址
+
+```http
+PUT /api/addresses/{id}
+Content-Type: application/json
+```
+
+**请求体:**
+
+```json
+{
+  "userId": 1,
+  "recipientName": "李四",
+  "recipientPhone": "13900139000",
+  "province": "山西省",
+  "city": "长治市",
+  "district": "潞州区",
+  "detailAddress": "新地址",
+  "isDefault": false
+}
+```
+
+**响应:**
+
+```json
+{
+  "success": true,
+  "message": "地址更新成功",
+  "data": {
+    "id": 1,
+    "userId": 1,
+    "recipientName": "李四",
+    "recipientPhone": "13900139000",
+    "province": "山西省",
+    "city": "长治市",
+    "district": "潞州区",
+    "detailAddress": "新地址",
+    "isDefault": false,
+    "updateTime": "2025-12-16T10:35:00"
+  }
+}
+```
+
+### 删除地址
+
+```http
+DELETE /api/addresses/{id}?userId={userId}
+```
+
+**响应:**
+
+```json
+{
+  "success": true,
+  "message": "地址删除成功",
+  "data": null
+}
+```
+
+**说明:** 删除默认地址时会自动将最早创建的地址设为新的默认地址。
+
+### 设置默认地址
+
+```http
+PUT /api/addresses/{id}/default?userId={userId}
+```
+
+**响应:**
+
+```json
+{
+  "success": true,
+  "message": "默认地址设置成功",
+  "data": {
+    "id": 2,
+    "userId": 1,
+    "isDefault": true,
+    "updateTime": "2025-12-16T10:40:00"
+  }
+}
+```
+
+### 查询用户地址列表
+
+```http
+GET /api/addresses/user/{userId}
+```
+
+**响应:**
+
+```json
+{
+  "success": true,
+  "message": "查询成功",
+  "data": [
+    {
+      "id": 2,
+      "userId": 1,
+      "recipientName": "王五",
+      "recipientPhone": "13700137000",
+      "province": "山西省",
+      "city": "长治市",
+      "district": "潞州区",
+      "detailAddress": "默认地址",
+      "isDefault": true,
+      "createTime": "2025-12-16T09:00:00"
+    },
+    {
+      "id": 1,
+      "userId": 1,
+      "recipientName": "李四",
+      "recipientPhone": "13900139000",
+      "province": "山西省",
+      "city": "长治市",
+      "district": "潞州区",
+      "detailAddress": "新地址",
+      "isDefault": false,
+      "createTime": "2025-12-15T10:00:00"
+    }
+  ]
+}
+```
+
+**说明:** 返回按默认地址优先、创建时间倒序排列的地址列表。
+
+### 查询默认地址
+
+```http
+GET /api/addresses/user/{userId}/default
+```
+
+**响应:**
+
+```json
+{
+  "success": true,
+  "message": "查询成功",
+  "data": {
+    "id": 2,
+    "userId": 1,
+    "recipientName": "王五",
+    "recipientPhone": "13700137000",
+    "province": "山西省",
+    "city": "长治市",
+    "district": "潞州区",
+    "detailAddress": "默认地址",
+    "isDefault": true
+  }
+}
+```
+
+### 查询地址详情
+
+```http
+GET /api/addresses/{id}
+```
+
+**响应:**
+
+```json
+{
+  "success": true,
+  "message": "查询成功",
+  "data": {
+    "id": 1,
+    "userId": 1,
+    "recipientName": "李四",
+    "recipientPhone": "13900139000",
+    "province": "山西省",
+    "city": "长治市",
+    "district": "潞州区",
+    "detailAddress": "新地址",
+    "isDefault": false,
+    "createTime": "2025-12-15T10:00:00",
+    "updateTime": "2025-12-16T10:35:00"
+  }
+}
+```
+
+---
+
 ## 📝 数据库字段说明
 
 **users 表字段:**
