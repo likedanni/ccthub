@@ -202,4 +202,6 @@ public class PointsController {
                     "message", e.getMessage()));
         }
     }
+
+    // 临时 admin 测试接口已移除（若需恢复，请使用受保护的 admin-only endpoint）
 }

@@ -38,6 +38,17 @@
 
 ## 🎯 三阶段架构演进路线
 
+---
+
+## **开发记录（近期）**
+
+- **2025-12-17**: 自动化积分 → 成长值功能实现与验证
+  - 在 `user-service` 中实现 `PointsToGrowthService`，并在 `PointsService` 中触发自动转换；新增 `users.points_for_growth_accumulated` 字段与 `points_to_growth_log` 审计表（数据库迁移脚本已在 `database/migrations/` 中）。
+  - 临时添加了一个用于开发测试的 admin 接口 `POST /api/points/admin/credit`，用于一次性给指定用户发放积分并观察自动转换流程；已用测试用户完成一次 100 积分的发放，验证了 100 积分会转为 1 个 `growthValue`（剩余累积分保留）。
+  - 随后移除了该临时接口并提交代码，系统编译通过，运行在本地端口 `8080` 上用于进一步手动/自动化验证。
+  - 备注：测试接口为开发临时工具，已被清理；如需持续测试或自动化集成，请改为受限的 admin-only 或仅在 `dev` profile 下启用。
+
+
 ### 第一阶段：模块化单体架构（1-3 个月）✅ 当前阶段
 
 **目标**: 快速上线核心功能，验证业务模式
